@@ -18,38 +18,17 @@ module.exports = {
 
         this.getToken(function(access_token){
             var options = {
-                url:graph_base+"search?q="+keyword+"&type=post",
-
+                url:graph_base+"v1.0/search?q="+keyword+"&type=post&access_token="+access_token
             }
-            request.get()
+            request.get(options,function(err,response,body){
+                var raw_body = JSON.parse(body);
+                return res.json({data:"Nope"});
+            });
         });
-    },
-
-    getOAuth2: function(){
-        return new OAuth2(sails.config.globals.facebook_key,
-            sails.config.globals.facebook_secret,
-            "http://graph.facebook.com/",
-            null,"oauth/access_token",null);
     },
 
     getToken:function(callback){
-        var oauth2 = this.getOAuth2();
-
-        console.log(sails.config.globals.facebook_key,
-            sails.config.globals.facebook_secret);
-
-        var options = {
-            url:graph_base+"oauth/access_token?client_id="
-                +sails.config.globals.facebook_key
-                +"&client_secret="+sails.config.globals.facebook_secret
-                +"&grant_type=client_credentials"
-        };
-
-        request.get(options,function(err,response,body){
-            var raw = body.replace("access_token=","");
-
-            callback(raw);
-        });
+        callback(sails.config.globals.facebook_key+"|"+sails.config.globals.facebook_secret);
     }
 };
 
