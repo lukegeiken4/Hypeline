@@ -1,6 +1,7 @@
 // EmailService.js - in api/services
 var sys = require('sys');
 var exec = require('child_process').exec;
+var request = require("request");
 module.exports = {
 
     
@@ -12,11 +13,11 @@ module.exports = {
         for(var i = 0; i < model_data.length; i++) {
             if(i==0) params += "'" + model_data[i].text + "'";
             else params += " '" + model_data[i].text + "'";
+
         }
 
         //Get sentiment data
-        var python_command = "echo $(python test.py "+params+")";
-
+        var python_command = "echo $(python sentiment.py "+params+")";
         callback(exec(python_command, function(error, stdout, stderr){
             if(!error) {
                 //Update the data model
@@ -26,7 +27,11 @@ module.exports = {
                     for (var i=0; i < output_arr.length;i++ ) {
                         //Push into mongo
                         model_data[i].sentiment = output_arr[i];
-
+                        console.log(JSON.stringify(model_data[i]));
+                        Hype_nug.create(model_data[i]).exec(function createCB(err, created){
+                            if(err) console.log("could not create hype nug");
+                            else  console.log('Created hype nug with sentiment of  ' + created.sentiment);
+                        });
                     };
                 } else {
                     //Only a single model was sent
