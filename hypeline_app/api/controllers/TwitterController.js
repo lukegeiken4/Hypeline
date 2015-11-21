@@ -57,6 +57,7 @@ module.exports = {
             obj.sentiment = 0.0;
             obj.date = Date.parse(raw[i].created_at);
             obj.text = raw[i].text;
+            obj.related_tags = [];
 
             parsed.push(obj);
         }
