@@ -17,12 +17,13 @@ module.exports = {
 				},
 			]
 		};
-		var result = SentiAnal.analPush(data, false);
-		if(result) {
-			return res.send("Successful sentiment taken");
-		} else {
-			return res.send("Shit....");
-		}	
+		SentiAnal.analPush(data, false, function(result){
+			if(result) {
+				return res.send("Successful sentiment taken");
+			} else {
+				return res.send("Shit....");
+			}	
+		});
   	}
 };
 
