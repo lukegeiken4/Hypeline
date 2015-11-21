@@ -6,7 +6,7 @@ indico.apiKey =  'ecad6731e6472b85c27e6eab6d35e003';
 module.exports = {
 
 
-    analPush: function(data, terminate, callback) {
+    analPush: function(data, resolve, callback) {
         //Check data
         //Create string of text to use as python param
         var model_data = data.data;
@@ -28,21 +28,23 @@ module.exports = {
                 var output_arr = response;
                 //If output is array, then multiple models were sent
                 if(output_arr.constructor === Array) {
-                    console.log("Array: " +output_arr);
                     for (var i=0; i < output_arr.length;i++ ) {
                         //Push into mongo
-                        model_data[i].sentiment = output_arr[i];
-                        console.log(JSON.stringify(model_data[i]));
+                        model_data[i].sentiment = output_arr[i];;
                         Hype_nug.create(model_data[i]).exec(function createCB(err, created){
                             if(err) console.log(err);
                             else  console.log('Created hype nug with sentiment of  ' + created.sentiment);
-                        });
+                            return;
+                        })/*.then(function(){
+                            resolve();
+                        });*/
                     };
                 } else {
                     //Only a single model was sent
                     console.log("Single: "+output_arr);
                      model_data[0].sentiment = output_arr;
                 }
+
                 callback(true);
             })
             .catch(function(logError){
