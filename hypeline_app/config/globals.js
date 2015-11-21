@@ -18,7 +18,10 @@ module.exports.globals = {
   *                                                                           *
   ****************************************************************************/
   twitter_secret: "MXcpyi3g6xF2rnF41eXyXopjFoFowpbx5zPHpkog8iokL44HHQ",
-  twitter_key: "Z6776OJNzXhhzOPbmSAp5Napb"
+  twitter_key: "Z6776OJNzXhhzOPbmSAp5Napb",
+  facebook_secret: "446baba6f4d102c07b59a90b6aad5ee5",
+  facebook_key: "1712266155651439"
+
 	// _: true,
 
   /****************************************************************************

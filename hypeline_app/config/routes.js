@@ -49,6 +49,6 @@ module.exports.routes = {
 
   'GET /twitter/hypeNugs': "TwitterController.get_raw_nugs",
   'GET /facebook/hypeNugs': "FacebookController.get_raw_nugs",
-  'GET /analyze/:origin':""
+  'GET /analyze/:origin':"AnalyzeController.get_nugs"
 
 };
