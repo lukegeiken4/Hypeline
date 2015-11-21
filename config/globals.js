@@ -17,7 +17,8 @@ module.exports.globals = {
   * lodash --save, then var _ = require('lodash') at the top of any file.     *
   *                                                                           *
   ****************************************************************************/
-
+  twitter_secret: "MXcpyi3g6xF2rnF41eXyXopjFoFowpbx5zPHpkog8iokL44HHQ",
+  twitter_key: "Z6776OJNzXhhzOPbmSAp5Napb"
 	// _: true,
 
   /****************************************************************************
