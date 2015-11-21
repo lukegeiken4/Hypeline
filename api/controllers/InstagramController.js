@@ -36,8 +36,13 @@ module.exports = {
 
                     self.parseResults(parsed,raw.data,top_tag,run_id);
 
-                    return res.json({data:parsed});
-
+                    SentiAnal.analPush({data:parsed}, false, function(result){
+                        if(result) {
+                            return res.json("Successful sentiment taken");
+                        } else {
+                            return res.json("Shit....");
+                        }
+                    });
                 });
             });
         });
@@ -51,15 +56,15 @@ module.exports = {
     },
 
     parseResults: function(parsed,raw,keyword,run_id){
-        console.log(raw[0]);
+        console.log(raw[0].created_time);
         for (i=0;i<raw.length;i++){
             var obj = {};
             obj.tag = keyword;
             obj.origin = "instagram";
-            obj.date_run = run_id;
+            obj.date_run = new Date().toISOString();
             obj.run_id = run_id;
             obj.sentiment = 0.0;
-            obj.date = Date.parse(raw[i].created_time);
+            obj.date =  new Date(parseInt(raw[i].caption.created_time)).toISOString();
             obj.text = raw[i].caption.text.replace(/\r?\n|\r/g, " ").replace(/\'/g,"");
             obj.related_tags = [];
 
