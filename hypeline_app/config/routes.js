@@ -34,7 +34,12 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+
+  '/login': 'User_authController.authUser',
+  'post /user/create': 'User_authController.createUser',
+  '/user/send_reset': 'User_authController.sendUserReset',
+  '/user/reset': 'User_authController.resetPassword'
 
   /***************************************************************************
   *                                                                          *

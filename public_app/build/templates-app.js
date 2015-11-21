@@ -1,4 +1,4 @@
-angular.module('templates-app', ['about/about.tpl.html', 'home/home.tpl.html']);
+angular.module('templates-app', ['about/about.tpl.html', 'home/home.tpl.html', 'hypeline/index.tpl.html', 'user/create.tpl.html']);
 
 angular.module("about/about.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("about/about.tpl.html",
@@ -273,54 +273,22 @@ angular.module("about/about.tpl.html", []).run(["$templateCache", function($temp
 angular.module("home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("home/home.tpl.html",
     "<div class=\"jumbotron\">\n" +
-    "  <h1>Non-Trivial AngularJS Made Easy</h1>\n" +
+    "  <h1>hype/line</h1>\n" +
     "\n" +
     "  <p class=\"lead\">\n" +
-    "    Everything you need to kickstart AngularJS projects: a best-practice\n" +
-    "    directory structure, an intelligent build system, and the best web design\n" +
-    "    libraries around.\n" +
+    "    Semiotics irony tofu ugh put a bird on it letterpress ennui, gluten-free helvetica biodiesel hashtag squid. Yr bespoke DIY poutine banh mi williamsburg, normcore try-hard trust fund church-key shoreditch tumblr. Squid actually lo-fi, YOLO locavore umami blog heirloom microdosing fanny pack twee banh mi waistcoat occupy.\n" +
     "  </p>\n" +
-    "\n" +
-    "  <ul class=\"list-inline social-buttons\">\n" +
-    "    <li>\n" +
-    "      <iframe \n" +
-    "        src=\"http://ghbtns.com/github-btn.html?user=ngbp&amp;repo=ngbp&amp;type=watch&amp;count=true\" \n" +
-    "        allowtransparency=\"true\" \n" +
-    "        frameborder=\"0\" \n" +
-    "        scrolling=\"0\" \n" +
-    "        width=\"110\" \n" +
-    "        height=\"20\">\n" +
-    "      </iframe>\n" +
-    "    </li>\n" +
-    "    <li>\n" +
-    "      <iframe \n" +
-    "        src=\"http://ghbtns.com/github-btn.html?user=ngbp&amp;repo=ngbp&amp;type=fork&amp;count=true\" \n" +
-    "        allowtransparency=\"true\" \n" +
-    "        frameborder=\"0\" \n" +
-    "        scrolling=\"0\" \n" +
-    "        width=\"95\" \n" +
-    "        height=\"20\">\n" +
-    "      </iframe>\n" +
-    "    </li>\n" +
-    "    <li>\n" +
-    "       <iframe allowtransparency=\"true\" frameborder=\"0\" scrolling=\"no\"\n" +
-    "        src=\"https://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fbit.ly%2FngBoilerplate&counturl=http%3A%2F%2Fngbp.github.com%2Fngbp&text=Check%20out%20%23ngbp%20-%20an%20awesome%20kickstarter%20for%20web%20projects%20%7C&hashtags=angularjs&via=joshdmiller&related=joshdmiller\"\n" +
-    "        style=\"width:130px; height:20px;\"></iframe>\n" +
-    "    </li>\n" +
-    "    <li plus-one></li>\n" +
-    "  </ul> \n" +
     "  \n" +
     "  <div class=\"btn-group\">\n" +
     "    <a href=\"https://github.com/ngbp/ngbp#readme\" class=\"btn btn-large btn-default\">\n" +
-    "      <i class=\"fa fa-book\"></i>\n" +
-    "      Read the Docs\n" +
+    "      <i class=\"fa fa-question-circle\"></i>\n" +
+    "      What we do\n" +
     "    </a>\n" +
     "    <a href=\"https://github.com/ngbp/ngbp\" class=\"btn btn-large btn-success\">\n" +
-    "      <i class=\"fa fa-download\"></i>\n" +
-    "      Download\n" +
+    "      <i class=\"fa fa-rocket\"></i>\n" +
+    "      Get Started\n" +
     "    </a>\n" +
     "  </div>\n" +
-    "\n" +
     "</div>\n" +
     "\n" +
     "<div class=\"marketing\">\n" +
@@ -328,73 +296,41 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
     "      <h4><i class=\"fa fa-thumbs-up\"></i> Good to Go!</h4>\n" +
     "      <p>\n" +
-    "        Kickstarts your project quickly, with everything you need, so you can \n" +
-    "        focus on what matters: your app.\n" +
+    "        Bullet point for stuff.\n" +
     "      </p>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-magic\"></i> Complete Build System</h4>\n" +
+    "      <h4><i class=\"fa fa-magic\"></i> Complete Analysis</h4>\n" +
     "      <p>\n" +
-    "        A smart, <a href=\"http://gruntjs.com\">Grunt</a>-based build system \n" +
-    "        designed to save you time and energy.\n" +
+    "        Bullet point for more stuff.\n" +
     "      </p>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-retweet\"></i> Modularization</h4>\n" +
+    "      <h4><i class=\"fa fa-retweet\"></i> Real time trending</h4>\n" +
     "      <p>\n" +
-    "        Supports a structure that maintains separation of concerns while\n" +
-    "        ensuring maximum code reuse.\n" +
+    "        So much awesome. So little time.\n" +
     "      </p>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-star\"></i> AngularJS</h4>\n" +
+    "      <h4><i class=\"fa fa-star\"></i> And dinosaurs</h4>\n" +
     "      <p>\n" +
-    "        JavaScript framework that augments browser-based, single-page \n" +
-    "        applications with MVC functionality.\n" +
+    "        This is pretty much the best thing ever.\n" +
     "        <a href=\"http://angularjs.org\">More &raquo;</a>\n" +
     "      </p>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-resize-small\"></i> LESS CSS</h4>\n" +
+    "      <h4><i class=\"fa fa-bar-chart\"></i> Less suck. More stats</h4>\n" +
     "      <p>\n" +
-    "        The dynamic stylesheet language that extends CSS with efficiency.\n" +
+    "        You want stats? We've got stats/\n" +
     "        <a href=\"http://lesscss.org\">More &raquo;</a>\n" +
     "      </p>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-twitter\"></i> Twitter Bootstrap</h4>\n" +
+    "      <h4><i class=\"fa fa-usd\"></i> Give us all your money</h4>\n" +
     "      <p>\n" +
-    "        Sleek, intuitive, and powerful front-end framework for faster and easier\n" +
-    "        web development.\n" +
-    "        <a href=\"http://getbootstrap.com\">More &raquo;</a>\n" +
-    "      </p>\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "  <div class=\"row\">\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-circle\"></i> Angular UI Bootstrap</h4>\n" +
-    "      <p>\n" +
-    "        Pure AngularJS components for Bootstrap written by the \n" +
-    "        <a href=\"https://github.com/angular-ui?tab=members\">AngularUI Team</a>.\n" +
-    "        <a href=\"http://angular-ui.github.com/bootstrap\">More &raquo;</a>\n" +
-    "      </p>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-flag\"></i> Font Awesome</h4>\n" +
-    "      <p>\n" +
-    "        The iconic font designed for use with Twitter Bootstrap.\n" +
-    "        <a href=\"http://fortawesome.github.com/Font-Awesome\">\n" +
-    "          More &raquo;\n" +
-    "        </a>\n" +
-    "      </p>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-asterisk\"></i> Placeholders</h4>\n" +
-    "      <p>\n" +
-    "        Client-side image and text placeholder directives written in pure \n" +
-    "        AngularJS to make designing mock-ups wicked-fast.\n" +
+    "        I'm about to retire.\n" +
     "        <a href=\"http://joshdmiller.github.com/angular-placeholders\">\n" +
     "          More &raquo;\n" +
     "        </a>\n" +
@@ -403,5 +339,90 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "  </div>\n" +
     "</div>\n" +
     "\n" +
+    "");
+}]);
+
+angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("hypeline/index.tpl.html",
+    "<div class=\"row\" ng-controller=\"HypelineCtrl\">\n" +
+    "    <ng-form novalidate role=\"form\" name=\"entryPoint\">\n" +
+    "        <div class=\"col-xs-12 col-sm-6\">\n" +
+    "            <label for=\"startDate\" class=\"label label-default\">Start Date</label>\n" +
+    "            <p class=\"input-group\">\n" +
+    "                <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"startDate\" is-open=\"status.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"false\" show-button-bar=\"false\" ng-click=\"open($event)\" id=\"startDate\" required />\n" +
+    "                <span class=\"input-group-btn\">\n" +
+    "                    <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                </span>\n" +
+    "            <p>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-12 col-sm-6\">\n" +
+    "            <label for=\"endDate\" class=\"label label-default\">End Date</label>\n" +
+    "            <p class=\"input-group\">\n" +
+    "                <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"endDate\" is-open=\"status.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"false\" show-button-bar=\"false\" ng-click=\"open($event)\" id=\"endDate\" required />\n" +
+    "                <span class=\"input-group-btn\">\n" +
+    "                    <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                </span>\n" +
+    "            <p>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-12\">\n" +
+    "            <label for=\"tags\" class=\"label label-default\">Tag</label>\n" +
+    "            <p class=\"input-group\">\n" +
+    "                <input class=\"form-control\" type=\"text\" ng-model=\"tag\" required />\n" +
+    "            </p>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-12\">\n" +
+    "            <p class=\"input-group\">\n" +
+    "                <button type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid\" ng-click=\"go()\">Go!</button>\n" +
+    "            </p>\n" +
+    "        </div>\n" +
+    "    </form>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("user/create.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("user/create.tpl.html",
+    "<div class=\"container\">\n" +
+    "    <form role=\"form\" ng-submit=\"createUser()\">\n" +
+    "        <div ng-if=\"error\" class=\"alert alert-danger\"><=% error ></div>\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12 col-sm-6 form-group\">\n" +
+    "                <label for=\"firstName\">First Name</label>\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"firstName\" ng-model=\"user.firstName\" />\n" +
+    "            </div>\n" +
+    "            <div class=\"col-xs-12 col-sm-6 form-group\">\n" +
+    "                <label for=\"lastName\">Last Name</label>\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"lastName\" ng-model=\"user.lastName\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        \n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
+    "                <label for=\"email\">Email</label>\n" +
+    "                <input type=\"email\" class=\"form-control\" id=\"email\" ng-model=\"user.email\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        \n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
+    "                <label for=\"userName\">User Name</label>\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"userName\" ng-model=\"user.userName\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
+    "                <label for=\"password\">Password</label>\n" +
+    "                <input type=\"password\" class=\"form-control\" id=\"password\" ng-model=\"user.password\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        \n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12\">\n" +
+    "                <input class=\"btn btn-primary\" type=\"submit\" value=\"Create User\" id=\"createUser\"></input>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </form>\n" +
+    "</div>\n" +
     "");
 }]);
