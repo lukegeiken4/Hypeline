@@ -4,7 +4,7 @@ var exec = require('child_process').exec;
 module.exports = {
 
     
-    analPush: function(data, terminate) {
+    analPush: function(data, terminate, callback) {
         //Check data
         //Create string of text to use as python param
         var model_data = data.data;
@@ -17,7 +17,7 @@ module.exports = {
         //Get sentiment data
         var python_command = "echo $(python test.py "+params+")";
 
-        return exec(python_command, function(error, stdout, stderr){
+        callback(exec(python_command, function(error, stdout, stderr){
             if(!error) {
                 //Update the data model
                 var output_arr = JSON.parse(stdout);
@@ -36,6 +36,6 @@ module.exports = {
             } 
             console.log(stderr);
             return false;
-        });
+        }));
     }
 };
