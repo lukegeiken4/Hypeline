@@ -41,8 +41,13 @@ module.exports = {
                 self.parseResults(parsed,raw_data,keyword,run_id);
 
                 //luke's api called hear
-
-                return res.json({data:parsed});
+                SentiAnal.analPush({data:parsed}, false, function(result){
+                    if(result) {
+                        return res.json("Successful sentiment taken");
+                    } else {
+                        return res.json("Shit....");
+                    }   
+                });
             })
         });
     },
