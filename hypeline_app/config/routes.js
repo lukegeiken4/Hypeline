@@ -36,6 +36,11 @@ module.exports.routes = {
     view: 'homepage'
   },
 
+  'GET /login': 'User_authController.authUser',
+  'POST /user/create': 'User_authController.createUser',
+  'POST /user/send_reset': 'User_authController.sendUserReset',
+  'POST /user/reset': 'User_authController.resetPassword',
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
