@@ -28,7 +28,8 @@
     "sails-disk": "~0.10.0",
     "stormpath": "^0.15.0",
     "sails-mongo": "^0.11.5",
-    "twitter": "^1.2.5"
+    "twitter": "^1.2.5",
+    "indico.io" : "^0.4.6 "
   },
   "scripts": {
     "debug": "node debug app.js",
