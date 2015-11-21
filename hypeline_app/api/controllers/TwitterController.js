@@ -40,13 +40,12 @@ module.exports = {
 
                 self.parseResults(parsed,raw_data,keyword,run_id);
 
-                //luke's api called hear
                 SentiAnal.analPush({data:parsed}, false, function(result){
                     if(result) {
                         return res.json("Successful sentiment taken");
                     } else {
                         return res.json("Shit....");
-                    }   
+                    }
                 });
             })
         });
@@ -57,10 +56,10 @@ module.exports = {
             var obj = {};
             obj.tag = keyword;
             obj.origin = "twitter";
-            obj.date_run = run_id;
+            obj.date_run = new Date().toISOString();
             obj.run_id = run_id;
             obj.sentiment = 0.0;
-            obj.date = Date.parse(raw[i].created_at);
+            obj.date = new Date(Date.parse(raw[i].created_at)).toISOString();
             obj.text = raw[i].text.replace(/\r?\n|\r/g, " ").replace(/\'/g,"");
             obj.related_tags = [];
 

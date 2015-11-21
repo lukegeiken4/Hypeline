@@ -5,7 +5,7 @@ var indico = require('indico.io');
 indico.apiKey =  'ecad6731e6472b85c27e6eab6d35e003';
 module.exports = {
 
-    
+
     analPush: function(data, terminate, callback) {
         //Check data
         //Create string of text to use as python param
@@ -24,7 +24,8 @@ module.exports = {
         indico.sentiment(batchInput)
             .then(function(response){
                 //Update the data model
-                var output_arr = JSON.parse(stdout);
+
+                var output_arr = response;
                 //If output is array, then multiple models were sent
                 if(output_arr.constructor === Array) {
                     console.log("Array: " +output_arr);
@@ -33,7 +34,7 @@ module.exports = {
                         model_data[i].sentiment = output_arr[i];
                         console.log(JSON.stringify(model_data[i]));
                         Hype_nug.create(model_data[i]).exec(function createCB(err, created){
-                            if(err) console.log("could not create hype nug");
+                            if(err) console.log(err);
                             else  console.log('Created hype nug with sentiment of  ' + created.sentiment);
                         });
                     };
@@ -70,7 +71,7 @@ module.exports = {
         //              model_data[0].sentiment = output_arr;
         //         }
         //         callback(true);
-        //     } 
+        //     }
         //     console.log(stderr);
         //     callback(false);
         // });
