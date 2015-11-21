@@ -13,10 +13,7 @@ module.exports = {
 
     },
 
-    get_raw_nugs: function(req,res){
-        var keyword = req.query.keyword;
-        var until = req.query.end_time || ""; //yyyy-mm-dd
-        var run_id = Date.now();
+    get_raw_nugs: function(keyword,until,run_id){
         var self = this;
 
         self.getToken(function(e,access_token,refresh_token,results){
@@ -27,27 +24,30 @@ module.exports = {
                 }
             };
 
-            request.get(options,function(err,response, body){
-                if (err){
-                    return res.json({error:err});
-                }
-
-                var raw_body = JSON.parse(body);
-                var raw_data = raw_body.statuses;
-                var raw_next = raw_body.next_results;
-
-                var parsed = [];
-
-                self.parseResults(parsed,raw_data,keyword,run_id);
-
-                SentiAnal.analPush({data:parsed}, false, function(result){
-                    if(result) {
-                        return res.json("Successful sentiment taken");
-                    } else {
-                        return res.json("Shit....");
+            return new Promise( function( resolve, reject ){
+                request.get(options,function(err,response, body){
+                    if (err){
+                        return {error:err};
                     }
+
+                    var raw_body = JSON.parse(body);
+                    var raw_data = raw_body.statuses;
+                    var raw_next = raw_body.next_results;
+
+                    var parsed = [];
+
+                    self.parseResults(parsed,raw_data,keyword,run_id);
+
+                    SentiAnal.analPush({data:parsed}, null, function(result){
+                        resolve();
+                        if(result) {
+                            return {data:"Successful sentiment taken"};
+                        } else {
+                            return {error:"Shit...."};
+                        }
+                    });
                 });
-            })
+            });
         });
     },
 
@@ -62,6 +62,7 @@ module.exports = {
             obj.date = new Date(Date.parse(raw[i].created_at)).toISOString();
             obj.text = raw[i].text.replace(/\r?\n|\r/g, " ").replace(/\'/g,"");
             obj.related_tags = [];
+            obj.origin_id = raw[i].id_str;
 
             parsed.push(obj);
         }
