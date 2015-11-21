@@ -36,10 +36,10 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  '/login': 'User_authController.authUser',
-  'post /user/create': 'User_authController.createUser',
-  '/user/send_reset': 'User_authController.sendUserReset',
-  '/user/reset': 'User_authController.resetPassword'
+  'GET /login': 'User_authController.authUser',
+  'POST /user/create': 'User_authController.createUser',
+  'POST /user/send_reset': 'User_authController.sendUserReset',
+  'POST /user/reset': 'User_authController.resetPassword',
 
   /***************************************************************************
   *                                                                          *
@@ -50,5 +50,10 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+  'get /test': 'Hype_nugController.testPush',
+
+  'GET /twitter/hypeNugs': "TwitterController.get_raw_nugs",
+  'GET /facebook/hypeNugs': "FacebookController.get_raw_nugs",
+  'GET /analyze/:origin':"AnalyzeController.get_nugs"
 
 };
