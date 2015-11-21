@@ -17,6 +17,9 @@ module.exports = {
             case "facebook":
                 sails.controllers.facebook.get_raw_nugs(req,res);
                 break;
+            case "instagram":
+                sails.controllers.instagram.get_raw_nugs(req,res);
+                break;
             default:
                 response.error = "No module for "+origin;
                 break;
