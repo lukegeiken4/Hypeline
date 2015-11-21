@@ -18,12 +18,14 @@ module.exports = {
 
         //Get sentiment data
         var python_command = "echo $(python sentiment.py "+params+")";
-        callback(exec(python_command, function(error, stdout, stderr){
+        console.log(python_command);
+        exec(python_command, function(error, stdout, stderr){
             if(!error) {
                 //Update the data model
                 var output_arr = JSON.parse(stdout);
                 //If output is array, then multiple models were sent
                 if(output_arr.constructor === Array) {
+                    console.log("Array: " +output_arr);
                     for (var i=0; i < output_arr.length;i++ ) {
                         //Push into mongo
                         model_data[i].sentiment = output_arr[i];
@@ -35,12 +37,13 @@ module.exports = {
                     };
                 } else {
                     //Only a single model was sent
+                    console.log("Single: "+output_arr);
                      model_data[0].sentiment = output_arr;
                 }
-                return true;
+                callback(true);
             } 
             console.log(stderr);
-            return false;
-        }));
+            callback(false);
+        });
     }
 };
