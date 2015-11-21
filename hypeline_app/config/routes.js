@@ -45,8 +45,10 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  'get /test': 'Hype_nugController.testPush' 
+  'get /test': 'Hype_nugController.testPush',
 
-  'GET /twitter/hypeNugs': "TwitterController.get_raw_nugs"
+  'GET /twitter/hypeNugs': "TwitterController.get_raw_nugs",
+  'GET /facebook/hypeNugs': "FacebookController.get_raw_nugs",
+  'GET /analyze/:origin':""
 
 };

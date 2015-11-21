@@ -38,6 +38,10 @@ module.exports = {
     sentiment:{
         type:"float",
         required:true
+    },
+    related_tags:{
+        type:"array",
+        required: true
     }
   },
   schema:true
