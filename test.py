@@ -4,10 +4,8 @@ indicoio.config.api_key = 'ecad6731e6472b85c27e6eab6d35e003'
 
 
 # single example
-print indicoio.sentiment(str(sys.argv[1]))
+dataList = sys.argv
 
-# batch example
-# print indicoio.sentiment([
-#     "indico is so easy to use!",
-#     "everything is awesome!"
-# ])
+del dataList[0]
+print indicoio.sentiment(dataList)
+
