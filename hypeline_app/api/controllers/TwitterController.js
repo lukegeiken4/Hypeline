@@ -21,7 +21,7 @@ module.exports = {
 
         self.getToken(function(e,access_token,refresh_token,results){
             var options = {
-                url:search_base+"?q="+keyword+"&until="+until+"&count=100",
+                url:search_base+"?q=%23"+keyword+"&until="+until+"&count=100",
                 headers:{
                     "Authorization":"Bearer "+access_token
                 }
@@ -56,7 +56,7 @@ module.exports = {
             obj.run_id = run_id;
             obj.sentiment = 0.0;
             obj.date = Date.parse(raw[i].created_at);
-            obj.text = raw[i].text.replace(/\r?\n|\r/g, " ");
+            obj.text = raw[i].text.replace(/\r?\n|\r/g, " ").replace(/\'/g,"");
             obj.related_tags = [];
 
             parsed.push(obj);
