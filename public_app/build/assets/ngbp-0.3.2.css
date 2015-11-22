@@ -5837,18 +5837,45 @@ h2 {
 .navbar {
   margin-top: 20px;
 }
+.navbar.navbar-default {
+  background-color: transparent;
+  border-bottom: 1px solid #3c4fa2;
+  border-radius: 0;
+  border-width: 0 0 1px 0;
+  height: 75px;
+}
+.navbar .navbar-right .btn {
+  margin-top: 15px;
+  margin-right: 2rem;
+}
+.navbar .navbar-right .btn:last-of-type {
+  margin-right: 0;
+}
+.navbar .links {
+  margin-left: 50px;
+}
+.navbar .links a {
+  margin-right: 5rem;
+}
+.navbar .links a:last-of-type {
+  margin-right: 0;
+}
 .navbar small {
   font-size: 60%;
+}
+.navbar .logo img {
+  width: 120px;
 }
 /**
  * Footer
  */
 .footer {
   margin-top: 80px;
+  background: #eee;
 }
 .footer .footer-inner {
   padding: 40px 0;
-  border-top: 1px solid #DDD;
+  text-align: center;
 }
 .footer .social {
   float: right;

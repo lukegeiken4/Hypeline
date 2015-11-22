@@ -223,7 +223,7 @@ angular.module( 'hypeLine.hypeline', [
       var max = _.max(allSeries.data, getDate);
       scope.chartConfig.series = [allSeries];
       scope.chartConfig.series[0].name = allSeries.data[0].tag;
-      scope.chartConfig.title.text = "#" + allSeries.data[0].tag + " [ " + moment(min.x).format('M/D/YY, HH:MM') + " - " + moment(min.x).format('M/D/YY, HH:MM') + " ]";
+      scope.chartConfig.title.text = "#" + allSeries.data[0].tag + " [ " + moment(min.x).format('M/D/YY') + " - " + moment(min.x).format('M/D/YY') + " ]";
 
       //scope.chartConfig.xAxis.max = new Date(max.x).getTime() + halfDay;
       //scope.chartConfig.xAxis.min = new Date(min.x).getTime() - halfDay;

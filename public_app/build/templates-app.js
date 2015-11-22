@@ -280,11 +280,11 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "  </p>\n" +
     "\n" +
     "  <div class=\"btn-group\">\n" +
-    "    <a href=\"https://github.com/ngbp/ngbp#readme\" class=\"btn btn-large btn-default\">\n" +
+    "    <a href=\"/#/about\" class=\"btn btn-large btn-default\">\n" +
     "      <i class=\"fa fa-question-circle\"></i>\n" +
     "      What we do\n" +
     "    </a>\n" +
-    "    <a href=\"https://github.com/ngbp/ngbp\" class=\"btn btn-large btn-primary\">\n" +
+    "    <a href=\"/#/app\" class=\"btn btn-large btn-primary\">\n" +
     "      <i class=\"fa fa-rocket\"></i>\n" +
     "      Get Started\n" +
     "    </a>\n" +
