@@ -33,7 +33,7 @@ module.exports = {
 
                     self.parseResults(parsed,raw.data,keyword,run_id);
 
-                    SentiAnal.analPush({data:parsed}, null, function(result){
+                    SentiAnal.analPush({data:parsed}, function(result){
                         resolve();
                         if(result) {
                             return {data:"Successful sentiment taken"};
@@ -61,8 +61,9 @@ module.exports = {
             obj.run_id = run_id;
             obj.sentiment = 0.0;
             obj.date =  new Date(parseInt(raw[i].caption.created_time)).toISOString();
-            obj.text = raw[i].caption.text.replace(/\r?\n|\r/g, " ").replace(/\uE000-\uF8FF\'/g,"");
-            obj.related_tags = [];
+            obj.text = raw[i].caption.text.replace(/\r?\n|\r/g, " ").replace(/\'/g,"");
+            obj.related_tags = "";
+            obj.keywords = "";
             obj.origin_id = raw[i].id;
 
             parsed.push(obj);

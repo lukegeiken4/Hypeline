@@ -44,8 +44,12 @@ module.exports = {
         required:true
     },
     related_tags:{
-        type:"array",
-        /*required: true*/
+        type:"string",
+        required: true
+    },
+    keywords:{
+        type:"string",
+        required: true
     }
   },
   schema:true
