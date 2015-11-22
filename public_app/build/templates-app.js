@@ -345,46 +345,69 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("hypeline/chart.tpl.html",
     "<div class=\"chart\">\n" +
-    "    <highchart id=\"chart-<%= id %>\" config=\"chartConfig\"></highchart>\n" +
+    "    <highchart id=\"chart-{{id}}\" config=\"chartConfig\"></highchart>\n" +
     "</div>\n" +
     "");
 }]);
 
 angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("hypeline/index.tpl.html",
-    "<div class=\"row\" ng-controller=\"HypelineCtrl\">\n" +
-    "    <ng-form novalidate role=\"form\" name=\"entryPoint\">\n" +
-    "        <div class=\"col-xs-12 col-sm-6\">\n" +
-    "            <label for=\"startDate\" class=\"label label-default\">Start Date</label>\n" +
-    "            <p class=\"input-group\">\n" +
-    "                <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"startDate\" is-open=\"status.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"false\" show-button-bar=\"false\" ng-click=\"open($event)\" id=\"startDate\" required />\n" +
-    "                <span class=\"input-group-btn\">\n" +
-    "                    <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
-    "                </span>\n" +
-    "            <p>\n" +
+    "<div ng-controller=\"HypelineCtrl\">\n" +
+    "  <div class=\"row\">\n" +
+    "      <div class=\"col-xs-8\">\n" +
+    "        <ng-form novalidate role=\"form\" name=\"entryPoint\">\n" +
+    "            <div class=\"col-xs-12 col-sm-6\">\n" +
+    "                <label for=\"startDate\" class=\"label label-default\">Start Date</label>\n" +
+    "                <p class=\"input-group\">\n" +
+    "                    <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"startDate\" is-open=\"status.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"false\" show-button-bar=\"false\" ng-click=\"open($event)\" id=\"startDate\" required />\n" +
+    "                    <span class=\"input-group-btn\">\n" +
+    "                        <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                    </span>\n" +
+    "                <p>\n" +
+    "            </div>\n" +
+    "            <div class=\"col-xs-12 col-sm-6\">\n" +
+    "                <label for=\"endDate\" class=\"label label-default\">End Date</label>\n" +
+    "                <p class=\"input-group\">\n" +
+    "                    <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"endDate\" is-open=\"status.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"false\" show-button-bar=\"false\" ng-click=\"open($event)\" id=\"endDate\" required />\n" +
+    "                    <span class=\"input-group-btn\">\n" +
+    "                        <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                    </span>\n" +
+    "                <p>\n" +
+    "            </div>\n" +
+    "            <div class=\"col-xs-12\">\n" +
+    "                <label for=\"tags\" class=\"label label-default\">Tag</label>\n" +
+    "                <p class=\"input-group\">\n" +
+    "                    <input class=\"form-control\" type=\"text\" ng-model=\"tag\" required />\n" +
+    "                </p>\n" +
+    "            </div>\n" +
+    "            <div class=\"col-xs-12\">\n" +
+    "                <p class=\"input-group\">\n" +
+    "                    <button type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid\" ng-click=\"go()\">Go!</button>\n" +
+    "                </p>\n" +
+    "            </div>\n" +
+    "        </form>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"col-xs-4\">\n" +
+    "        <div class=\"panel panel-default\">\n" +
+    "          <div ng-if=\"runLoading\">Loading...</div>\n" +
+    "          <ul class=\"runs\" ng-if=\"!runLoading\">\n" +
+    "            <li ng-repeat=\"run in runs\">\n" +
+    "              <span class=\"run\" ng-click=\"getRun(run)\">{{run.tag}} : [{{run.startDate}} - {{run.endDate}}]</span>\n" +
+    "            </li>\n" +
+    "          </ul>\n" +
     "        </div>\n" +
-    "        <div class=\"col-xs-12 col-sm-6\">\n" +
-    "            <label for=\"endDate\" class=\"label label-default\">End Date</label>\n" +
-    "            <p class=\"input-group\">\n" +
-    "                <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"endDate\" is-open=\"status.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"false\" show-button-bar=\"false\" ng-click=\"open($event)\" id=\"endDate\" required />\n" +
-    "                <span class=\"input-group-btn\">\n" +
-    "                    <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
-    "                </span>\n" +
-    "            <p>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-xs-12\">\n" +
-    "            <label for=\"tags\" class=\"label label-default\">Tag</label>\n" +
-    "            <p class=\"input-group\">\n" +
-    "                <input class=\"form-control\" type=\"text\" ng-model=\"tag\" required />\n" +
-    "            </p>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-xs-12\">\n" +
-    "            <p class=\"input-group\">\n" +
-    "                <button type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid\" ng-click=\"go()\">Go!</button>\n" +
-    "            </p>\n" +
-    "        </div>\n" +
-    "    </form>\n" +
+    "      </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"col-xs-12\">\n" +
+    "      <div ng-if=\"noDataError\" class=\"alert alert-info\"></div>\n" +
+    "      <results-chart ng-if=\"!noDataError\" type=\"chart\" name=\"results\" runId=\"{{runId}}\"></results-chart>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "</div>\n" +
+    "\n" +
+    "\n" +
     "");
 }]);
 

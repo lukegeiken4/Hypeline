@@ -49,6 +49,9 @@ angular.module( 'ngBoilerplate', [
         var user = window.localStorage.getItem('user');
         if(user){
           data = JSON.parse(user);
+          var lastIndex = data.href.lastIndexOf('/');
+          var userId = data.href.substring(lastIndex + 1);
+          data.userId = userId;
         } else {
           data = false;
         }

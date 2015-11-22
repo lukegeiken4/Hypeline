@@ -24,15 +24,20 @@ angular.module( 'hypeLine.hypeline', [
     $scope.datesUpdated = moment().format('x');
   };
 
-
   $scope.defaultDates();
   $scope.format = 'yyyy-MM-dd';
   $scope.maxDate = new Date();
 
   var setUser = function(){
     $scope.user = AuthService.get();
-    console.log($scope.user);
   };
+
+  if($scope.user){
+    getUserRuns();
+  } else {
+    setUser();
+    getUserRuns();
+  }
 
   $rootScope.$on("user:updated",setUser);
 
@@ -41,6 +46,8 @@ angular.module( 'hypeLine.hypeline', [
     $event.stopPropagation();
     $scope.status.opened = true;
   };
+
+  $scope.runs = [];
 
   $scope.setDate = function(year, month, day) {
     $scope.dt = new Date(year, month, day);
@@ -60,6 +67,40 @@ angular.module( 'hypeLine.hypeline', [
     $scope.datesUpdated = moment().format('x');
   };
 
+  function getUserRuns(){
+    $scope.runs = [];
+    $scope.runLoading = true;
+    var url = Config.appRoot + '/run?user_id=' + $scope.user.userId;
+    $http.get(url)
+    .then(
+      function(data){
+        parseUserRuns(data.data);
+        $scope.runLoading = false;
+      },
+      function(data){
+        console.log('error fetching runs', data.data);
+      }
+    );
+  }
+
+  $scope.getRun = function(run){
+    $scope.runId = run.runId;
+  };
+
+  function parseUserRuns(data){
+    data.forEach(function(run){
+      $scope.runs.push({
+        tag: run.keyword,
+        startDate: run.hasOwnProperty('start_date') ? moment(run.start_date).format('MM-DD-YYYY') : '?',
+        endDate: run.hasOwnProperty('end_date') ? moment(run.end_date).format('MM-DD-YYYY') : '?',
+        runId: run.run_id
+      });
+    });
+  }
+
+  function graphRun(run){
+    console.log(run);
+  }
 
   $scope.go = function(){
     if(!$scope.user){
@@ -68,6 +109,7 @@ angular.module( 'hypeLine.hypeline', [
         go();
       } else {
         console.log('No user');
+        $location.path('user/login');
       }
     } else {
       go();
@@ -75,14 +117,12 @@ angular.module( 'hypeLine.hypeline', [
 
     function go(){
       $scope.loading = true;
-      //console.log($scope.tag, new Date($scope.startDate).getTime(), new Date($scope.endDate).getTime());
-      var lastIndex = $scope.user.href.lastIndexOf('/');
-      var userId = $scope.user.href.substring(lastIndex + 1);
-      var url = Config.appRoot + '/analyze?origin=twitter&user_id=' + userId + '&keyword=' + $scope.tag;
+      var url = Config.appRoot + '/analyze?origin=twitter&user_id=' + $scope.user.userId + '&keyword=' + $scope.tag + '&start_date=' + $scope.startDate + '&end_date=' + $scope.endDate;
       $http.get(url)
       .then(
         function(data){
           console.log('success',data);
+          getUserRuns();
         },
         function(data){
           console.log('error', data);
@@ -92,5 +132,141 @@ angular.module( 'hypeLine.hypeline', [
   };
 
 
-});
+})
+
+.directive('resultsChart', function($http, Config, $log){
+
+  var linkFn = function(scope, elem, attrs){
+
+    scope.chartConfig = {
+        series: [],
+        title: {
+           text: "Metric"
+        },
+        loading: true,
+        xAxis: {
+          //type: 'datetime',
+          //tickInterval: 24 * 3600 * 1000,
+          startOnTick: false
+        },
+        yAxis: {
+          labels: {
+            enabled: false
+          }
+        },
+        options: {
+          chart: {
+            type: 'line'
+          },
+          plotOptions: {
+            column: {
+              stacking: 'normal'
+            }
+          },
+          tooltip: {
+            shared: true
+          }
+        }
+    };
+
+    fetch();
+
+    scope.$parent.$watch('runId', function(){
+      fetch();
+    });
+
+    function updateSeries(allSeries){
+
+      var min = _.min(allSeries.data, getDate);
+      var max = _.max(allSeries.data, getDate);
+      scope.chartConfig.series = [allSeries];
+      scope.chartConfig.series[0].name = allSeries.data[0].tag;
+      scope.chartConfig.title.text = "#" + allSeries.data[0].tag + " [ " + moment(min.x).format('M/D/YY, HH:MM') + " - " + moment(min.x).format('M/D/YY, HH:MM') + " ]";
+
+      //scope.chartConfig.xAxis.max = new Date(max.x).getTime() + halfDay;
+      //scope.chartConfig.xAxis.min = new Date(min.x).getTime() - halfDay;
+    }
+
+    function getDate(item){
+      return item.x;
+    }
+
+    function removeAllSeries(){
+      scope.chartConfig.series = [];
+    }
+
+    function updateData(data){
+      scope.chartConfig.loading = false;
+
+      var groups = _.groupBy(data, groupByDate);
+      var points = _.map(groups, averageSentimentScorePerTimestamp);
+      var sorted = _.sortBy(points, sortByDate);
+
+      updateSeries({data: sorted});
+
+    }
+
+    function sortByDate(item){
+      return item.x;
+    }
+
+    function groupByDate(item){
+      return item.date;
+    }
+
+    function averageSentimentScorePerTimestamp(item){
+      var dataPoint = {};
+      var total = 0;
+
+      for(var i=0;i<item.length; i++){
+        total += item[i].sentiment;
+      }
+
+      var average = total/item.length;
+      var formatted = item[0].date.split('T')[0];
+      var date = new Date(formatted).getTime();
+      var label = moment(formatted).utcOffset(0).format('ddd, MMM Do');
+
+      return {
+        x: new Date(item[0].date).getTime(),
+        y: average * 100,
+        name: item[0].tag + ", " + label,
+        tag: item[0].tag
+      };
+
+    }
+
+    function fetch(){
+      $http.get(Config.appRoot + '/search?run_id=' + scope.runid)
+      .then(
+        function(data){
+          if(data.data.data.length > 0){
+            updateData(data.data.data);
+          } else {
+            scope.$parent.noDataError = 'No data present';
+          }
+        },
+        function(data){
+          $log.error('Error fetching', data);
+          scope.chartConfig.loading = "Error fetching data";
+        }
+      );
+    }
+
+  };
+
+  return {
+    restrict: 'E',
+    scope: {
+      type: '@',
+      name: '@',
+      runid: '@'
+    },
+    templateUrl: 'hypeline/chart.tpl.html',
+    link: linkFn
+  };
+
+})
+
+;
 
