@@ -17,6 +17,7 @@ module.exports = {
                     return {error:error};
                 }
                 var raw = JSON.parse(body_last);
+                console.log(raw);
 
                 var parsed = [];
                 //console.log(raw.data.records);
@@ -52,6 +53,7 @@ module.exports = {
                 obj.related_tags = "";
                 obj.keywords = "";
                 obj.origin_id = raw[i].id;
+
 
                 parsed.push(obj);
             //}

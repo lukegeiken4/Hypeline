@@ -13,12 +13,24 @@ module.exports = {
         var until = req.query.end_time || ""; //yyyy-mm-dd
         var user_id = req.query.user_id;
         var run_id = Date.now();
+        var start_date = "";
+
+        if (req.query.start_date){
+            start_date = new Date(req.query.start_date).toISOString();
+        }
+
+        var end_date = "";
+        if (req.query.end_date){
+            end_date = new Date(req.query.end_date).toISOString();
+        }
 
         var run = {
             run_id: run_id,
             media:origins,
             user_id:user_id,
-            keyword:keyword
+            keyword:keyword,
+            start_date:start_date,
+            end_date:end_date
         };
 
         var p_stack = [];
@@ -51,6 +63,8 @@ module.exports = {
         }
 
         var messages = [];
+        console.log(run);
+
         Promise.all(p_stack).then(function(){
 
             Run.create(run).exec(function createCB(err, created){
@@ -64,6 +78,10 @@ module.exports = {
 
             return res.json({data:run});
         });
+
+        if (p_stack.length < 1){
+            return res.json({data:"Unavailable"});
+        }
 
     },
 
