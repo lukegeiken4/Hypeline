@@ -15,12 +15,18 @@ module.exports = {
         return new Promise( function( resolve, reject ){
             request.get(url,function(error, res_last, body_last) {
                 if (error){
+                    resolve();
                     return {error:error};
                 }
                 var raw = JSON.parse(body_last);
                 var parsed = [];
 
                 self.parseResults(parsed,raw.response,keyword,run_id);
+
+                if (parsed.length < 1){
+                    resolve();
+                    return;
+                }
 
                 SentiAnal.analPush({data:parsed}, null, function(result){
                     resolve();
@@ -31,6 +37,7 @@ module.exports = {
                     }
                 });
             });
+            resolve();
         });
     },
 
