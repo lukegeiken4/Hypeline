@@ -9,29 +9,80 @@ var request = require("request");
 var ig = require("instagram-node").instagram();
 
 module.exports = {
+    pages:0,
+
     get_raw_nugs: function(keyword,until,run_id){
         var self = this;
 
-            var url = "https://api.instagram.com/v1/tags/" + keyword + "/media/recent?count=100&access_token="+sails.config.globals.instagram_access;
-            return new Promise( function( resolve, reject ){
+        return new Promise( function( resolve, reject ){
+            self.getPages(keyword,run_id,"");
+            resolve();
+        });
+    },
+
+    getPageAsync: function(keyword,run_id,min_id){
+        var self = this;
+        return new Promise( function(resolve,reject){
+            var tag_url = "https://api.instagram.com/v1/tags/search?q="+keyword+"&access_token="+sails.config.globals.instagram_access;
+
+            request.get(tag_url,function(err,response,body){
+
+                if (err){
+                    return {error:err};
+                }
+
+                var raw_tags = JSON.parse(body).data;
+
+                if (raw_tags.length < 1){
+                    resolve(null);
+                    return;
+                }
+
+                var top_tag = raw_tags[0].name;
+
+                var url = "https://api.instagram.com/v1/tags/" + top_tag + "/media/recent?min_tag_id="+min_id+"&count=100&access_token="+sails.config.globals.instagram_access;
+
                 request.get(url,function(error, res_last, body_last) {
                     if (error){
                         return {error:error};
                     }
+
                     var raw = JSON.parse(body_last);
+
                     var parsed = [];
 
                     self.parseResults(parsed,raw.data,keyword,run_id);
 
+                    if (parsed.length < 1){
+                        resolve(null);
+                        return;
+                    }
+
                     SentiAnal.analPush({data:parsed}, function(result){
-                        resolve();
                         if(result) {
-                            return {data:"Successful sentiment taken"};
+                            resolve(raw.pagination.next_min_id);
                         } else {
-                            return {error:"Shit...."};
+                            resolve(null);
                         }
                     });
                 });
+            });
+        });
+    },
+
+    getPages: function(keyword,run_id,min_id){
+        var self = this;
+        this.pages++;
+        return this.getPageAsync(keyword,run_id,min_id)
+            .then(function(res){
+
+                if (res && self.pages < 10){
+
+                    self.getPages(keyword,run_id,res);
+                }
+
+            }).catch(function(e){
+                console.log(e.stack);
             });
     },
 

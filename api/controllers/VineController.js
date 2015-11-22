@@ -16,6 +16,7 @@ module.exports = {
 
         return new Promise( function( resolve, reject ){
             self.getPages(keyword,run_id,url);
+            resolve();
         });
     },
 
