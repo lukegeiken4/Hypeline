@@ -29,7 +29,7 @@ module.exports = {
     },
     origin:{
         type:"string",
-        enum:["twitter","instagram","vine","gplus"],
+        enum:["twitter","instagram","vine","gplus","tumblr"],
         required:true
     },
     date_run:{
