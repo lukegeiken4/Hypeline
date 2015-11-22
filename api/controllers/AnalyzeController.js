@@ -40,6 +40,9 @@ module.exports = {
                 case "gplus":
                     p_stack.push(sails.controllers.gplus.get_raw_nugs(keyword,until,run_id));
                     break;
+                case "tumblr":
+                    p_stack.push(sails.controllers.tumblr.get_raw_nugs(keyword,until,run_id));
+                    break;
                 default:
                     response.error = "No module for "+origin;
                     break;
