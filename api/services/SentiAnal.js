@@ -2,7 +2,7 @@
 var sys = require('sys');
 var exec = require('child_process').exec;
 var indico = require('indico.io');
-indico.apiKey =  'ecad6731e6472b85c27e6eab6d35e003';
+indico.apiKey =  '4d75dcbb4a7cac0b2c2046c9b909b816';
 
 module.exports = {
 
@@ -59,7 +59,6 @@ module.exports = {
             batchInput[i] = model_data[i].text;
         }
 
-
         // Sentiment Data
         var senti = new Promise(function(resolve, reject){
 
@@ -113,8 +112,11 @@ module.exports = {
 
             for(var i = 0; i < model_data.length; i++) {
                 Hype_nug.create(model_data[i]).exec(function createCB(err, created){
-                    if(err) console.log(err);
-                    else  console.log('Created hype nug with sentiment of  ' + created.sentiment);
+                    if(err){
+                        console.log(err);
+                    }else{
+                        console.log('Created hype nug with sentiment of  ' + created.sentiment);
+                    }
                 });
             }
             callback(true);

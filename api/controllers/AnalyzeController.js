@@ -47,8 +47,11 @@ module.exports = {
         Promise.all(p_stack).then(function(){
 
             Run.create(run).exec(function createCB(err, created){
-                if(err) console.log(err);
-                else  console.log('Created run with id of  ' + created.id);
+                if(err) {
+                    console.log(err);
+                }else{
+                    console.log('Created run with id of  ' + created.id);
+                }
                 return;
             });
 

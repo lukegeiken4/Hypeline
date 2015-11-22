@@ -29,7 +29,7 @@ module.exports = {
     },
     origin:{
         type:"string",
-        enum:["twitter","instagram"],
+        enum:["twitter","instagram","vine"],
         required:true
     },
     date_run:{
@@ -44,12 +44,12 @@ module.exports = {
         required:true
     },
     related_tags:{
-        type:"string",
-        required: true
+        type:"string"/*,
+        required: true*/
     },
     keywords:{
-        type:"string",
-        required: true
+        type:"string"/*,
+        required: true*/
     }
   },
   schema:true
