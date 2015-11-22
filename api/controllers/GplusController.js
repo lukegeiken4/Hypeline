@@ -4,6 +4,7 @@
  * @description :: Server-side logic for managing gplus
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+var request = require("request");
 
 module.exports = {
 
@@ -17,9 +18,7 @@ module.exports = {
                     return {error:error};
                 }
                 var raw = JSON.parse(body_last);
-
                 var parsed = [];
-                //console.log(raw.data.records);
 
                 self.parseResults(parsed,raw.items,keyword,run_id);
 
@@ -41,20 +40,22 @@ module.exports = {
 
         for (i=0;i<raw.length;i++){
             var obj = {};
-            if (raw[i].description && raw[i].description != ""){
-                obj.tag = keyword;
-                obj.origin = "vine";
-                obj.date_run = new Date().toISOString();
-                obj.run_id = run_id;
-                obj.sentiment = 0.0;
-                obj.date =  new Date(parseInt(raw[i].published)).toISOString();
-                obj.text = raw[i].content.replace(/\r?\n|\r/g, " ").replace(re,"");
-                obj.related_tags = "";
-                obj.keywords = "";
-                obj.origin_id = raw[i].id;
+            obj.tag = keyword;
+            obj.origin = "gplus";
+            obj.date_run = new Date().toISOString();
+            obj.run_id = run_id;
+            obj.sentiment = 0.0;
+            obj.date =  new Date(parseInt(raw[i].published)).toISOString();
+            obj.text = raw[i].title.replace(/\r?\n|\r/g, " ").replace(re,"");
+            obj.related_tags = "";
+            obj.keywords = "";
+            obj.origin_id = raw[i].id;
 
+            console.log(obj.text);
+            if (obj.text != ""){
                 parsed.push(obj);
             }
+
         }
     }
 

@@ -5,34 +5,57 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 var request = require("request");
+var base_url = "https://api.vineapp.com/timelines/tags/";
 
 module.exports = {
+    pages:0,
 
 	get_raw_nugs: function(keyword,until,run_id){
         var self = this;
-        var url = "https://api.vineapp.com/timelines/tags/" + keyword;
+        var url = base_url + keyword;
 
         return new Promise( function( resolve, reject ){
-            request.get(url,function(error, res_last, body_last) {
+            self.getPages(keyword,run_id,url);
+        });
+    },
+
+    getPageAsync: function(keyword,run_id,options){
+        var self = this;
+        return new Promise( function(resolve,reject){
+            request.get(options,function(error, res_last, body_last) {
                 if (error){
                     return {error:error};
                 }
                 var raw = JSON.parse(body_last);
                 var parsed = [];
-                //console.log(raw.data.records);
 
                 self.parseResults(parsed,raw.data.records,keyword,run_id);
 
                 SentiAnal.analPush({data:parsed}, null, function(result){
-                    resolve();
                     if(result) {
-                        return {data:"Successful sentiment taken"};
+                        resolve(raw.data.nextPage);
                     } else {
-                        return {error:"Shit...."};
+                        resolve(null);
                     }
                 });
             });
         });
+    },
+
+    getPages: function(keyword,run_id,options){
+        var self = this;
+        this.pages++;
+        return this.getPageAsync(keyword,run_id,options)
+            .then(function(res){
+                if (res && self.pages < 10){
+                    url = search_base + "?page="+res;
+                    self.getPages(keyword,run_id,url);
+                }else{
+                    return;
+                }
+            }).catch(function(e){
+                console.log(e.stack);
+            });
     },
 
     parseResults: function(parsed,raw,keyword,run_id){

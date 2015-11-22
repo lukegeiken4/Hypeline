@@ -9,9 +9,7 @@ var OAuth2 = require("oauth").OAuth2;
 var search_base = "https://api.twitter.com/1.1/search/tweets.json";
 
 module.exports = {
-    get_raw_nug: function(){
-
-    },
+    pages:0,
 
     get_raw_nugs: function(keyword,until,run_id){
         var self = this;
@@ -25,29 +23,51 @@ module.exports = {
             };
 
             return new Promise( function( resolve, reject ){
-                request.get(options,function(err,response, body){
-                    if (err){
-                        return {error:err};
+                self.getPages(keyword,run_id,options);
+            });
+        });
+    },
+
+    getPageAsync: function(keyword,run_id,options){
+        var self = this;
+        return new Promise( function(resolve,reject){
+            request.get(options,function(err,response, body){
+                if (err){
+                    return {error:err};
+                }
+
+                var raw_body = JSON.parse(body);
+                var raw_data = raw_body.statuses;
+                var raw_next = raw_body.search_metadata.next_results;
+                var parsed = [];
+
+                self.parseResults(parsed,raw_data,keyword,run_id);
+
+                SentiAnal.analPush({data:parsed}, function(result){
+                    if(result) {
+                        resolve(raw_next);
+                    } else {
+                        resolve(null);
                     }
-
-                    var raw_body = JSON.parse(body);
-                    var raw_data = raw_body.statuses;
-                    var raw_next = raw_body.next_results;
-
-                    var parsed = [];
-
-                    self.parseResults(parsed,raw_data,keyword,run_id);
-
-                    SentiAnal.analPush({data:parsed}, function(result){
-                        if(result) {
-                            return res.json("Successful sentiment taken");
-                        } else {
-                            return res.json("Shit....");
-                        }
-                    });
                 });
             });
         });
+    },
+
+    getPages: function(keyword,run_id,options){
+        var self = this;
+        this.pages++;
+        return this.getPageAsync(keyword,run_id,options)
+            .then(function(res){
+                if (res && self.pages < 10){
+                    options.url = search_base + res;
+                    self.getPages(keyword,run_id,options);
+                }else{
+                    return;
+                }
+            }).catch(function(e){
+                console.log(e.stack);
+            });
     },
 
     parseResults: function(parsed,raw,keyword,run_id){
@@ -67,7 +87,6 @@ module.exports = {
             parsed.push(obj);
         }
 
-        //callback();
     },
 
     getOAuth2: function(){

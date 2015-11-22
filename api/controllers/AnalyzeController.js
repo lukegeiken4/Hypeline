@@ -63,7 +63,6 @@ module.exports = {
         }
 
         var messages = [];
-        console.log(run);
 
         Promise.all(p_stack).then(function(){
 
@@ -73,6 +72,7 @@ module.exports = {
                 }else{
                     console.log('Created run with id of  ' + created.id);
                 }
+
                 return;
             });
 
