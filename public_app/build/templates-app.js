@@ -347,6 +347,38 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "<div class=\"chart\">\n" +
     "    <highchart id=\"chart-{{id}}\" config=\"chartConfig\"></highchart>\n" +
     "</div>\n" +
+    "\n" +
+    "<div class=\"row\">\n" +
+    "  <div class=\"col-xs-4\">\n" +
+    "    <h4>Top Ten Results</h4>\n" +
+    "    <ul class=\"terms\">\n" +
+    "      <li ng-repeat=\"term in topTen\" class=\"term\">\n" +
+    "        <ul class=\"details\">\n" +
+    "          <li class=\"detail\"><strong>Origin:</strong><br /> {{term.raw[0].origin}}</li>\n" +
+    "          <li class=\"detail\"><strong>Score:</strong><br /> {{term.raw[0].sentiment}}</li>\n" +
+    "          <li class=\"detail\"><strong>Detail:</strong><br /> {{term.raw[0].text}}</li>\n" +
+    "        </ul>\n" +
+    "      </li>\n" +
+    "    </ul>\n" +
+    "  </div>\n" +
+    "  <div class=\"col-xs-4\">\n" +
+    "    <h4>Bottom Ten Results</h4>\n" +
+    "    <ul class=\"terms\">\n" +
+    "      <li ng-repeat=\"term in bottomTen\" class=\"term\">\n" +
+    "        <ul class=\"details\">\n" +
+    "          <li class=\"detail\"><strong>Origin:</strong><br /> {{term.raw[0].origin}}</li>\n" +
+    "          <li class=\"detail\"><strong>Score:</strong><br /> {{term.raw[0].sentiment}}</li>\n" +
+    "          <li class=\"detail\"><strong>Detail:</strong><br /> {{term.raw[0].text}}</li>\n" +
+    "        </ul>\n" +
+    "      </li>\n" +
+    "    </ul>\n" +
+    "  </div>\n" +
+    "  <div class=\"col-xs-4\">\n" +
+    "    <h4>Associated Datea</h4>\n" +
+    "    <ul class=\"terms\">\n" +
+    "    </ul>\n" +
+    "  </div>\n" +
+    "</div>\n" +
     "");
 }]);
 

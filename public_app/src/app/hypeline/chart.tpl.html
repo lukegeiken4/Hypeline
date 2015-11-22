@@ -1,3 +1,35 @@
 <div class="chart">
     <highchart id="chart-{{id}}" config="chartConfig"></highchart>
 </div>
+
+<div class="row">
+  <div class="col-xs-4">
+    <h4>Top Ten Results</h4>
+    <ul class="terms">
+      <li ng-repeat="term in topTen" class="term">
+        <ul class="details">
+          <li class="detail"><strong>Origin:</strong><br /> {{term.raw[0].origin}}</li>
+          <li class="detail"><strong>Score:</strong><br /> {{term.raw[0].sentiment}}</li>
+          <li class="detail"><strong>Detail:</strong><br /> {{term.raw[0].text}}</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="col-xs-4">
+    <h4>Bottom Ten Results</h4>
+    <ul class="terms">
+      <li ng-repeat="term in bottomTen" class="term">
+        <ul class="details">
+          <li class="detail"><strong>Origin:</strong><br /> {{term.raw[0].origin}}</li>
+          <li class="detail"><strong>Score:</strong><br /> {{term.raw[0].sentiment}}</li>
+          <li class="detail"><strong>Detail:</strong><br /> {{term.raw[0].text}}</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="col-xs-4">
+    <h4>Associated Datea</h4>
+    <ul class="terms">
+    </ul>
+  </div>
+</div>
