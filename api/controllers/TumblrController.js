@@ -56,7 +56,7 @@ module.exports = {
             var text = "";
             if (raw[i].body){
                 text = raw[i].body.replace(/\r?\n|\r/g, " ").replace(/<(?:.|\n)*?>/g, '').replace(re,"");
-            }else{
+            }else if (raw[i].caption){
                 text = raw[i].caption.replace(/\r?\n|\r/g, " ").replace(/<(?:.|\n)*?>/g, '').replace(re,"");
             }
 
