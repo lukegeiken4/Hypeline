@@ -95,27 +95,27 @@ module.exports = {
 
             for (var i=0;i<found.length;i++){
                 var current = found[i];
+                var keys = JSON.parse(current.keywords);
 
-                for (id in current.keywords){
+                for (id in keys){
                     if (keywords[id]){
-                        keywords += current.keywords[id];
+                        keywords[id] += keys[id];
                     }else{
-                        keywords[id] = current.keywords[id];
+                        keywords[id] = keys[id];
                     }
                 }
             }
-            keywords = Object.keys(keywords).sort(function(a,b){return keywords[a]-keywords[b]});
-            var top_keywords = [];
 
-            for (id in keywords){
-                top_keywords.push({word:id,value:keywords[id]});
+            var sortedWords = Object.keys(keywords).sort(function(a,b){return keywords[b]-keywords[a]});
+            var top_keywords = {};
+            //console.log(keywords,sortedWords);
+            for (var i=0;i<5;i++){
+                var id = sortedWords[i];
 
-                if (top_keywords.length >= 5){
-                    break;
-                }
+                top_keywords[id] = keywords[id];
             }
 
-            return res.json({data:{nugs:found,keywords:top_keywords});
+            return res.json({data:{nugs:found,keywords:top_keywords}});
         })
 
     }
