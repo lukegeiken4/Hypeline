@@ -6023,3 +6023,10 @@ ul.runs li:last-of-type {
 .platforms img {
   width: 100%;
 }
+.about-header {
+  color: #3c4fa2;
+}
+#pricing-anchor {
+  text-decoration: none;
+  color: #3c4fa2;
+}
