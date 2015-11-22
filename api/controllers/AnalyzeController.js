@@ -95,7 +95,7 @@ module.exports = {
 
             for (var i=0;i<found.length;i++){
                 var current = found[i];
-                var keys = JSON.parse(current.keywords);
+                var keys = current.keywords;
 
                 for (id in keys){
                     if (keywords[id]){
@@ -107,12 +107,12 @@ module.exports = {
             }
 
             var sortedWords = Object.keys(keywords).sort(function(a,b){return keywords[b]-keywords[a]});
-            var top_keywords = {};
-            //console.log(keywords,sortedWords);
+            var top_keywords = [];
+
             for (var i=0;i<5;i++){
                 var id = sortedWords[i];
-
-                top_keywords[id] = keywords[id];
+                var obj = {keyword:id,score:keywords[id]};
+                top_keywords.push(obj);
             }
 
             return res.json({data:{nugs:found,keywords:top_keywords}});

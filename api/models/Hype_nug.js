@@ -44,11 +44,11 @@ module.exports = {
         required:true
     },
     related_tags:{
-        type:"string"/*,
+        type:"json"/*,
         required: true*/
     },
     keywords:{
-        type:"string"/*,
+        type:"json"/*,
         required: true*/
     }
   },

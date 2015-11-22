@@ -34,10 +34,10 @@ module.exports = {
                         model_data[i].sentiment = anal_data[i];
                         break;
                     case "text_tags":
-                        model_data[i].related_tags = JSON.stringify(SentiAnal.parseTags(anal_data[i]));
+                        model_data[i].related_tags = SentiAnal.parseTags(anal_data[i]);
                         break;
                     case "keywords":
-                        model_data[i].keywords = JSON.stringify(anal_data[i]);
+                        model_data[i].keywords = anal_data[i];
                         break;
                     default:
                         console.log("Invalid type to add to model");
@@ -51,10 +51,10 @@ module.exports = {
                     model_data[0].sentiment = anal_data[i];
                     break;
                 case "text_tags":
-                    model_data[0].related_tags = JSON.stringify(SentiAnal.parseTags(anal_data[i]));
+                    model_data[0].related_tags = SentiAnal.parseTags(anal_data[i]);
                     break;
                 case "keywords":
-                    model_data[0].keywords = JSON.stringify(anal_data[i]);
+                    model_data[0].keywords = anal_data[i];
                     break;
                 default:
                     console.log("Invalid type to add to model");
