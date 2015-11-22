@@ -27,39 +27,28 @@ module.exports = {
 
   createUser: function(req, res){
 
-    console.log(req.body);
-
     var client = this.getAuthApp();
     var data = req.body;
-    var user = {
-      givenName: data.firstName,
-      surname: data.lastName,
-      username: data.username,
-      email: data.email,
-      password: data.password,
-      customData: {
-        org: data.organization || null
-      }
-    }
 
     client.client.getApplication(client.applicationHref, function(err, application) {
       var account = {
-        givenName: 'Joe',
-        surname: 'Stormtrooper',
-        username: 'tk4212',
-        email: 'tk4212@stormpath.com',
-        password: 'Changeme1',
+        givenName: data.firstName,
+        surname: data.lastName,
+        username: data.username,
+        email: data.email,
+        password: data.password,
         customData: {
-          favoriteColor: 'white'
+          org: data.organization || null
         }
       };
-      try {
-        application.createAccount(user, function(err, createdAccount) {
+      application.createAccount(account, function(err, createdAccount) {
+          if(err){
+            console.log(err);
+            return res.send(503, {error: err.userMessage});
+          } else {
             return res.send(200, {message: 'user created'});
-        });
-        } catch(err) {
-          return res.send(501, {message: 'user creation failed', err: err});
-        }
+          }
+      });
     });
   },
 
@@ -76,20 +65,33 @@ module.exports = {
     });
   },
 
-  authUser: function(data){
+  authUser: function(req, res){
 
-    var application = this.getAuthApp();
+    var client = this.getAuthApp()
+    var data = req.body;
 
     var authRequest = {
-      username: 'tk421',
-      password: 'Changeme1'
+      username: data.userName,
+      password: data.password
     };
 
-    application.authenticateAccount(authRequest, function(err, result) {
-      // If successful, the authentication result will have a method,
-      // getAccount(), for getting the authenticated account.
-      result.getAccount(function(err, account) {
-        console.log('Account:', account);
+    client.client.getApplication(client.applicationHref, function(err, application) {
+      application.authenticateAccount(authRequest, function(err, result) {
+        // If successful, the authentication result will have a method,
+        // getAccount(), for getting the authenticated account.
+        if(err){
+            console.log(err);
+            res.send(503, {error: err.userMessage});
+        } else {
+          result.getAccount(function(err, account) {
+            if(err){
+              console.log(err);
+              res.send(401, {error: err.userMessage});
+            } else {
+              res.send(200, {account: account});
+            }
+          });
+        }
       });
     });
   },
@@ -127,6 +129,10 @@ module.exports = {
       // associated with this password reset workflow.
       console.log('Account HREF:', result.account.href);
     });
+
+  },
+
+  setAuth: function(account){
 
   }
 
