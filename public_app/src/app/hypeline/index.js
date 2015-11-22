@@ -148,7 +148,6 @@ angular.module( 'hypeLine.hypeline', [
       $http.get(url)
       .then(
         function(data){
-          console.log('success',data);
           getUserRuns();
         },
         function(data){
@@ -208,7 +207,6 @@ angular.module( 'hypeLine.hypeline', [
       var sorted = _.sortBy(data, sortBySentimentScore);
       scope.bottomTen = sorted.slice(0,10);
       scope.topTen = sorted.slice((sorted.length - 11), sorted.length - 1);
-      console.log(scope.topTen);
     }
 
     function sortBySentimentScore(item){

@@ -273,18 +273,18 @@ angular.module("about/about.tpl.html", []).run(["$templateCache", function($temp
 angular.module("home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("home/home.tpl.html",
     "<div class=\"jumbotron\">\n" +
-    "  <h1>hype/line</h1>\n" +
+    "  <img src=\"/assets/imgs/logo_large.png\" />\n" +
     "\n" +
     "  <p class=\"lead\">\n" +
     "    Semiotics irony tofu ugh put a bird on it letterpress ennui, gluten-free helvetica biodiesel hashtag squid. Yr bespoke DIY poutine banh mi williamsburg, normcore try-hard trust fund church-key shoreditch tumblr. Squid actually lo-fi, YOLO locavore umami blog heirloom microdosing fanny pack twee banh mi waistcoat occupy.\n" +
     "  </p>\n" +
-    "  \n" +
+    "\n" +
     "  <div class=\"btn-group\">\n" +
     "    <a href=\"https://github.com/ngbp/ngbp#readme\" class=\"btn btn-large btn-default\">\n" +
     "      <i class=\"fa fa-question-circle\"></i>\n" +
     "      What we do\n" +
     "    </a>\n" +
-    "    <a href=\"https://github.com/ngbp/ngbp\" class=\"btn btn-large btn-success\">\n" +
+    "    <a href=\"https://github.com/ngbp/ngbp\" class=\"btn btn-large btn-primary\">\n" +
     "      <i class=\"fa fa-rocket\"></i>\n" +
     "      Get Started\n" +
     "    </a>\n" +

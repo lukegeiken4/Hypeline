@@ -5786,7 +5786,7 @@ button.close {
  * definitions in our imported stylesheets.
  */
 /**
- * These are the variables used throughout the application. This is where 
+ * These are the variables used throughout the application. This is where
  * overwrites that are not specific to components should be maintained.
  */
 /**
@@ -5826,6 +5826,10 @@ pre {
 h2 {
   margin: 20px 0;
   color: #666;
+}
+.btn-primary {
+  background: #3c4fa2;
+  border-color: #3c4fa2;
 }
 /**
  * Navigation
@@ -5867,6 +5871,9 @@ h2 {
 .footer .social li a:visited:hover {
   color: #555555;
 }
+a {
+  color: #3c4fa2;
+}
 /**
  * Now that all app-wide styles have been applied, we can load the styles for
  * all the submodules and components we are using.
@@ -5881,6 +5888,9 @@ h2 {
   margin-bottom: 20px;
   font-size: 55px;
   line-height: 1;
+}
+.jumbotron img {
+  margin-bottom: 5rem;
 }
 .jumbotron .lead {
   font-size: 24px;
