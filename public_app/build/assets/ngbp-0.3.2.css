@@ -5903,33 +5903,86 @@ h2 {
   font-size: 28px;
   line-height: 1;
 }
-.chart {
-  width: 100%;
-}
 .highcharts-container {
   width: 100% !important;
 }
+.chart {
+  border-top: 1px solid #ccc;
+  padding-top: 5rem;
+  width: 100%;
+}
+.chart-label {
+  margin-top: 5rem;
+}
+.chart-data {
+  border-right: 1px solid #eee;
+}
+.chart-data:last-of-type {
+  border: 0;
+}
 ul.terms,
-ul.details {
+ul.details,
+ul.runs {
   margin: 0;
   padding: 0;
 }
 ul.terms li,
-ul.details li {
+ul.details li,
+ul.runs li {
   list-style-type: none;
 }
 ul.terms .term,
-ul.details .term {
+ul.details .term,
+ul.runs .term {
   padding: 1rem 0;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px dashed #ccc;
 }
 ul.terms .term:last-of-type,
-ul.details .term:last-of-type {
+ul.details .term:last-of-type,
+ul.runs .term:last-of-type {
   border: 0;
 }
 ul.terms .detail strong,
-ul.details .detail strong {
+ul.details .detail strong,
+ul.runs .detail strong {
+  background: #eee;
   text-transform: uppercase;
   font-size: .8rem;
   padding: 3px 3rem 3px 2px;
+}
+ul.runs li {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+ul.runs li:last-of-type {
+  border: 0;
+}
+.past-runs {
+  background: #eee;
+  background: rgba(0, 0, 0, 0.03);
+}
+.platforms {
+  margin: 0;
+  padding: 0;
+  margin: 1rem 0;
+}
+.platforms li {
+  display: inline-block;
+  list-style-type: none;
+  margin-right: 2rem;
+  padding: 1rem;
+}
+.platforms li:last-of-type {
+  margin-right: 0;
+}
+.platforms label {
+  width: 20px;
+  height: 20px;
+  display: block;
+  background: transparent;
+  padding: 0;
+}
+.platforms img {
+  width: 100%;
 }

@@ -344,12 +344,15 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("hypeline/chart.tpl.html",
-    "<div class=\"chart\">\n" +
+    "<div class=\"chart-label\" ng-if=\"chart\" >\n" +
+    "  <label class=\"label label-default\">Results</label>\n" +
+    "</div>\n" +
+    "<div ng-if=\"chart\" class=\"chart\">\n" +
     "    <highchart id=\"chart-{{id}}\" config=\"chartConfig\"></highchart>\n" +
     "</div>\n" +
     "\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"col-xs-4\">\n" +
+    "<div class=\"row\" ng-if=\"chart\">\n" +
+    "  <div class=\"col-xs-4 chart-data\">\n" +
     "    <h4>Top Ten Results</h4>\n" +
     "    <ul class=\"terms\">\n" +
     "      <li ng-repeat=\"term in topTen\" class=\"term\">\n" +
@@ -361,7 +364,7 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "      </li>\n" +
     "    </ul>\n" +
     "  </div>\n" +
-    "  <div class=\"col-xs-4\">\n" +
+    "  <div class=\"col-xs-4 chart-data\">\n" +
     "    <h4>Bottom Ten Results</h4>\n" +
     "    <ul class=\"terms\">\n" +
     "      <li ng-repeat=\"term in bottomTen\" class=\"term\">\n" +
@@ -373,9 +376,15 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "      </li>\n" +
     "    </ul>\n" +
     "  </div>\n" +
-    "  <div class=\"col-xs-4\">\n" +
+    "  <div class=\"col-xs-4 chart-data\">\n" +
     "    <h4>Associated Datea</h4>\n" +
     "    <ul class=\"terms\">\n" +
+    "      <li ng-repeat=\"keyword in keywords\" class=\"term\">\n" +
+    "        <ul class=\"details\">\n" +
+    "          <li class=\"detail\"><strong>Keyword:</strong><br /> {{keyword.keyword}}</li>\n" +
+    "          <li class=\"detail\"><strong>Relevancy Score:</strong><br /> {{keyword.score}}</li>\n" +
+    "        </ul>\n" +
+    "      </li>\n" +
     "    </ul>\n" +
     "  </div>\n" +
     "</div>\n" +
@@ -413,6 +422,31 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "                </p>\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-12\">\n" +
+    "                <label for=\"endDate\" class=\"label label-default\">Platforms</label>\n" +
+    "                <ul class=\"input-group platforms\">\n" +
+    "                    <li>\n" +
+    "                      <label for=\"twitter\" class=\"label label-default\"><img src=\"/assets/imgs/twitter.png\" /></label>\n" +
+    "                      <input type=\"checkbox\" value=\"twitter\" id=\"twitter\" ng-model=\"platforms.twitter\"/>\n" +
+    "                    </li>\n" +
+    "                    <li>\n" +
+    "                      <label for=\"tumblr\" class=\"label label-default\"><img src=\"/assets/imgs/tumblr.png\" /></label>\n" +
+    "                      <input type=\"checkbox\" value=\"tumblr\" id=\"tumblr\" ng-model=\"platforms.tumblr\"/>\n" +
+    "                    </li>\n" +
+    "                    <li>\n" +
+    "                      <label for=\"insta\" class=\"label label-default\"><img src=\"/assets/imgs/instagram.png\" /></label>\n" +
+    "                      <input type=\"checkbox\" value=\"instagram\" id=\"insta\" ng-model=\"platforms.instagram\"/>\n" +
+    "                    </li>\n" +
+    "                    <li>\n" +
+    "                      <label for=\"gplus\" class=\"label label-default\"><img src=\"/assets/imgs/gplus.jpg\" /></label>\n" +
+    "                      <input type=\"checkbox\" value=\"gplus\" id=\"gplus\" ng-model=\"platforms.gplus\"/>\n" +
+    "                    </li>\n" +
+    "                    <li>\n" +
+    "                      <label for=\"vine\" class=\"label label-default\"><img src=\"/assets/imgs/vine.jpg\" /></label>\n" +
+    "                      <input type=\"checkbox\" value=\"vine\" id=\"vine\" ng-model=\"platforms.vine\"/>\n" +
+    "                    </li>\n" +
+    "                </ul>\n" +
+    "            </div>\n" +
+    "            <div class=\"col-xs-12\">\n" +
     "                <p class=\"input-group\">\n" +
     "                    <button type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid\" ng-click=\"go()\">Go!</button>\n" +
     "                </p>\n" +
@@ -421,17 +455,18 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "      </div>\n" +
     "\n" +
     "      <div class=\"col-xs-4\">\n" +
-    "        <div class=\"panel panel-default\">\n" +
+    "        <label class=\"label label-default\">Past Runs</label>\n" +
+    "        <div class=\"panel panel-default past-runs\">\n" +
     "          <div ng-if=\"runLoading\">Loading...</div>\n" +
     "          <ul class=\"runs\" ng-if=\"!runLoading\">\n" +
     "            <li ng-repeat=\"run in runs\">\n" +
-    "              <span class=\"run\" ng-click=\"getRun(run)\">{{run.tag}} : [{{run.startDate}} - {{run.endDate}}]</span>\n" +
+    "              <span class=\"run\" ng-click=\"getRun(run)\">#{{run.tag}} : <span class=\"small\">[{{run.startDate}} - {{run.endDate}}]</span></span>\n" +
     "            </li>\n" +
     "          </ul>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "  </div>\n" +
-    "  <div class=\"row\">\n" +
+    "  <div class=\"row chart-container\">\n" +
     "    <div class=\"col-xs-12\">\n" +
     "      <div ng-if=\"noDataError\" class=\"alert alert-info\"></div>\n" +
     "      <results-chart ng-if=\"!noDataError\" type=\"chart\" name=\"results\" runId=\"{{runId}}\"></results-chart>\n" +

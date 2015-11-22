@@ -27,6 +27,7 @@ angular.module( 'hypeLine.hypeline', [
   $scope.defaultDates();
   $scope.format = 'yyyy-MM-dd';
   $scope.maxDate = new Date();
+  $scope.platforms = {};
 
   var setUser = function(){
     $scope.user = AuthService.get();
@@ -103,6 +104,7 @@ angular.module( 'hypeLine.hypeline', [
   }
 
   $scope.go = function(){
+    getPlatforms();
     if(!$scope.user){
       setUser();
       if($scope.user){
@@ -115,9 +117,34 @@ angular.module( 'hypeLine.hypeline', [
       go();
     }
 
+    function getPlatforms(){
+      var platforms = [];
+      var twitter = {key: 'twitter', value: $scope.platforms.twitter};
+      var tumblr = {key: 'tumblr', value: $scope.platforms.tumblr};
+      var gplus = {key: 'gplus', value: $scope.platforms.gplus};
+      var vine = {key: 'vine', value: $scope.platforms.vine};
+      var instagram = {key: 'instagram', value: $scope.platforms.instagram};
+
+      platforms.push(twitter);
+      platforms.push(tumblr);
+      platforms.push(gplus);
+      platforms.push(vine);
+      platforms.push(instagram);
+
+      var platformString = _.chain(platforms)
+      .filter(function(item){
+        return item.value;
+      })
+      .map(function(item){
+        return item.key;
+      }).value();
+
+      return platformString.join(',');
+    }
+
     function go(){
       $scope.loading = true;
-      var url = Config.appRoot + '/analyze?origin=twitter&user_id=' + $scope.user.userId + '&keyword=' + $scope.tag + '&start_date=' + $scope.startDate + '&end_date=' + $scope.endDate;
+      var url = Config.appRoot + '/analyze?origin=' + getPlatforms() + '&user_id=' + $scope.user.userId + '&keyword=' + $scope.tag + '&start_date=' + $scope.startDate + '&end_date=' + $scope.endDate;
       $http.get(url)
       .then(
         function(data){
@@ -137,6 +164,8 @@ angular.module( 'hypeLine.hypeline', [
 .directive('resultsChart', function($http, Config, $log){
 
   var linkFn = function(scope, elem, attrs){
+
+    scope.chart = false;
 
     scope.chartConfig = {
         series: [],
@@ -186,6 +215,10 @@ angular.module( 'hypeLine.hypeline', [
       return item.y;
     }
 
+    function getAssociatedData(keywords){
+      scope.keywords = keywords;
+    }
+
     function updateSeries(allSeries){
 
       var min = _.min(allSeries.data, getDate);
@@ -208,11 +241,14 @@ angular.module( 'hypeLine.hypeline', [
 
     function updateData(data){
       scope.chartConfig.loading = false;
+      scope.chart = true;
 
-      var groups = _.groupBy(data, groupByDate);
+      var groups = _.groupBy(data.nugs, groupByDate);
       var points = _.map(groups, averageSentimentScorePerTimestamp);
       var sorted = _.sortBy(points, sortByDate);
+      console.log(sorted);
       getBracketedResults(points);
+      getAssociatedData(data.keywords);
 
       updateSeries({data: sorted});
     }
@@ -252,7 +288,7 @@ angular.module( 'hypeLine.hypeline', [
       $http.get(Config.appRoot + '/search?run_id=' + scope.runid)
       .then(
         function(data){
-          if(data.data.data.length > 0){
+          if(data.data.data.nugs.length > 0){
             updateData(data.data.data);
           } else {
             scope.$parent.noDataError = 'No data present';

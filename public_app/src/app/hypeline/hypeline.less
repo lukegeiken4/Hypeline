@@ -1,12 +1,26 @@
-.chart{
-  width: 100%;
-}
 
 .highcharts-container{
   width: 100% !important;
 }
 
-ul.terms, ul.details{
+.chart{
+  border-top: 1px solid #ccc;
+  padding-top: 5rem;
+  width: 100%;
+}
+
+.chart-label{
+  margin-top: 5rem;
+}
+
+.chart-data{
+  border-right: 1px solid #eee;
+  &:last-of-type{
+    border: 0;
+  }
+}
+
+ul.terms, ul.details, ul.runs{
   margin: 0;
   padding: 0;
   li{
@@ -14,16 +28,58 @@ ul.terms, ul.details{
   }
   .term{
     padding: 1rem 0;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px dashed #ccc;
     &:last-of-type{
       border: 0;
     }
   }
   .detail{
     strong{
+      background: #eee;
       text-transform: uppercase;
       font-size: .8rem;
       padding: 3px 3rem 3px 2px;
     }
+  }
+}
+
+ul.runs{
+  li{
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    &:last-of-type{
+      border: 0;
+    }
+  }
+}
+
+.past-runs{
+  background: #eee;
+  background: rgba(0,0,0,.03);
+}
+
+.platforms{
+  margin: 0;
+  padding: 0;
+  margin: 1rem 0;
+  li{
+    display: inline-block;
+    list-style-type: none;
+    margin-right: 2rem;
+    padding: 1rem;
+    &:last-of-type{
+      margin-right: 0;
+    }
+  }
+  label{
+    width: 20px;
+    height: 20px;
+    display: block;
+    background: transparent;
+    padding: 0;
+  }
+  img{
+    width: 100%;
   }
 }
