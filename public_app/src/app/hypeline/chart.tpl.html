@@ -1,9 +1,12 @@
-<div class="chart">
+<div class="chart-label" ng-if="chart" >
+  <label class="label label-default">Results</label>
+</div>
+<div ng-if="chart" class="chart">
     <highchart id="chart-{{id}}" config="chartConfig"></highchart>
 </div>
 
-<div class="row">
-  <div class="col-xs-4">
+<div class="row" ng-if="chart">
+  <div class="col-xs-4 chart-data">
     <h4>Top Ten Results</h4>
     <ul class="terms">
       <li ng-repeat="term in topTen" class="term">
@@ -15,7 +18,7 @@
       </li>
     </ul>
   </div>
-  <div class="col-xs-4">
+  <div class="col-xs-4 chart-data">
     <h4>Bottom Ten Results</h4>
     <ul class="terms">
       <li ng-repeat="term in bottomTen" class="term">
@@ -27,9 +30,15 @@
       </li>
     </ul>
   </div>
-  <div class="col-xs-4">
+  <div class="col-xs-4 chart-data">
     <h4>Associated Datea</h4>
     <ul class="terms">
+      <li ng-repeat="keyword in keywords" class="term">
+        <ul class="details">
+          <li class="detail"><strong>Keyword:</strong><br /> {{keyword.keyword}}</li>
+          <li class="detail"><strong>Relevancy Score:</strong><br /> {{keyword.score}}</li>
+        </ul>
+      </li>
     </ul>
   </div>
 </div>

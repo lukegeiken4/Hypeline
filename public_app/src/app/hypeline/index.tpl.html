@@ -27,6 +27,31 @@
                 </p>
             </div>
             <div class="col-xs-12">
+                <label for="endDate" class="label label-default">Platforms</label>
+                <ul class="input-group platforms">
+                    <li>
+                      <label for="twitter" class="label label-default"><img src="/assets/imgs/twitter.png" /></label>
+                      <input type="checkbox" value="twitter" id="twitter" ng-model="platforms.twitter"/>
+                    </li>
+                    <li>
+                      <label for="tumblr" class="label label-default"><img src="/assets/imgs/tumblr.png" /></label>
+                      <input type="checkbox" value="tumblr" id="tumblr" ng-model="platforms.tumblr"/>
+                    </li>
+                    <li>
+                      <label for="insta" class="label label-default"><img src="/assets/imgs/instagram.png" /></label>
+                      <input type="checkbox" value="instagram" id="insta" ng-model="platforms.instagram"/>
+                    </li>
+                    <li>
+                      <label for="gplus" class="label label-default"><img src="/assets/imgs/gplus.jpg" /></label>
+                      <input type="checkbox" value="gplus" id="gplus" ng-model="platforms.gplus"/>
+                    </li>
+                    <li>
+                      <label for="vine" class="label label-default"><img src="/assets/imgs/vine.jpg" /></label>
+                      <input type="checkbox" value="vine" id="vine" ng-model="platforms.vine"/>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-12">
                 <p class="input-group">
                     <button type="submit" value="submit" class="btn btn-primary" ng-disabled="entryPoint.$invalid" ng-click="go()">Go!</button>
                 </p>
@@ -35,17 +60,18 @@
       </div>
 
       <div class="col-xs-4">
-        <div class="panel panel-default">
+        <label class="label label-default">Past Runs</label>
+        <div class="panel panel-default past-runs">
           <div ng-if="runLoading">Loading...</div>
           <ul class="runs" ng-if="!runLoading">
             <li ng-repeat="run in runs">
-              <span class="run" ng-click="getRun(run)">{{run.tag}} : [{{run.startDate}} - {{run.endDate}}]</span>
+              <span class="run" ng-click="getRun(run)">#{{run.tag}} : <span class="small">[{{run.startDate}} - {{run.endDate}}]</span></span>
             </li>
           </ul>
         </div>
       </div>
   </div>
-  <div class="row">
+  <div class="row chart-container">
     <div class="col-xs-12">
       <div ng-if="noDataError" class="alert alert-info"></div>
       <results-chart ng-if="!noDataError" type="chart" name="results" runId="{{runId}}"></results-chart>

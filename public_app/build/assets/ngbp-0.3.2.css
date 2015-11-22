@@ -5786,7 +5786,7 @@ button.close {
  * definitions in our imported stylesheets.
  */
 /**
- * These are the variables used throughout the application. This is where 
+ * These are the variables used throughout the application. This is where
  * overwrites that are not specific to components should be maintained.
  */
 /**
@@ -5827,24 +5827,55 @@ h2 {
   margin: 20px 0;
   color: #666;
 }
+.btn-primary {
+  background: #3c4fa2;
+  border-color: #3c4fa2;
+}
 /**
  * Navigation
  */
 .navbar {
   margin-top: 20px;
 }
+.navbar.navbar-default {
+  background-color: transparent;
+  border-bottom: 1px solid #3c4fa2;
+  border-radius: 0;
+  border-width: 0 0 1px 0;
+  height: 75px;
+}
+.navbar .navbar-right .btn {
+  margin-top: 15px;
+  margin-right: 2rem;
+}
+.navbar .navbar-right .btn:last-of-type {
+  margin-right: 0;
+}
+.navbar .links {
+  margin-left: 50px;
+}
+.navbar .links a {
+  margin-right: 5rem;
+}
+.navbar .links a:last-of-type {
+  margin-right: 0;
+}
 .navbar small {
   font-size: 60%;
+}
+.navbar .logo img {
+  width: 120px;
 }
 /**
  * Footer
  */
 .footer {
   margin-top: 80px;
+  background: #eee;
 }
 .footer .footer-inner {
   padding: 40px 0;
-  border-top: 1px solid #DDD;
+  text-align: center;
 }
 .footer .social {
   float: right;
@@ -5867,6 +5898,9 @@ h2 {
 .footer .social li a:visited:hover {
   color: #555555;
 }
+a {
+  color: #3c4fa2;
+}
 /**
  * Now that all app-wide styles have been applied, we can load the styles for
  * all the submodules and components we are using.
@@ -5881,6 +5915,9 @@ h2 {
   margin-bottom: 20px;
   font-size: 55px;
   line-height: 1;
+}
+.jumbotron img {
+  margin-bottom: 5rem;
 }
 .jumbotron .lead {
   font-size: 24px;
@@ -5903,33 +5940,93 @@ h2 {
   font-size: 28px;
   line-height: 1;
 }
-.chart {
-  width: 100%;
-}
 .highcharts-container {
   width: 100% !important;
 }
+.chart {
+  border-top: 1px solid #ccc;
+  padding-top: 5rem;
+  width: 100%;
+}
+.chart-label {
+  margin-top: 5rem;
+}
+.chart-data {
+  border-right: 1px solid #eee;
+}
+.chart-data:last-of-type {
+  border: 0;
+}
 ul.terms,
-ul.details {
+ul.details,
+ul.runs {
   margin: 0;
   padding: 0;
 }
 ul.terms li,
-ul.details li {
+ul.details li,
+ul.runs li {
   list-style-type: none;
 }
 ul.terms .term,
-ul.details .term {
+ul.details .term,
+ul.runs .term {
   padding: 1rem 0;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px dashed #ccc;
 }
 ul.terms .term:last-of-type,
-ul.details .term:last-of-type {
+ul.details .term:last-of-type,
+ul.runs .term:last-of-type {
   border: 0;
 }
 ul.terms .detail strong,
-ul.details .detail strong {
+ul.details .detail strong,
+ul.runs .detail strong {
+  background: #eee;
   text-transform: uppercase;
   font-size: .8rem;
   padding: 3px 3rem 3px 2px;
+}
+ul.runs li {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+ul.runs li:last-of-type {
+  border: 0;
+}
+.past-runs {
+  background: #eee;
+  background: rgba(0, 0, 0, 0.03);
+}
+.platforms {
+  margin: 0;
+  padding: 0;
+  margin: 1rem 0;
+}
+.platforms li {
+  display: inline-block;
+  list-style-type: none;
+  margin-right: 2rem;
+  padding: 1rem;
+}
+.platforms li:last-of-type {
+  margin-right: 0;
+}
+.platforms label {
+  width: 20px;
+  height: 20px;
+  display: block;
+  background: transparent;
+  padding: 0;
+}
+.platforms img {
+  width: 100%;
+}
+.about-header {
+  color: #3c4fa2;
+}
+#pricing-anchor {
+  text-decoration: none;
+  color: #3c4fa2;
 }
