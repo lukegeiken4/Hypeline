@@ -23,7 +23,7 @@ module.exports = {
 
         return new Promise( function(resolve,reject){
             var url = "https://www.googleapis.com/plus/v1/activities?orderBy=recent&query="+keyword+"&key=" + sails.config.globals.gplus_access+"&pageToken="+pageToken;
-            console.log(url);
+
             request.get(url,function(error, res_last, body_last) {
                 if (error){
                     resolve(error);
@@ -48,7 +48,6 @@ module.exports = {
         this.pages++;
         return this.getPageAsync(keyword,run_id,pageToken)
             .then(function(res){
-                console.log("res "+res);
                 if (res && self.pages < 10){
                     self.getPages(keyword,run_id,res);
                 }else{
