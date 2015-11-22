@@ -6,6 +6,23 @@ indico.apiKey =  '4d75dcbb4a7cac0b2c2046c9b909b816';
 
 module.exports = {
 
+    parseTags: function(keyword_data) {
+        var arr=[];
+        for(var obj in keyword_data){
+         arr.push([obj,keyword_data[obj]])
+        }
+        arr.sort(function(a,b){return b[1] - a[1]});
+
+        var top_keywords = {};
+        for(var i=0;i<5;i++) {
+            if(arr[i] != null) {
+                var val = arr[i];
+                top_keywords[val[0]] = val[1];
+            }
+        }
+        return top_keywords;
+    },
+
     setAnalInfo: function(model_data, anal_data, type, callback) {
 
         //If output is array, then multiple models were sent
@@ -17,10 +34,9 @@ module.exports = {
                         model_data[i].sentiment = anal_data[i];
                         break;
                     case "text_tags":
-                        model_data[i].related_tags = JSON.stringify(anal_data[i]);
+                        model_data[i].related_tags = JSON.stringify(SentiAnal.parseTags(anal_data[i]));
                         break;
                     case "keywords":
-                        //console.log(JSON.stringify(anal_data[i].result));
                         model_data[i].keywords = JSON.stringify(anal_data[i]);
                         break;
                     default:
@@ -35,7 +51,7 @@ module.exports = {
                     model_data[0].sentiment = anal_data[i];
                     break;
                 case "text_tags":
-                    model_data[0].related_tags = JSON.stringify(anal_data[i]);
+                    model_data[0].related_tags = JSON.stringify(SentiAnal.parseTags(anal_data[i]));
                     break;
                 case "keywords":
                     model_data[0].keywords = JSON.stringify(anal_data[i]);
@@ -114,8 +130,8 @@ module.exports = {
                 Hype_nug.create(model_data[i]).exec(function createCB(err, created){
                     if(err){
                         console.log(err);
-                    }else{
-                        console.log('Created hype nug with sentiment of  ' + created.sentiment);
+                    } else {
+                        console.log("Created");
                     }
                 });
             }
