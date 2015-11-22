@@ -90,7 +90,32 @@ module.exports = {
 
         Hype_nug.find({where:{run_id:run_id}}).exec(function selectCB(err,found){
             if(err) return res.json({error:err});
-            else return res.json({data:found});
+
+            var keywords = {};
+
+            for (var i=0;i<found.length;i++){
+                var current = found[i];
+
+                for (id in current.keywords){
+                    if (keywords[id]){
+                        keywords += current.keywords[id];
+                    }else{
+                        keywords[id] = current.keywords[id];
+                    }
+                }
+            }
+            keywords = Object.keys(keywords).sort(function(a,b){return keywords[a]-keywords[b]});
+            var top_keywords = [];
+
+            for (id in keywords){
+                top_keywords.push({word:id,value:keywords[id]});
+
+                if (top_keywords.length >= 5){
+                    break;
+                }
+            }
+
+            return res.json({data:{nugs:found,keywords:top_keywords});
         })
 
     }
