@@ -34,6 +34,8 @@ module.exports = {
                 case "instagram":
                     p_stack.push(sails.controllers.instagram.get_raw_nugs(keyword,until,run_id));
                     break;
+                case "vine":
+                    p_stack.push(sails.controllers.vine.get_raw_nugs(keyword,until,run_id));
                 default:
                     response.error = "No module for "+origin;
                     break;
