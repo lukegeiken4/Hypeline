@@ -2,7 +2,7 @@
 var sys = require('sys');
 var exec = require('child_process').exec;
 var indico = require('indico.io');
-indico.apiKey =  '4d75dcbb4a7cac0b2c2046c9b909b816';
+indico.apiKey =  '7c494dbd995378039f6e01915e09a94a';
 
 module.exports = {
 
