@@ -46,9 +46,11 @@ angular.module( 'ngBoilerplate', [
         $rootScope.$broadcast('user:updated');
       },
       get = function(){
-        var user = window.localStorage.getItem('getItem', 'user');
+        var user = window.localStorage.getItem('user');
         if(user){
           data = JSON.parse(user);
+        } else {
+          data = false;
         }
         return data;
       },
