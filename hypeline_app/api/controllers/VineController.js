@@ -32,6 +32,11 @@ module.exports = {
 
                 self.parseResults(parsed,raw.data.records,keyword,run_id);
 
+                if (parsed.length < 1){
+                    resolve(null);
+                    return;
+                }
+
                 SentiAnal.analPush({data:parsed}, null, function(result){
                     if(result) {
                         resolve(raw.data.nextPage);
