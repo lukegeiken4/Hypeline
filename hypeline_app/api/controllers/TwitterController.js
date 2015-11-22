@@ -13,37 +13,40 @@ module.exports = {
 
     },
 
-    get_raw_nugs: function(req,res){
-        var keyword = req.query.keyword;
-        var until = req.query.end_time || ""; //yyyy-mm-dd
-        var run_id = Date.now();
+    get_raw_nugs: function(keyword,until,run_id){
         var self = this;
 
         self.getToken(function(e,access_token,refresh_token,results){
             var options = {
-                url:search_base+"?q="+keyword+"&until="+until+"&count=100",
+                url:search_base+"?q=%23"+keyword+"&until="+until+"&count=100",
                 headers:{
                     "Authorization":"Bearer "+access_token
                 }
             };
 
-            request.get(options,function(err,response, body){
-                if (err){
-                    return res.json({error:err});
-                }
+            return new Promise( function( resolve, reject ){
+                request.get(options,function(err,response, body){
+                    if (err){
+                        return {error:err};
+                    }
 
-                var raw_body = JSON.parse(body);
-                var raw_data = raw_body.statuses;
-                var raw_next = raw_body.next_results;
+                    var raw_body = JSON.parse(body);
+                    var raw_data = raw_body.statuses;
+                    var raw_next = raw_body.next_results;
 
-                var parsed = [];
+                    var parsed = [];
 
-                self.parseResults(parsed,raw_data,keyword,run_id);
+                    self.parseResults(parsed,raw_data,keyword,run_id);
 
-                //luke's api called hear
-
-                return res.json({data:parsed});
-            })
+                    SentiAnal.analPush({data:parsed}, function(result){
+                        if(result) {
+                            return res.json("Successful sentiment taken");
+                        } else {
+                            return res.json("Shit....");
+                        }
+                    });
+                });
+            });
         });
     },
 
@@ -52,12 +55,14 @@ module.exports = {
             var obj = {};
             obj.tag = keyword;
             obj.origin = "twitter";
-            obj.date_run = run_id;
+            obj.date_run = new Date().toISOString();
             obj.run_id = run_id;
             obj.sentiment = 0.0;
-            obj.date = Date.parse(raw[i].created_at);
-            obj.text = raw[i].text.replace(/\r?\n|\r/g, " ");
-            obj.related_tags = [];
+            obj.date = new Date(Date.parse(raw[i].created_at)).toISOString();
+            obj.text = raw[i].text.replace(/\r?\n|\r/g, " ").replace(/\'/g,"");
+            obj.related_tags = "";
+            obj.keywords = "";
+            obj.origin_id = raw[i].id_str;
 
             parsed.push(obj);
         }

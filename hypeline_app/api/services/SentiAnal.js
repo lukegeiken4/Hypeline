@@ -1,46 +1,125 @@
 // EmailService.js - in api/services
 var sys = require('sys');
 var exec = require('child_process').exec;
-var request = require("request");
+var indico = require('indico.io');
+indico.apiKey =  '4d75dcbb4a7cac0b2c2046c9b909b816';
+
 module.exports = {
 
-    
-    analPush: function(data, terminate, callback) {
+    setAnalInfo: function(model_data, anal_data, type, callback) {
+
+        //If output is array, then multiple models were sent
+        if(anal_data.constructor === Array) {
+            for (var i=0; i < anal_data.length;i++ ) {
+                //Set new information
+                switch(type){
+                    case "sentiment":
+                        model_data[i].sentiment = anal_data[i];
+                        break;
+                    case "text_tags":
+                        model_data[i].related_tags = JSON.stringify(anal_data[i]);
+                        break;
+                    case "keywords":
+                        //console.log(JSON.stringify(anal_data[i].result));
+                        model_data[i].keywords = JSON.stringify(anal_data[i]);
+                        break;
+                    default:
+                        console.log("Invalid type to add to model");
+                        break;
+                }
+            };
+        } else {
+            //Only a single model was sent
+            switch(type){
+                case "sentiment":
+                    model_data[0].sentiment = anal_data[i];
+                    break;
+                case "text_tags":
+                    model_data[0].related_tags = JSON.stringify(anal_data[i]);
+                    break;
+                case "keywords":
+                    model_data[0].keywords = JSON.stringify(anal_data[i]);
+                    break;
+                default:
+                    console.log("Invalid type to add to model");
+                    break;
+            }
+
+        }
+        callback();
+    },
+
+    analPush: function(data, callback) {
+
         //Check data
         //Create string of text to use as python param
         var model_data = data.data;
-        var params = "";
+        var batchInput = [];
         for(var i = 0; i < model_data.length; i++) {
-            if(i==0) params += "'" + model_data[i].text + "'";
-            else params += " '" + model_data[i].text + "'";
-
+            batchInput[i] = model_data[i].text;
         }
 
-        //Get sentiment data
-        var python_command = "echo $(python sentiment.py "+params+")";
-        callback(exec(python_command, function(error, stdout, stderr){
-            if(!error) {
-                //Update the data model
-                var output_arr = JSON.parse(stdout);
-                //If output is array, then multiple models were sent
-                if(output_arr.constructor === Array) {
-                    for (var i=0; i < output_arr.length;i++ ) {
-                        //Push into mongo
-                        model_data[i].sentiment = output_arr[i];
-                        console.log(JSON.stringify(model_data[i]));
-                        Hype_nug.create(model_data[i]).exec(function createCB(err, created){
-                            if(err) console.log("could not create hype nug");
-                            else  console.log('Created hype nug with sentiment of  ' + created.sentiment);
-                        });
-                    };
-                } else {
-                    //Only a single model was sent
-                     model_data[0].sentiment = output_arr;
-                }
-                return true;
-            } 
-            console.log(stderr);
-            return false;
-        }));
+        // Sentiment Data
+        var senti = new Promise(function(resolve, reject){
+
+            indico.sentimentHQ(batchInput)
+            .then(function(response){
+                SentiAnal.setAnalInfo(model_data, response, "sentiment",function(){
+                    resolve();
+                });
+            })
+            .catch(function(logError){
+                console.log(logError);
+                reject();
+            });
+        });
+
+        //Related Tage
+        var tags = new Promise(function(resolve, reject) {
+            indico.text_tags(batchInput)
+            .then(function(response){
+
+                SentiAnal.setAnalInfo(model_data, response, "text_tags",function(){
+                    resolve();
+                });
+
+            })
+            .catch(function(logError){
+                console.log(logError);
+                reject();
+            });
+        });
+
+        //Keywords
+        var keywords = new Promise(function(resolve, reject){
+            indico.keywords(batchInput)
+            .then(function(response){
+
+                SentiAnal.setAnalInfo(model_data, response, "keywords",function(){
+                    resolve();
+                });
+            })
+            .catch(function(logError){
+                console.log(logError);
+                reject();
+            });
+        });
+
+        //When promises are done
+        Promise.all([
+            senti, tags, keywords
+        ]).then(function(){
+
+            for(var i = 0; i < model_data.length; i++) {
+                Hype_nug.create(model_data[i]).exec(function createCB(err, created){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        console.log('Created hype nug with sentiment of  ' + created.sentiment);
+                    }
+                });
+            }
+            callback(true);
+        });
     }
 };

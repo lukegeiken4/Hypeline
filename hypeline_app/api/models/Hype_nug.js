@@ -11,6 +11,10 @@ module.exports = {
         type:"string",
         defaultsTo:"datapoint"
     },
+    origin_id:{
+        type:"string",
+        required:true
+    },
     date:{
         type:"datetime"/*,
         required:true*/
@@ -25,7 +29,7 @@ module.exports = {
     },
     origin:{
         type:"string",
-        enum:["twitter"],
+        enum:["twitter","instagram","vine"],
         required:true
     },
     date_run:{
@@ -40,8 +44,12 @@ module.exports = {
         required:true
     },
     related_tags:{
-        type:"array",
-        required: true
+        type:"string"/*,
+        required: true*/
+    },
+    keywords:{
+        type:"string"/*,
+        required: true*/
     }
   },
   schema:true
