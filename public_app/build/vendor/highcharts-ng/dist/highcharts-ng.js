@@ -10,7 +10,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   angular.module('highcharts-ng', [])
     .provider('highchartsNG', highchartsNGProvider)
     .directive('highchart', ['highchartsNG', '$timeout', highchart]);
-  
+
   function highchartsNGProvider(){
     var modules = [];
     var basePath = false;
@@ -482,7 +482,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
       }
     };
-    
+
     // override link fn if lazy loading is enabled
     if(highchartsNGUtils.lazyLoad){
       var oldLink = res.link;

@@ -22,7 +22,7 @@ angular.module( 'hypeLine.results', [
 
 })
 
-.directive('resultsChart', function($http, Config, $log){
+.directive('resultsChart2', function($http, Config, $log){
 
   var linkFn = function(scope, elem, attrs){
 
