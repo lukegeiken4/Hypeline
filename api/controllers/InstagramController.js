@@ -61,7 +61,7 @@ module.exports = {
             obj.run_id = run_id;
             obj.sentiment = 0.0;
             obj.date =  new Date(parseInt(raw[i].caption.created_time)).toISOString();
-            obj.text = raw[i].caption.text.replace(/\r?\n|\r/g, " ").replace(/\'/g,"");
+            obj.text = raw[i].caption.text.replace(/\r?\n|\r/g, " ").replace(/\uE000-\uF8FF\'/g,"");
             obj.related_tags = [];
             obj.origin_id = raw[i].id;
 
