@@ -1,4 +1,4 @@
-angular.module('templates-app', ['about/about.tpl.html', 'home/home.tpl.html', 'hypeline/index.tpl.html', 'user/create.tpl.html']);
+angular.module('templates-app', ['about/about.tpl.html', 'home/home.tpl.html', 'hypeline/chart.tpl.html', 'hypeline/index.tpl.html', 'hypeline/results.tpl.html', 'user/create.tpl.html', 'user/login.tpl.html']);
 
 angular.module("about/about.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("about/about.tpl.html",
@@ -342,6 +342,14 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "");
 }]);
 
+angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("hypeline/chart.tpl.html",
+    "<div class=\"chart\">\n" +
+    "    <highchart id=\"chart-<%= id %>\" config=\"chartConfig\"></highchart>\n" +
+    "</div>\n" +
+    "");
+}]);
+
 angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("hypeline/index.tpl.html",
     "<div class=\"row\" ng-controller=\"HypelineCtrl\">\n" +
@@ -380,11 +388,22 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "");
 }]);
 
+angular.module("hypeline/results.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("hypeline/results.tpl.html",
+    "<div class=\"row\">\n" +
+    "  <div class=\"col-xs-12\">\n" +
+    "    <h1>Results</h1>\n" +
+    "    <results-chart type=\"chart\" name=\"results\" runId=\"{{runId}}\"></results-chart>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
 angular.module("user/create.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("user/create.tpl.html",
     "<div class=\"container\">\n" +
+    "    <div ng-if=\"error\" class=\"alert alert-danger\">{{error}}</div>\n" +
     "    <form role=\"form\" ng-submit=\"createUser()\">\n" +
-    "        <div ng-if=\"error\" class=\"alert alert-danger\"><=% error ></div>\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"col-xs-12 col-sm-6 form-group\">\n" +
     "                <label for=\"firstName\">First Name</label>\n" +
@@ -395,14 +414,14 @@ angular.module("user/create.tpl.html", []).run(["$templateCache", function($temp
     "                <input type=\"text\" class=\"form-control\" id=\"lastName\" ng-model=\"user.lastName\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
-    "        \n" +
+    "\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
     "                <label for=\"email\">Email</label>\n" +
     "                <input type=\"email\" class=\"form-control\" id=\"email\" ng-model=\"user.email\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
-    "        \n" +
+    "\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
     "                <label for=\"userName\">User Name</label>\n" +
@@ -416,10 +435,40 @@ angular.module("user/create.tpl.html", []).run(["$templateCache", function($temp
     "                <input type=\"password\" class=\"form-control\" id=\"password\" ng-model=\"user.password\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
-    "        \n" +
+    "\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"col-xs-12\">\n" +
     "                <input class=\"btn btn-primary\" type=\"submit\" value=\"Create User\" id=\"createUser\"></input>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </form>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("user/login.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("user/login.tpl.html",
+    "<div class=\"container\">\n" +
+    "    <div ng-if=\"error\" class=\"alert alert-danger\">{{error}}</div>\n" +
+    "    <form role=\"form\" ng-submit=\"login()\">\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
+    "                <label for=\"userName\">User Name</label>\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"userName\" ng-model=\"user.userName\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
+    "                <label for=\"password\">Password</label>\n" +
+    "                <input type=\"password\" class=\"form-control\" id=\"password\" ng-model=\"user.password\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12\">\n" +
+    "                <input ng-if=\"!loading\" class=\"btn btn-primary\" type=\"submit\" value=\"Login\" id=\"login\" ng-diabled=\"!loading\"></input>\n" +
+    "                <p ng-if=\"loading\">Loading...</p>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </form>\n" +

@@ -18,24 +18,25 @@ angular.module( 'hypeLine.userCreate', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'UserCreateCtrl', function HomeController( $scope, $http, Config ) {
-    
+.controller( 'UserCreateCtrl', function HomeController( $scope, $http, Config, $location ) {
+
     $scope.user = {};
-    
+
     $scope.createUser = function(){
-        console.log('user', $scope.user);
-        console.log(Config);
         $http.post(Config.appRoot + '/user/create', $scope.user)
         .then(
             function(data){
                 console.log('success', data);
+                $location.path('/');
+                AuthService.set(data.data.account);
             },
             function(data){
                 console.log('failure', data);
+                $scope.error = data.data.error;
             }
         );
     };
-    
+
 })
 
 ;
