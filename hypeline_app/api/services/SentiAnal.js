@@ -131,7 +131,7 @@ module.exports = {
                     if(err){
                         console.log(err);
                     } else {
-                        console.log("Created");
+                        console.log("Created "+created.id);
                     }
                 });
             }
