@@ -116,8 +116,26 @@ module.exports = {
             }
 
             return res.json({data:{nugs:found,keywords:top_keywords}});
-        })
+        });
+    },
 
+    delete_run: function(req,res){
+        var run_id = req.query.run_id;
+
+        Hype_nug.destroy({where:{run_id:run_id}}).exec(function selectCB(err){
+            if (err){
+                return res.json({error:err});
+            }
+
+            Run.destroy({run_id:run_id}).exec(function runCB(error){
+                if (error){
+                    return res.json({error:error});
+                }
+
+                return res.json({data:"Successfully removed "+run_id});
+            });
+
+        });
     }
 };
 
