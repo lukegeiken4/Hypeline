@@ -21,6 +21,12 @@ module.exports = {
     },
     keyword:{
         type:"string",
+    },
+    start_date:{
+        type:"datetime"
+    },
+    end_date:{
+        type:"datetime"
     }
   },
   schema:true,

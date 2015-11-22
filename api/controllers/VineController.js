@@ -7,6 +7,7 @@
 var request = require("request");
 
 module.exports = {
+
 	get_raw_nugs: function(keyword,until,run_id){
         var self = this;
         var url = "https://api.vineapp.com/timelines/tags/" + keyword;

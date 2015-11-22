@@ -12,16 +12,6 @@ module.exports = {
     get_raw_nugs: function(keyword,until,run_id){
         var self = this;
 
-/*            request.get("https://api.instagram.com/v1/tags/search?q="+keyword+"&access_token="+sails.config.globals.instagram_access,
-                function(err,response,body){
-
-                if (err){
-                    return {error:err};
-                }
-
-                var raw_tags = JSON.parse(body).data;
-                var top_tag = raw_tags[0].name;
-                */
             var url = "https://api.instagram.com/v1/tags/" + keyword + "/media/recent?count=100&access_token="+sails.config.globals.instagram_access;
             return new Promise( function( resolve, reject ){
                 request.get(url,function(error, res_last, body_last) {
