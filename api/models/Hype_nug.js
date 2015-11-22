@@ -11,8 +11,9 @@ module.exports = {
         type:"string",
         defaultsTo:"datapoint"
     },
-    id:{
+    origin_id:{
         type:"string",
+        required:true
     },
     date:{
         type:"datetime"/*,

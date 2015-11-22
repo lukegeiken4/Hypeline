@@ -51,6 +51,7 @@ module.exports = {
     },
 
     analPush: function(data, callback) {
+
         //Check data
         //Create string of text to use as python param
         var model_data = data.data;
@@ -83,7 +84,7 @@ module.exports = {
                 SentiAnal.setAnalInfo(model_data, response, "text_tags",function(){
                     resolve();
                 });
-      
+    
             })
             .catch(function(logError){
                 console.log(logError);
