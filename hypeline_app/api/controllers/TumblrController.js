@@ -1,7 +1,7 @@
 /**
- * GplusController
+ * TumblrController
  *
- * @description :: Server-side logic for managing gplus
+ * @description :: Server-side logic for managing tumblrs
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
@@ -9,7 +9,7 @@ module.exports = {
 
     get_raw_nugs: function(keyword,until,run_id){
         var self = this;
-        var url = "https://www.googleapis.com/plus/v1/activities?orderBy=recent&query="+keyword+"&key=" + sails.config.globals.gplus_access;
+        var url = "https://api.tumblr.com/v2/tagged?tag="+keyword+"&api_key=" + sails.config.globals.tumblr_key;
 
         return new Promise( function( resolve, reject ){
             request.get(url,function(error, res_last, body_last) {
@@ -21,7 +21,7 @@ module.exports = {
                 var parsed = [];
                 //console.log(raw.data.records);
 
-                self.parseResults(parsed,raw.items,keyword,run_id);
+                self.parseResults(parsed,raw.response,keyword,run_id);
 
                 SentiAnal.analPush({data:parsed}, null, function(result){
                     resolve();
@@ -41,22 +41,21 @@ module.exports = {
 
         for (i=0;i<raw.length;i++){
             var obj = {};
-            if (raw[i].description && raw[i].description != ""){
+            /*if (raw[i].description && raw[i].description != ""){*/
                 obj.tag = keyword;
                 obj.origin = "vine";
                 obj.date_run = new Date().toISOString();
                 obj.run_id = run_id;
                 obj.sentiment = 0.0;
                 obj.date =  new Date(parseInt(raw[i].published)).toISOString();
-                obj.text = raw[i].content.replace(/\r?\n|\r/g, " ").replace(re,"");
+                obj.text = raw[i].caption.replace(/\r?\n|\r/g, " ").replace(re,"");
                 obj.related_tags = "";
                 obj.keywords = "";
                 obj.origin_id = raw[i].id;
 
                 parsed.push(obj);
-            }
+            //}
         }
     }
 
 };
-
