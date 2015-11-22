@@ -51,7 +51,7 @@ module.exports = {
             obj.date_run = new Date().toISOString();
             obj.run_id = run_id;
             obj.sentiment = 0.0;
-            obj.date =  new Date(parseInt(raw[i].date)).toISOString();
+            obj.date =  new Date(parseInt(raw[i].timestamp)*1000).toISOString();
 
             var text = "";
             if (raw[i].body){
