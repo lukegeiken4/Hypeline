@@ -54,5 +54,6 @@ module.exports.routes = {
 
   'GET /analyze':"AnalyzeController.get_nugs",
   'GET /search':"AnalyzeController.find_run",
+  'GET /delete_run': "AnalyzeController.delete_run"
 
 };
