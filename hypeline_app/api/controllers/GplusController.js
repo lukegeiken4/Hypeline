@@ -7,31 +7,56 @@
 var request = require("request");
 
 module.exports = {
+    pages:0,
 
     get_raw_nugs: function(keyword,until,run_id){
         var self = this;
-        var url = "https://www.googleapis.com/plus/v1/activities?orderBy=recent&query="+keyword+"&key=" + sails.config.globals.gplus_access;
 
         return new Promise( function( resolve, reject ){
+            self.getPages(keyword,run_id,"");
+            resolve();
+        });
+    },
+
+    getPageAsync: function(keyword,run_id,pageToken){
+        var self = this;
+
+        return new Promise( function(resolve,reject){
+            var url = "https://www.googleapis.com/plus/v1/activities?orderBy=recent&query="+keyword+"&key=" + sails.config.globals.gplus_access+"&pageToken="+pageToken;
+            console.log(url);
             request.get(url,function(error, res_last, body_last) {
                 if (error){
-                    return {error:error};
+                    resolve(error);
+                    return;
                 }
+
                 var raw = JSON.parse(body_last);
                 var parsed = [];
 
+                resolve(raw.nextPageToken);
                 self.parseResults(parsed,raw.items,keyword,run_id);
 
                 SentiAnal.analPush({data:parsed}, null, function(result){
-                    resolve();
-                    if(result) {
-                        return {data:"Successful sentiment taken"};
-                    } else {
-                        return {error:"Shit...."};
-                    }
+                    return;
                 });
             });
         });
+    },
+
+    getPages: function(keyword,run_id,pageToken){
+        var self = this;
+        this.pages++;
+        return this.getPageAsync(keyword,run_id,pageToken)
+            .then(function(res){
+                console.log("res "+res);
+                if (res && self.pages < 10){
+                    self.getPages(keyword,run_id,res);
+                }else{
+                    return;
+                }
+            }).catch(function(e){
+                console.log(e.stack);
+            });
     },
 
     parseResults: function(parsed,raw,keyword,run_id){
@@ -51,7 +76,6 @@ module.exports = {
             obj.keywords = "";
             obj.origin_id = raw[i].id;
 
-            console.log(obj.text);
             if (obj.text != ""){
                 parsed.push(obj);
             }
