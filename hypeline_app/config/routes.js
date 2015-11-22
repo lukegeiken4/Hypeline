@@ -53,6 +53,6 @@ module.exports.routes = {
   'get /test': 'Hype_nugController.testPush',
 
   'GET /analyze':"AnalyzeController.get_nugs",
-  'GET /search':"AnalyzeController.find_run"
+  'GET /search':"AnalyzeController.find_run",
 
 };

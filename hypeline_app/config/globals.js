@@ -21,7 +21,8 @@ module.exports.globals = {
   twitter_key: "Z6776OJNzXhhzOPbmSAp5Napb",
   facebook_secret: "446baba6f4d102c07b59a90b6aad5ee5",
   facebook_key: "1712266155651439",
-  instagram_access: "16384709.6ac06b4.49b97800d7fd4ac799a2c889f50f2587" //"278540041.0e2ff05.ad90ef5dff2147388cf9b33caa0162ae"
+  instagram_access: "16384709.6ac06b4.49b97800d7fd4ac799a2c889f50f2587", //"278540041.0e2ff05.ad90ef5dff2147388cf9b33caa0162ae"
+  gplus_access: "AIzaSyCQoSJD2HCo0GURiQCUGWJdGxRZ_PqMbh0"
 
 	// _: true,
 
