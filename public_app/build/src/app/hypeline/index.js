@@ -175,6 +175,17 @@ angular.module( 'hypeLine.hypeline', [
       fetch();
     });
 
+    function getBracketedResults(data){
+      var sorted = _.sortBy(data, sortBySentimentScore);
+      scope.bottomTen = sorted.slice(0,10);
+      scope.topTen = sorted.slice((sorted.length - 11), sorted.length - 1);
+      console.log(scope.topTen);
+    }
+
+    function sortBySentimentScore(item){
+      return item.y;
+    }
+
     function updateSeries(allSeries){
 
       var min = _.min(allSeries.data, getDate);
@@ -201,9 +212,9 @@ angular.module( 'hypeLine.hypeline', [
       var groups = _.groupBy(data, groupByDate);
       var points = _.map(groups, averageSentimentScorePerTimestamp);
       var sorted = _.sortBy(points, sortByDate);
+      getBracketedResults(points);
 
       updateSeries({data: sorted});
-
     }
 
     function sortByDate(item){
@@ -230,8 +241,9 @@ angular.module( 'hypeLine.hypeline', [
       return {
         x: new Date(item[0].date).getTime(),
         y: average * 100,
-        name: item[0].tag + ", " + label,
-        tag: item[0].tag
+        name: label,
+        tag: item[0].tag,
+        raw: item
       };
 
     }
