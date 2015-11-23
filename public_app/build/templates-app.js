@@ -125,16 +125,21 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("hypeline/chart.tpl.html",
-    "<div class=\"row\">\n" +
-    "  <div class=\"col-xs-12\">\n" +
-    "    <label for=\"tags\" class=\"label label-default\">Time Grouping</label>\n" +
-    "    <ul class=\"input-group\">\n" +
+    "<div class=\"row chart-label\" ng-if=\"chart\">\n" +
+    "  <div class=\"col-xs-6\">\n" +
+    "    <div>\n" +
+    "      <label class=\"label label-default\">Results</label>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"col-xs-6\">\n" +
+    "<!--     <label for=\"tags\" class=\"label label-default\">Time Grouping</label> -->\n" +
+    "    <ul class=\"input-group time-grouping\">\n" +
     "        <li>\n" +
-    "          <label for=\"second\" class=\"label label-default\">1 second</label>\n" +
+    "          <label for=\"second\" class=\"label label-default\">Seconds</label>\n" +
     "          <input type=\"radio\" value=\"second\" id=\"second\" ng-model=\"timegroup\"/>\n" +
     "        </li>\n" +
     "        <li>\n" +
-    "          <label for=\"minute\" class=\"label label-default\">1 minute</label>\n" +
+    "          <label for=\"minute\" class=\"label label-default\">Minutes</label>\n" +
     "          <input type=\"radio\" value=\"minute\" id=\"minute\" ng-model=\"timegroup\"/>\n" +
     "        </li>\n" +
     "<!--\n" +
@@ -144,22 +149,22 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "        </li>\n" +
     "-->\n" +
     "        <li>\n" +
-    "          <label for=\"hour\" class=\"label label-default\">1 hour</label>\n" +
+    "          <label for=\"hour\" class=\"label label-default\">Hours</label>\n" +
     "          <input type=\"radio\" value=\"hour\" id=\"hour\" ng-model=\"timegroup\"/>\n" +
     "        </li>\n" +
     "        <li>\n" +
-    "          <label for=\"day\" class=\"label label-default\">1 day</label>\n" +
+    "          <label for=\"day\" class=\"label label-default\">Days</label>\n" +
     "          <input type=\"radio\" value=\"day\" id=\"day\" ng-model=\"timegroup\"/>\n" +
     "        </li>\n" +
     "    </ul>\n" +
     "  </div>\n" +
     "</div>\n" +
-    "\n" +
-    "<div class=\"chart-label\" ng-if=\"chart\" >\n" +
-    "  <label class=\"label label-default\">Results</label>\n" +
-    "</div>\n" +
-    "<div ng-if=\"chart\" class=\"chart\">\n" +
-    "    <highchart id=\"chart-{{id}}\" config=\"chartConfig\"></highchart>\n" +
+    "<div class=\"row\" ng-if=\"chart\">\n" +
+    "  <div class=\"col-xs-12\">\n" +
+    "    <div ng-if=\"chart\" class=\"chart\">\n" +
+    "        <highchart id=\"chart-{{id}}\" config=\"chartConfig\"></highchart>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "</div>\n" +
     "\n" +
     "<div class=\"row\" ng-if=\"chart\">\n" +

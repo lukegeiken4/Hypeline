@@ -5999,6 +5999,18 @@ ul.runs li:last-of-type {
   background: #eee;
   background: rgba(0, 0, 0, 0.03);
 }
+ul.time-grouping {
+  float: right;
+  padding: 0;
+  margin: 0;
+}
+ul.time-grouping li {
+  display: inline-block;
+  margin-right: 1rem;
+}
+ul.time-grouping lilast-of-type {
+  margin-right: 0;
+}
 .platforms {
   margin: 0;
   padding: 0;

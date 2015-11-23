@@ -1,13 +1,18 @@
-<div class="row">
-  <div class="col-xs-12">
-    <label for="tags" class="label label-default">Time Grouping</label>
-    <ul class="input-group">
+<div class="row chart-label" ng-if="chart">
+  <div class="col-xs-6">
+    <div>
+      <label class="label label-default">Results</label>
+    </div>
+  </div>
+  <div class="col-xs-6">
+<!--     <label for="tags" class="label label-default">Time Grouping</label> -->
+    <ul class="input-group time-grouping">
         <li>
-          <label for="second" class="label label-default">1 second</label>
+          <label for="second" class="label label-default">Seconds</label>
           <input type="radio" value="second" id="second" ng-model="timegroup"/>
         </li>
         <li>
-          <label for="minute" class="label label-default">1 minute</label>
+          <label for="minute" class="label label-default">Minutes</label>
           <input type="radio" value="minute" id="minute" ng-model="timegroup"/>
         </li>
 <!--
@@ -17,22 +22,22 @@
         </li>
 -->
         <li>
-          <label for="hour" class="label label-default">1 hour</label>
+          <label for="hour" class="label label-default">Hours</label>
           <input type="radio" value="hour" id="hour" ng-model="timegroup"/>
         </li>
         <li>
-          <label for="day" class="label label-default">1 day</label>
+          <label for="day" class="label label-default">Days</label>
           <input type="radio" value="day" id="day" ng-model="timegroup"/>
         </li>
     </ul>
   </div>
 </div>
-
-<div class="chart-label" ng-if="chart" >
-  <label class="label label-default">Results</label>
-</div>
-<div ng-if="chart" class="chart">
-    <highchart id="chart-{{id}}" config="chartConfig"></highchart>
+<div class="row" ng-if="chart">
+  <div class="col-xs-12">
+    <div ng-if="chart" class="chart">
+        <highchart id="chart-{{id}}" config="chartConfig"></highchart>
+    </div>
+  </div>
 </div>
 
 <div class="row" ng-if="chart">
