@@ -97,6 +97,7 @@ angular.module( 'hypeLine.hypeline', [
         runId: run.run_id
       });
     });
+    $scope.getRun(_.last($scope.runs));
   }
 
   function graphRun(run){
@@ -165,6 +166,9 @@ angular.module( 'hypeLine.hypeline', [
   var linkFn = function(scope, elem, attrs){
 
     scope.chart = false;
+    scope.timegroup = 'minute';
+
+    var currentData = [];
 
     scope.chartConfig = {
         series: [],
@@ -173,8 +177,8 @@ angular.module( 'hypeLine.hypeline', [
         },
         loading: true,
         xAxis: {
-          //type: 'datetime',
-          //tickInterval: 24 * 3600 * 1000,
+          type: 'datetime',
+          tickInterval: updateTickInterval(),
           startOnTick: false
         },
         yAxis: {
@@ -199,18 +203,27 @@ angular.module( 'hypeLine.hypeline', [
 
     fetch();
 
+    scope.$watch('timegroup', function(){
+      if(currentData){
+        updateData(currentData);
+        updateTickInterval();
+      } else {
+        fetch();
+      }
+    });
+
     scope.$parent.$watch('runId', function(){
       fetch();
     });
 
     function getBracketedResults(data){
-      var sorted = _.sortBy(data, sortBySentimentScore);
+      var sorted = _.sortBy(data.nugs, sortBySentimentScore);
       scope.bottomTen = sorted.slice(0,10);
-      scope.topTen = sorted.slice((sorted.length - 11), sorted.length - 1);
+      scope.topTen = sorted.slice((sorted.length - 11), sorted.length - 1).reverse();
     }
 
     function sortBySentimentScore(item){
-      return item.y;
+      return item.sentiment;
     }
 
     function getAssociatedData(keywords){
@@ -218,13 +231,13 @@ angular.module( 'hypeLine.hypeline', [
     }
 
     function updateSeries(allSeries){
-
       var min = _.min(allSeries.data, getDate);
       var max = _.max(allSeries.data, getDate);
       scope.chartConfig.series = [allSeries];
-      scope.chartConfig.series[0].name = allSeries.data[0].tag;
-      scope.chartConfig.title.text = "#" + allSeries.data[0].tag + " [ " + moment(min.x).format('M/D/YY') + " - " + moment(min.x).format('M/D/YY') + " ]";
-
+      if(allSeries.data[0]){
+        scope.chartConfig.series[0].name = allSeries.data[0].tag;
+        scope.chartConfig.title.text = "#" + allSeries.data[0].tag + " [ " + currentData.nugs.length + " data points ]";
+      }
       //scope.chartConfig.xAxis.max = new Date(max.x).getTime() + halfDay;
       //scope.chartConfig.xAxis.min = new Date(min.x).getTime() - halfDay;
     }
@@ -241,11 +254,10 @@ angular.module( 'hypeLine.hypeline', [
       scope.chartConfig.loading = false;
       scope.chart = true;
 
-      var groups = _.groupBy(data.nugs, groupByDate);
+      var groups = _.groupBy(data.nugs, groupByTime);
       var points = _.map(groups, averageSentimentScorePerTimestamp);
       var sorted = _.sortBy(points, sortByDate);
-      console.log(sorted);
-      getBracketedResults(points);
+      getBracketedResults(currentData);
       getAssociatedData(data.keywords);
 
       updateSeries({data: sorted});
@@ -259,23 +271,61 @@ angular.module( 'hypeLine.hypeline', [
       return item.date;
     }
 
+    function groupByTime(item){
+      var date = moment(item.date).format('YYYY-MM-DDTHH:mm:SS');
+      var group;
+      if(scope.timegroup === 'tenminute'){
+        group = moment(item.date).minutes(10).seconds(0).milliseconds(0);
+      } else if(timegroup === 'second'){
+        moment(item.date);
+      } else {
+        group = moment(item.date).startOf(scope.timegroup);
+      }
+      //console.log(scope.timegroup, item.date, group.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'), group);
+      item.modifiedDate = group.format('YYYY-MM-DDTHH:mm:ss.SSSSZ');
+      return item.modifiedDate;
+    }
+
+    function updateTickInterval(){
+      var timeGroup = 1000;
+      switch(scope.timegroup){
+        case 'second':
+          timegroup = 1000;
+          break;
+        case 'minute':
+          timegroup = 1000 * 60;
+          break;
+        case 'tenminute':
+          timegroup = 1000 * 60 * 10;
+          break;
+        case 'hour':
+          timegroup = 1000 * 60 * 60;
+          break;
+        case 'day':
+          timegroup = 1000 * 60 * 60 * 24;
+          break;
+        default:
+          timegroup = 1000;
+      }
+      return timegroup;
+    }
+
     function averageSentimentScorePerTimestamp(item){
-      var dataPoint = {};
       var total = 0;
+      //console.log(item, item[0].modifiedDate);
 
       for(var i=0;i<item.length; i++){
         total += item[i].sentiment;
       }
 
       var average = total/item.length;
-      var formatted = item[0].date.split('T')[0];
+      var formatted = item[0].modifiedDate.split('T')[0];
       var date = new Date(formatted).getTime();
-      var label = moment(formatted).utcOffset(0).format('ddd, MMM Do');
+      var label = moment(formatted).format('ddd, MMM Do');
 
       return {
-        x: new Date(item[0].date).getTime(),
+        x: new Date(item[0].modifiedDate).getTime(),
         y: average * 100,
-        name: label,
         tag: item[0].tag,
         raw: item
       };
@@ -287,7 +337,9 @@ angular.module( 'hypeLine.hypeline', [
       .then(
         function(data){
           if(data.data.data.nugs.length > 0){
+            currentData = data.data.data;
             updateData(data.data.data);
+            updateTickInterval();
           } else {
             scope.$parent.noDataError = 'No data present';
           }

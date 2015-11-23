@@ -125,6 +125,36 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("hypeline/chart.tpl.html",
+    "<div class=\"row\">\n" +
+    "  <div class=\"col-xs-12\">\n" +
+    "    <label for=\"tags\" class=\"label label-default\">Time Grouping</label>\n" +
+    "    <ul class=\"input-group\">\n" +
+    "        <li>\n" +
+    "          <label for=\"second\" class=\"label label-default\">1 second</label>\n" +
+    "          <input type=\"radio\" value=\"second\" id=\"second\" ng-model=\"timegroup\"/>\n" +
+    "        </li>\n" +
+    "        <li>\n" +
+    "          <label for=\"minute\" class=\"label label-default\">1 minute</label>\n" +
+    "          <input type=\"radio\" value=\"minute\" id=\"minute\" ng-model=\"timegroup\"/>\n" +
+    "        </li>\n" +
+    "<!--\n" +
+    "        <li>\n" +
+    "          <label for=\"ten-minute\" class=\"label label-default\">10 minutes</label>\n" +
+    "          <input type=\"radio\" value=\"tenminute\" id=\"ten-minute\" ng-model=\"timegroup\"/>\n" +
+    "        </li>\n" +
+    "-->\n" +
+    "        <li>\n" +
+    "          <label for=\"hour\" class=\"label label-default\">1 hour</label>\n" +
+    "          <input type=\"radio\" value=\"hour\" id=\"hour\" ng-model=\"timegroup\"/>\n" +
+    "        </li>\n" +
+    "        <li>\n" +
+    "          <label for=\"day\" class=\"label label-default\">1 day</label>\n" +
+    "          <input type=\"radio\" value=\"day\" id=\"day\" ng-model=\"timegroup\"/>\n" +
+    "        </li>\n" +
+    "    </ul>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "\n" +
     "<div class=\"chart-label\" ng-if=\"chart\" >\n" +
     "  <label class=\"label label-default\">Results</label>\n" +
     "</div>\n" +
@@ -138,9 +168,9 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "    <ul class=\"terms\">\n" +
     "      <li ng-repeat=\"term in topTen\" class=\"term\">\n" +
     "        <ul class=\"details\">\n" +
-    "          <li class=\"detail\"><strong>Origin:</strong><br /> {{term.raw[0].origin}}</li>\n" +
-    "          <li class=\"detail\"><strong>Score:</strong><br /> {{term.raw[0].sentiment}}</li>\n" +
-    "          <li class=\"detail\"><strong>Detail:</strong><br /> {{term.raw[0].text}}</li>\n" +
+    "          <li class=\"detail\"><strong>Origin:</strong><br /> {{term.origin}}</li>\n" +
+    "          <li class=\"detail\"><strong>Score:</strong><br /> {{term.sentiment}}</li>\n" +
+    "          <li class=\"detail\"><strong>Detail:</strong><br /> {{term.text}}</li>\n" +
     "        </ul>\n" +
     "      </li>\n" +
     "    </ul>\n" +
@@ -150,15 +180,15 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "    <ul class=\"terms\">\n" +
     "      <li ng-repeat=\"term in bottomTen\" class=\"term\">\n" +
     "        <ul class=\"details\">\n" +
-    "          <li class=\"detail\"><strong>Origin:</strong><br /> {{term.raw[0].origin}}</li>\n" +
-    "          <li class=\"detail\"><strong>Score:</strong><br /> {{term.raw[0].sentiment}}</li>\n" +
-    "          <li class=\"detail\"><strong>Detail:</strong><br /> {{term.raw[0].text}}</li>\n" +
+    "          <li class=\"detail\"><strong>Origin:</strong><br /> {{term.origin}}</li>\n" +
+    "          <li class=\"detail\"><strong>Score:</strong><br /> {{term.sentiment}}</li>\n" +
+    "          <li class=\"detail\"><strong>Detail:</strong><br /> {{term.text}}</li>\n" +
     "        </ul>\n" +
     "      </li>\n" +
     "    </ul>\n" +
     "  </div>\n" +
     "  <div class=\"col-xs-4 chart-data\">\n" +
-    "    <h4>Associated Datea</h4>\n" +
+    "    <h4>Associated Data</h4>\n" +
     "    <ul class=\"terms\">\n" +
     "      <li ng-repeat=\"keyword in keywords\" class=\"term\">\n" +
     "        <ul class=\"details\">\n" +
