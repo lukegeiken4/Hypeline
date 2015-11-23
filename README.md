@@ -25,6 +25,10 @@ Describe and show how to run the tests with code examples.
 ## Contributors
 
 Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+PAUL
+Paul is making a contribution finally
+It does need to be documented and I hope to make this more of a learning tool by adding the wiki and other information
+about how the node.js app works from a hardware and network perspective
 
 ## License
 
