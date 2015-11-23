@@ -1,26 +1,32 @@
 ## Synopsis
-
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+This is method to infer sentiment from publically available sources of comments
 
 ## Code Example
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+Later
+
+Show what the library does as concisely as possible,
+developers should be able to figure out **how** your project solves their problem by looking at the code example.
+Make sure the API you are showing off is obvious, and that your code is short and concise.
 
 ## Motivation
-
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+This project was created as part of Startup Iowa
+It is inended to be a learning experience in all aspects of getting a business off the ground.
+As time permits I will document the process because in the heat of design the 
+documentation tends to be the last item of significance when a real running app is what is needed.
 
 ## Installation
 
-Provide code examples and explanations of how to get the project.
+This was templated and I will document how that is achieved
 
 ## API Reference
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+Various API's were used like twitter facebook google and others
+This is extrensive
 
 ## Tests
 
-Describe and show how to run the tests with code examples.
+Currently there are Python tests, however I will add tests to understand some of the code limitations and corner cases
 
 ## Contributors
 
@@ -31,9 +37,10 @@ It does need to be documented and I hope to make this more of a learning tool by
 about how the node.js app works from a hardware and network perspective
 
 ## License
+Ther is a License and I will review which best suits this after conferring witrh the main contributors
 
-A short snippet describing the license (MIT, Apache, etc.)
+....A short snippet describing the license (MIT, Apache, etc.)
 =======
 # hypeline
-
+Yes it is Sails
 a [Sails](http://sailsjs.org) application
