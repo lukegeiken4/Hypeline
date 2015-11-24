@@ -74,6 +74,29 @@
   <div class="row chart-container">
     <div class="col-xs-12">
       <div ng-if="noDataError" class="alert alert-info"></div>
+      <ul class="input-group time-grouping">
+          <li>
+            <label for="second" class="label label-default">Seconds</label>
+            <input type="radio" value="second" id="second" ng-model="timegroup"/>
+          </li>
+          <li>
+            <label for="minute" class="label label-default">Minutes</label>
+            <input type="radio" value="minute" id="minute" ng-model="timegroup"/>
+          </li>
+            <li>
+            <label for="ten-minute" class="label label-default">10 minutes</label>
+            <input type="radio" value="tenminute" id="ten-minute" ng-model="timegroup"/>
+          </li>
+
+          <li>
+            <label for="hour" class="label label-default">Hours</label>
+            <input type="radio" value="hour" id="hour" ng-model="timegroup"/>
+          </li>
+          <li>
+            <label for="day" class="label label-default">Days</label>
+            <input type="radio" value="day" id="day" ng-model="timegroup"/>
+          </li>
+      </ul>
       <results-chart ng-if="!noDataError" type="chart" name="results" runId="{{runId}}"></results-chart>
     </div>
   </div>

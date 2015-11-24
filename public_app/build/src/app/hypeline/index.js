@@ -24,6 +24,8 @@ angular.module( 'hypeLine.hypeline', [
     $scope.datesUpdated = moment().format('x');
   };
 
+  $scope.timegroup = 'minute';
+
   $scope.defaultDates();
   $scope.format = 'yyyy-MM-dd';
   $scope.maxDate = new Date();
@@ -203,8 +205,8 @@ angular.module( 'hypeLine.hypeline', [
 
     fetch();
 
-    scope.$watch('timegroup', function(){
-      if(currentData){
+    scope.$parent.$watch('timegroup', function(){
+        if(currentData){
         updateData(currentData);
         updateTickInterval();
       } else {
@@ -238,8 +240,8 @@ angular.module( 'hypeLine.hypeline', [
         scope.chartConfig.series[0].name = allSeries.data[0].tag;
         scope.chartConfig.title.text = "#" + allSeries.data[0].tag + " [ " + currentData.nugs.length + " data points ]";
       }
-      //scope.chartConfig.xAxis.max = new Date(max.x).getTime() + halfDay;
-      //scope.chartConfig.xAxis.min = new Date(min.x).getTime() - halfDay;
+      scope.chartConfig.yAxis.max = 100;
+      scope.chartConfig.yAxis.min = 0;
     }
 
     function getDate(item){
@@ -274,14 +276,14 @@ angular.module( 'hypeLine.hypeline', [
     function groupByTime(item){
       var date = moment(item.date).format('YYYY-MM-DDTHH:mm:SS');
       var group;
-      if(scope.timegroup === 'tenminute'){
+      if(scope.$parent.timegroup === 'tenminute'){
         group = moment(item.date).minutes(10).seconds(0).milliseconds(0);
-      } else if(timegroup === 'second'){
-        moment(item.date);
+      } else if(scope.$parent.timegroup === 'second'){
+        group = moment(item.date);
       } else {
-        group = moment(item.date).startOf(scope.timegroup);
+        group = moment(item.date).startOf(scope.$parent.timegroup);
       }
-      //console.log(scope.timegroup, item.date, group.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'), group);
+      //console.log(scope.$parent.timegroup, item.date, group.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'), group);
       item.modifiedDate = group.format('YYYY-MM-DDTHH:mm:ss.SSSSZ');
       return item.modifiedDate;
     }
