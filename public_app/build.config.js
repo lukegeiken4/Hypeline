@@ -78,6 +78,13 @@ module.exports = {
     css: [
     ],
     assets: [
+
+    ],
+    fonts: [
+      'src/app/fonts/glyphicons-halflings-regular.eot',
+      'src/app/fonts/glyphicons-halflings-regular.svg',
+      'src/app/fonts/glyphicons-halflings-regular.ttf',
+      'src/app/fonts/glyphicons-halflings-regular.woff'
     ]
   },
 };

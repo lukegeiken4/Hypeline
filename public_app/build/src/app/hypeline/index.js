@@ -171,6 +171,7 @@ angular.module( 'hypeLine.hypeline', [
 
     scope.chart = false;
     scope.timegroup = 'minute';
+    scope.limitDate = false;
 
     var currentData = [];
 
@@ -182,8 +183,7 @@ angular.module( 'hypeLine.hypeline', [
         loading: true,
         xAxis: {
           type: 'datetime',
-          tickInterval: updateTickInterval(),
-          startOnTick: false
+          tickInterval: updateTickInterval()
         },
         yAxis: {
           labels: {
@@ -197,7 +197,16 @@ angular.module( 'hypeLine.hypeline', [
           plotOptions: {
             column: {
               stacking: 'normal'
+            },
+            series: {
+              cursor: 'pointer',
+              point: {
+                events: {
+                  click: pointClicked
+                }
+              }
             }
+
           },
           tooltip: {
             shared: true
@@ -207,18 +216,30 @@ angular.module( 'hypeLine.hypeline', [
 
     fetch();
 
-    scope.$parent.$watch('timegroup', function(){
-        if(currentData){
+    scope.$watch('timegroup', function(val){
+      optionsUpdated();
+    });
+
+    scope.$watch('limitDate', function(){
+      optionsUpdated();
+    });
+
+    function optionsUpdated(){
+      if(currentData){
         updateData(currentData);
         updateTickInterval();
       } else {
         fetch();
       }
-    });
+    }
 
     scope.$parent.$watch('runId', function(){
       fetch();
     });
+
+    function pointClicked(event){
+      console.log(this);
+    }
 
     function getBracketedResults(data){
       var sorted = _.sortBy(data.nugs, sortBySentimentScore);
@@ -278,19 +299,19 @@ angular.module( 'hypeLine.hypeline', [
     function groupByTime(item){
       var date = moment(item.date).format('YYYY-MM-DDTHH:mm:SS');
       var group;
-      if(scope.$parent.timegroup === 'tenminute'){
+      if(scope.timegroup === 'tenminute'){
         group = moment(item.date).minutes(10).seconds(0).milliseconds(0);
-      } else if(scope.$parent.timegroup === 'second'){
+      } else if(scope.timegroup === 'second'){
         group = moment(item.date);
       } else {
-        group = moment(item.date).startOf(scope.$parent.timegroup);
+        group = moment(item.date).startOf(scope.timegroup);
       }
       //console.log(scope.$parent.timegroup, item.date, group.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'), group);
       item.modifiedDate = group.format('YYYY-MM-DDTHH:mm:ss.SSSSZ');
       return item.modifiedDate;
     }
 
-    function updateTickInterval(){
+    function getTickInterval(){
       var timeGroup = 1000;
       switch(scope.timegroup){
         case 'second':
@@ -311,7 +332,15 @@ angular.module( 'hypeLine.hypeline', [
         default:
           timegroup = 1000;
       }
+
       return timegroup;
+    }
+
+    function updateTickInterval(){
+      var tickInterval = getTickInterval();
+      if(scope.chartConfig){
+        scope.chartConfig.xAxis.tickInterval = tickInterval;
+      }
     }
 
     function averageSentimentScorePerTimestamp(item){

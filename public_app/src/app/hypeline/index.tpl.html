@@ -2,24 +2,6 @@
   <div class="row">
       <div class="col-xs-8">
         <ng-form novalidate role="form" name="entryPoint">
-            <div class="col-xs-12 col-sm-6">
-                <label for="startDate" class="label label-default">Start Date</label>
-                <p class="input-group">
-                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startDate" is-open="status.opened" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" show-weeks="false" close-text="Close" close-on-date-selection="false" show-button-bar="false" ng-click="open($event)" id="startDate" required />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
-                    </span>
-                <p>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-                <label for="endDate" class="label label-default">End Date</label>
-                <p class="input-group">
-                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="endDate" is-open="status.opened" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" show-weeks="false" close-text="Close" close-on-date-selection="false" show-button-bar="false" ng-click="open($event)" id="endDate" required />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
-                    </span>
-                <p>
-            </div>
             <div class="col-xs-12">
                 <label for="tags" class="label label-default">Tag</label>
                 <p class="input-group">
@@ -72,31 +54,28 @@
       </div>
   </div>
   <div class="row chart-container">
+    <div ng-if="limitDate">
+      <div class="col-xs-12 col-sm-6">
+          <label for="startDate" class="label label-default">Start Date</label>
+          <p class="input-group">
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startDate" is-open="status.opened" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" show-weeks="false" close-text="Close" close-on-date-selection="false" show-button-bar="false" ng-click="open($event)" id="startDate" required />
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+              </span>
+          <p>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+          <label for="endDate" class="label label-default">End Date</label>
+          <p class="input-group">
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="endDate" is-open="status.opened" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" show-weeks="false" close-text="Close" close-on-date-selection="false" show-button-bar="false" ng-click="open($event)" id="endDate" required />
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+              </span>
+          <p>
+      </div>
+    </div>
     <div class="col-xs-12">
       <div ng-if="noDataError" class="alert alert-info"></div>
-      <ul class="input-group time-grouping">
-          <li>
-            <label for="second" class="label label-default">Seconds</label>
-            <input type="radio" value="second" id="second" ng-model="timegroup"/>
-          </li>
-          <li>
-            <label for="minute" class="label label-default">Minutes</label>
-            <input type="radio" value="minute" id="minute" ng-model="timegroup"/>
-          </li>
-            <li>
-            <label for="ten-minute" class="label label-default">10 minutes</label>
-            <input type="radio" value="tenminute" id="ten-minute" ng-model="timegroup"/>
-          </li>
-
-          <li>
-            <label for="hour" class="label label-default">Hours</label>
-            <input type="radio" value="hour" id="hour" ng-model="timegroup"/>
-          </li>
-          <li>
-            <label for="day" class="label label-default">Days</label>
-            <input type="radio" value="day" id="day" ng-model="timegroup"/>
-          </li>
-      </ul>
       <results-chart ng-if="!noDataError" type="chart" name="results" runId="{{runId}}"></results-chart>
     </div>
   </div>
