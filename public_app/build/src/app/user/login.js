@@ -17,12 +17,15 @@ angular.module( 'hypeLine.userLogin', [
 
 .controller( 'UserLoginCtrl', function LoginController( $scope, $http, Config, $location, AuthService ) {
 
-    $scope.user = {};
+    $scope.user2 = {
+      userName: 'jeff.shinrock@gmail.com',
+      password: 'Mav*ncat12'
+    };
 
     $scope.login = function(){
       $scope.loading = true;
       console.log('login');
-      $http.post(Config.appRoot + '/user/login', $scope.user)
+      $http.post(Config.appRoot + '/user/login', $scope.user2)
       .then(
           function(data){
               console.log('success', data);

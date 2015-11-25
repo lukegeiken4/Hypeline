@@ -5,6 +5,11 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+var crypto = require("cryptojs").Crypto;
+//var crypto = require('crypto');
+var node_cryptojs = require('node-cryptojs-aes');
+var CryptoJS = node_cryptojs.CryptoJS;
+var JsonFormatter = node_cryptojs.JsonFormatter;
 var stormpath = require('stormpath');
 
 module.exports = {
@@ -69,6 +74,7 @@ module.exports = {
 
     var client = this.getAuthApp()
     var data = req.body;
+    var formatter = this.formatter();
 
     var authRequest = {
       username: data.userName,
@@ -88,7 +94,23 @@ module.exports = {
               console.log(err);
               res.send(401, {error: err.userMessage});
             } else {
-              res.send(200, {account: account});
+              if(account.status === "ENABLED"){
+                var user = {
+                  username: account.username,
+                  status: account.status,
+                  timestamp: new Date().getTime(),
+                  href: account.href
+                }
+                var key = sails.config.crypto['CRYPTO_KEY'];
+                var obj = {};
+
+                var encrypted = CryptoJS.AES.encrypt(JSON.stringify(user), key, { format: JsonFormatter });
+                var encrypted_json_str = encrypted.toString();
+
+                res.send(200, {account: encrypted_json_str});
+              } else {
+                res.send(401, {error: 'User account disabled'});
+              }
             }
           });
         }
@@ -134,6 +156,49 @@ module.exports = {
 
   setAuth: function(account){
 
+  },
+
+  formatter: function(){
+    return {
+        stringify: function (cipherParams) {
+            console.log(cipherParams);
+            // create json object with ciphertext
+            var jsonObj = {
+                ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64)
+            };
+
+            // optionally add iv and salt
+            if (cipherParams.iv) {
+                jsonObj.iv = cipherParams.iv.toString();
+            }
+            if (cipherParams.salt) {
+                jsonObj.s = cipherParams.salt.toString();
+            }
+
+            // stringify json object
+            return JSON.stringify(jsonObj);
+        },
+
+        parse: function (jsonStr) {
+            // parse json string
+            var jsonObj = JSON.parse(jsonStr);
+
+            // extract ciphertext from json object, and create cipher params object
+            var cipherParams = CryptoJS.lib.CipherParams.create({
+                ciphertext: CryptoJS.enc.Base64.parse(jsonObj.ct)
+            });
+
+            // optionally extract iv and salt
+            if (jsonObj.iv) {
+                cipherParams.iv = CryptoJS.enc.Hex.parse(jsonObj.iv)
+            }
+            if (jsonObj.s) {
+                cipherParams.salt = CryptoJS.enc.Hex.parse(jsonObj.s)
+            }
+
+            return cipherParams;
+        }
+    };
   }
 
 

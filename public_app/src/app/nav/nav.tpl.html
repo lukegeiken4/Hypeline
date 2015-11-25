@@ -1,0 +1,39 @@
+<div class="navbar navbar-default">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" ng-init="menuCollapsed = true"
+      ng-click="menuCollapsed = ! menuCollapsed">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <div class="navbar-brand clearfix">
+        <p>
+          <a href="/"><img src="/assets/imgs/hypeline_logo_small.png" /></a>
+        </p>
+    </div>
+    <div class="navbar-info clearfix">
+      <ul class="list-inline">
+        <li>
+          <a href="#/about">Info</a>
+        </li>
+        <li>
+          <a href="#/about#pricing">Pricing</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div ng-if="user" class="nav navbar-nav navbar-right">
+    <p>
+      <a href="#/app" class="btn btn-success">App</a>
+      <a href="#/app" ng-click="logout()" href="#/user/logout" class="btn">Logout</a>
+    </p>
+  </div>
+  <div ng-if="!user" class="nav navbar-nav navbar-right">
+    <p>
+      <a href="#/user/create" class="btn btn-primary">Sign Up</a>
+      <a href="#/user/login" class="btn">Log In</a>
+    </p>
+  </div>
+  <div class="collapse navbar-collapse" collapse="menuCollapsed"></div>
+</div>

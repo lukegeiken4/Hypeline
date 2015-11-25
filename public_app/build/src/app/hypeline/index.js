@@ -33,13 +33,15 @@ angular.module( 'hypeLine.hypeline', [
 
   var setUser = function(){
     $scope.user = AuthService.get();
+    if($scope.user){
+      getUserRuns();
+    }
   };
 
   if($scope.user){
     getUserRuns();
   } else {
     setUser();
-    getUserRuns();
   }
 
   $rootScope.$on("user:updated",setUser);

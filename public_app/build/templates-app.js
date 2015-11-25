@@ -1,4 +1,4 @@
-angular.module('templates-app', ['about/about.tpl.html', 'home/home.tpl.html', 'hypeline/chart.tpl.html', 'hypeline/index.tpl.html', 'hypeline/results.tpl.html', 'user/create.tpl.html', 'user/login.tpl.html']);
+angular.module('templates-app', ['about/about.tpl.html', 'home/home.tpl.html', 'hypeline/chart.tpl.html', 'hypeline/index.tpl.html', 'nav/nav.tpl.html', 'user/create.tpl.html', 'user/login.tpl.html']);
 
 angular.module("about/about.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("about/about.tpl.html",
@@ -292,13 +292,46 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "");
 }]);
 
-angular.module("hypeline/results.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("hypeline/results.tpl.html",
-    "<div class=\"row\">\n" +
-    "  <div class=\"col-xs-12\">\n" +
-    "    <h1>Results</h1>\n" +
-    "    <results-chart type=\"chart\" name=\"results\" runId=\"{{runId}}\"></results-chart>\n" +
+angular.module("nav/nav.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("nav/nav.tpl.html",
+    "<div class=\"navbar navbar-default\">\n" +
+    "  <div class=\"navbar-header\">\n" +
+    "    <button type=\"button\" class=\"navbar-toggle\" ng-init=\"menuCollapsed = true\"\n" +
+    "      ng-click=\"menuCollapsed = ! menuCollapsed\">\n" +
+    "      <span class=\"sr-only\">Toggle navigation</span>\n" +
+    "      <span class=\"icon-bar\"></span>\n" +
+    "      <span class=\"icon-bar\"></span>\n" +
+    "      <span class=\"icon-bar\"></span>\n" +
+    "    </button>\n" +
+    "    <div class=\"navbar-brand clearfix\">\n" +
+    "        <p>\n" +
+    "          <a href=\"/\"><img src=\"/assets/imgs/hypeline_logo_small.png\" /></a>\n" +
+    "        </p>\n" +
+    "    </div>\n" +
+    "    <div class=\"navbar-info clearfix\">\n" +
+    "      <ul class=\"list-inline\">\n" +
+    "        <li>\n" +
+    "          <a href=\"#/about\">Info</a>\n" +
+    "        </li>\n" +
+    "        <li>\n" +
+    "          <a href=\"#/about#pricing\">Pricing</a>\n" +
+    "        </li>\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
     "  </div>\n" +
+    "  <div ng-if=\"user\" class=\"nav navbar-nav navbar-right\">\n" +
+    "    <p>\n" +
+    "      <a href=\"#/app\" class=\"btn btn-success\">App</a>\n" +
+    "      <a href=\"#/app\" ng-click=\"logout()\" href=\"#/user/logout\" class=\"btn\">Logout</a>\n" +
+    "    </p>\n" +
+    "  </div>\n" +
+    "  <div ng-if=\"!user\" class=\"nav navbar-nav navbar-right\">\n" +
+    "    <p>\n" +
+    "      <a href=\"#/user/create\" class=\"btn btn-primary\">Sign Up</a>\n" +
+    "      <a href=\"#/user/login\" class=\"btn\">Log In</a>\n" +
+    "    </p>\n" +
+    "  </div>\n" +
+    "  <div class=\"collapse navbar-collapse\" collapse=\"menuCollapsed\"></div>\n" +
     "</div>\n" +
     "");
 }]);
@@ -356,21 +389,21 @@ angular.module("user/login.tpl.html", []).run(["$templateCache", function($templ
     "    <div ng-if=\"error\" class=\"alert alert-danger\">{{error}}</div>\n" +
     "    <form role=\"form\" ng-submit=\"login()\">\n" +
     "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
-    "                <label for=\"userName\">User Name</label>\n" +
+    "            <div class=\"col-xs-12 col-sm-6 col-sm-offset-3 form-group\">\n" +
+    "                <label for=\"userName\">Email</label>\n" +
     "                <input type=\"text\" class=\"form-control\" id=\"userName\" ng-model=\"user.userName\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
+    "            <div class=\"col-xs-12 col-sm-6 col-sm-offset-3 form-group\">\n" +
     "                <label for=\"password\">Password</label>\n" +
     "                <input type=\"password\" class=\"form-control\" id=\"password\" ng-model=\"user.password\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-12\">\n" +
+    "            <div class=\"col-xs-12 col-sm-6 col-sm-offset-3 form-group\">\n" +
     "                <input ng-if=\"!loading\" class=\"btn btn-primary\" type=\"submit\" value=\"Login\" id=\"login\" ng-diabled=\"!loading\"></input>\n" +
     "                <p ng-if=\"loading\">Loading...</p>\n" +
     "            </div>\n" +

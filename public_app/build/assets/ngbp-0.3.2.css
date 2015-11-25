@@ -5832,41 +5832,6 @@ h2 {
   border-color: #3c4fa2;
 }
 /**
- * Navigation
- */
-.navbar {
-  margin-top: 20px;
-}
-.navbar.navbar-default {
-  background-color: transparent;
-  border-bottom: 1px solid #3c4fa2;
-  border-radius: 0;
-  border-width: 0 0 1px 0;
-  height: 75px;
-}
-.navbar .navbar-right .btn {
-  margin-top: 15px;
-  margin-right: 2rem;
-}
-.navbar .navbar-right .btn:last-of-type {
-  margin-right: 0;
-}
-.navbar .links {
-  margin-left: 50px;
-}
-.navbar .links a {
-  margin-right: 5rem;
-}
-.navbar .links a:last-of-type {
-  margin-right: 0;
-}
-.navbar small {
-  font-size: 60%;
-}
-.navbar .logo img {
-  width: 120px;
-}
-/**
  * Footer
  */
 .footer {
@@ -6041,4 +6006,53 @@ ul.time-grouping lilast-of-type {
 #pricing-anchor {
   text-decoration: none;
   color: #3c4fa2;
+}
+.navbar {
+  margin-top: 20px;
+}
+.navbar.navbar-default {
+  background-color: transparent;
+  border-bottom: 1px solid #3c4fa2;
+  border-radius: 0;
+  border-width: 0 0 1px 0;
+}
+.navbar .navbar-right p {
+  margin: 0;
+}
+.navbar .navbar-right .btn {
+  margin-right: 2rem;
+}
+.navbar .navbar-right .btn:last-of-type {
+  margin-right: 0;
+}
+.navbar .navbar-info {
+  float: left;
+  margin-left: 30px;
+}
+.navbar .navbar-info ul {
+  padding: 0;
+  margin: 0;
+}
+.navbar .navbar-info ul li {
+  list-style-type: none;
+  padding: 10px;
+}
+.navbar .navbar-brand {
+  float: left;
+  padding: 0;
+}
+.navbar .navbar-brand img {
+  width: 120px;
+}
+.navbar .navbar-brand a {
+  display: block;
+}
+.navbar .links a {
+  margin-right: 5rem;
+}
+.navbar .links a:last-of-type {
+  margin-right: 0;
+}
+.navbar small {
+  font-size: 60%;
 }

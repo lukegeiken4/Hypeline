@@ -67,7 +67,13 @@ module.exports = {
       'vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
       'vendor/angular-ui-router/release/angular-ui-router.js',
       'vendor/angular-ui-utils/modules/route/route.js',
-      'vendor/highcharts-ng/dist/highcharts-ng.js'
+      'vendor/highcharts-ng/dist/highcharts-ng.js',
+      'vendor/angular-cryptography/mdo-angular-cryptography.js',
+      'vendor/cryptolib/aes.js',
+      'vendor/highcharts/highcharts-standalone-framework.js',
+      'vendor/highcharts/highcharts.js',
+      'vendor/moment/moment.min.js',
+      'vendor/underscore/underscore.min.js'
     ],
     css: [
     ],

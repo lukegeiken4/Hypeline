@@ -1,0 +1,59 @@
+.navbar {
+  margin-top: 20px;
+
+  &.navbar-default{
+    background-color: transparent;
+    border-bottom: 1px solid @primary-color;
+    border-radius: 0;
+    border-width: 0 0 1px 0;
+  }
+
+  .navbar-right{
+    p{
+      margin: 0;
+    }
+    .btn{
+      margin-right: 2rem;
+      &:last-of-type{
+        margin-right: 0;
+      }
+    }
+  }
+
+  .navbar-info{
+    float: left;
+    margin-left: 30px;
+    ul{
+      padding: 0;
+      margin: 0;
+      li{
+        list-style-type: none;
+        padding: 10px;
+      }
+    }
+  }
+
+  .navbar-brand{
+    float: left;
+    padding: 0;
+    img{
+      width: 120px;
+    }
+    a{
+      display: block;
+    }
+  }
+
+  .links{
+    a{
+      margin-right: 5rem;
+      &:last-of-type{
+        margin-right: 0;
+      }
+    }
+  }
+
+  small {
+    font-size: 60%;
+  }
+}
