@@ -391,9 +391,12 @@ angular.module("user/create.tpl.html", []).run(["$templateCache", function($temp
 angular.module("user/login.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("user/login.tpl.html",
     "<div class=\"container\">\n" +
-    "    <div ng-if=\"error\" class=\"alert alert-danger\">{{error}}</div>\n" +
     "    <form role=\"form\" ng-submit=\"login()\">\n" +
     "        <div class=\"row\">\n" +
+    "          <div class=\"col-xs-12 col-sm-6 col-sm-offset-3 form-group\">\n" +
+    "                <div ng-if=\"error\" class=\"alert alert-danger\">{{error}}</div>\n" +
+    "                <div ng-if=\"messages\" class=\"alert alert-info\" ng-bind-html=\"messages\"></div>\n" +
+    "          </div>\n" +
     "            <div class=\"col-xs-12 col-sm-6 col-sm-offset-3 form-group\">\n" +
     "                <label for=\"userName\">Email</label>\n" +
     "                <input type=\"text\" class=\"form-control\" id=\"userName\" ng-model=\"user.userName\" />\n" +

@@ -39,6 +39,8 @@ angular.module( 'hypeLine.hypeline', [
     $scope.user = AuthService.get();
     if($scope.user){
       getUserRuns();
+    } else {
+      AuthService.eject();
     }
   };
 
@@ -92,6 +94,7 @@ angular.module( 'hypeLine.hypeline', [
       },
       function(data){
         console.log('error fetching runs', data.data);
+        AuthService.handle(data.data);
       }
     );
   }
@@ -183,32 +186,34 @@ angular.module( 'hypeLine.hypeline', [
     }
 
     function go(){
-      $scope.loading = true;
-      var platforms = getPlatforms();
-      var params = {
-        origin: platforms,
-        user_id: $scope.user.userId,
-        keyword: $scope.tag,
-        start_date: $scope.startDate,
-        end_date: $scope.endDate,
-        auth_string: $scope.user.authString
-      };
-      var url = Config.appRoot + '/analyze';
-      $http.post(url, params)
-      .then(
-        function(data){
-          getUserRuns();
-        },
-        function(data){
-          console.log('error', data);
-          if(data.data.error){
-            $scope.inputError = data.data.error;
+      if($scope.user){
+        $scope.loading = true;
+        var platforms = getPlatforms();
+        var params = {
+          origin: platforms,
+          user_id: $scope.user.userId,
+          keyword: $scope.tag,
+          start_date: $scope.startDate,
+          end_date: $scope.endDate,
+          auth_string: $scope.user.authString
+        };
+        var url = Config.appRoot + '/analyze';
+        $http.post(url, params)
+        .then(
+          function(data){
+            getUserRuns();
+          },
+          function(data){
+            console.log('error', data);
+            if(data.data.error){
+              $scope.inputError = data.data.error;
+            }
+            if(data.data.errors){
+              $scope.inputError = data.data.errors.join('<br />');
+            }
           }
-          if(data.data.errors){
-            $scope.inputError = data.data.errors.join('<br />');
-          }
-        }
-      );
+        );
+      }
     }
   };
 
@@ -416,26 +421,28 @@ angular.module( 'hypeLine.hypeline', [
     }
 
     function fetch(){
-      var params = {
-        run_id: scope.runid,
-        auth_string: scope.$parent.user.authString
-      };
-      $http.post(Config.appRoot + '/search', params)
-      .then(
-        function(data){
-          if(data.data.data.nugs.length > 0){
-            currentData = data.data.data;
-            updateData(data.data.data);
-            updateTickInterval();
-          } else {
-            scope.$parent.noDataError = 'No data present';
+      if(scope.$parent.user){
+        var params = {
+          run_id: scope.runid,
+          auth_string: scope.$parent.user.authString
+        };
+        $http.post(Config.appRoot + '/search', params)
+        .then(
+          function(data){
+            if(data.data.data.nugs.length > 0){
+              currentData = data.data.data;
+              updateData(data.data.data);
+              updateTickInterval();
+            } else {
+              scope.$parent.noDataError = 'No data present';
+            }
+          },
+          function(data){
+            $log.error('Error fetching', data);
+            scope.chartConfig.loading = "Error fetching data";
           }
-        },
-        function(data){
-          $log.error('Error fetching', data);
-          scope.chartConfig.loading = "Error fetching data";
-        }
-      );
+        );
+      }
     }
 
   };

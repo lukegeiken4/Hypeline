@@ -33,11 +33,48 @@ angular.module( 'ngBoilerplate', [
     };
 })
 
-.factory( 'AuthService', function AuthFactory($rootScope, $location, Config, $crypto){
+.factory( 'Messages', function MessageFactory(){
+
   var data = {},
-      set = function(user){
+      set = function(area, message){
+        if(!data.area){
+          data.area = [];
+        }
+        if(!_.contains(data.area, message)){
+          data.area.push(message);
+        }
+      },
+      get = function(area){
+        if(!data.area){
+          return null;
+        } else if(data.area.length === 0){
+            return null;
+        } else {
+          return data.area;
+        }
+      },
+      clear = function(area){
+        if(data.area){
+          data.area = [];
+        }
+      };
+
+    return {
+      set: set,
+      get: get,
+      clear: clear
+    };
+
+})
+
+.factory( 'AuthService', function AuthFactory($rootScope, $location, Config, $crypto, Messages){
+  var data = {},
+      set = function(user, redirect){
         window.localStorage.setItem('user', user);
         $rootScope.$broadcast('user:updated');
+        if(redirect){
+          $location.path('app');
+        }
       },
       formatter = {
         stringify: function (cipherParams) {
@@ -89,19 +126,38 @@ angular.module( 'ngBoilerplate', [
           return false;
         }
       },
-      logout = function(){
+      logout = function(redirect){
         if(window.localStorage.getItem('user')){
           window.localStorage.removeItem('user');
+          if(redirect){
+            $location.path('/');
+          } else {
+            $rootScope.$broadcast('user:updated');
+          }
         }
-        $rootScope.$broadcast('user:updated');
-        $location.path('/');
+      },
+      handle = function(data){
+        Messages.set('login', data.message);
+        if(data.type === 'eject'){
+          this.logout(false);
+          $location.path('/user/login');
+        }
+      },
+      eject = function(){
+        var data = {
+          message: "You must be logged in to perform this action.",
+          type: 'eject'
+        };
+        this.handle(data);
       };
 
   return {
     set: set,
     get: get,
     isLoggedIn: isLoggedIn,
-    logout: logout
+    logout: logout,
+    handle: handle,
+    eject: eject
   };
 
 })

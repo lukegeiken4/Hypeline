@@ -4,14 +4,13 @@ angular.module('hypeLine.menu', [])
 
   $rootScope.$on('user:updated', function(event, obj) {
     $scope.user = AuthService.get();
-    console.log($scope.user);
   });
-
 
   $scope.user = AuthService.get();
 
   $scope.logout = function(){
-    AuthService.logout();
+    AuthService.logout(true);
+    $scope.user = null;
   };
 
 

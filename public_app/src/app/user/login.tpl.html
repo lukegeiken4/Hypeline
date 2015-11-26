@@ -1,7 +1,10 @@
 <div class="container">
-    <div ng-if="error" class="alert alert-danger">{{error}}</div>
     <form role="form" ng-submit="login()">
         <div class="row">
+          <div class="col-xs-12 col-sm-6 col-sm-offset-3 form-group">
+                <div ng-if="error" class="alert alert-danger">{{error}}</div>
+                <div ng-if="messages" class="alert alert-info" ng-bind-html="messages"></div>
+          </div>
             <div class="col-xs-12 col-sm-6 col-sm-offset-3 form-group">
                 <label for="userName">Email</label>
                 <input type="text" class="form-control" id="userName" ng-model="user.userName" />

@@ -15,23 +15,22 @@ angular.module( 'hypeLine.userLogin', [
   });
 })
 
-.controller( 'UserLoginCtrl', function LoginController( $scope, $http, Config, $location, AuthService ) {
+.controller( 'UserLoginCtrl', function LoginController( $scope, $http, Config, $location, AuthService, Messages, $sanitize ) {
 
-    $scope.user2 = {
-      userName: 'jeff.shinrock@gmail.com',
-      password: 'Mav*ncat12'
-    };
+    var messages = Messages.get('login');
+    if(messages){
+      $scope.messages = messages.join('<br />');
+      Messages.clear('login');
+    }
 
     $scope.login = function(){
       $scope.loading = true;
-      console.log('login');
-      $http.post(Config.appRoot + '/user/login', $scope.user2)
+      $http.post(Config.appRoot + '/user/login', $scope.user)
       .then(
           function(data){
               console.log('success', data);
-              AuthService.set(data.data.account);
+              AuthService.set(data.data.account, true);
               $scope.loading = false;
-              $location.path('app');
           },
           function(data){
               console.log('failure', data);

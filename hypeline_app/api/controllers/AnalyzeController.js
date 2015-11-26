@@ -59,8 +59,7 @@ module.exports = {
           var p_stack = [];
           for (i=0;i<origins.length;i++){
               var origin = origins[i];
-  /*
-              switch(origin){
+                switch(origin){
                   case "twitter":
                       p_stack.push(sails.controllers.twitter.get_raw_nugs(keyword,until,run_id));
                       break;
@@ -80,7 +79,7 @@ module.exports = {
                       response.error = "No module for "+origin;
                       break;
               }
-  */
+
 
           }
 

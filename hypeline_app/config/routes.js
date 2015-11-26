@@ -50,7 +50,8 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  'get /test': 'Hype_nugController.testPush',
+  'GET /test': 'Hype_nugController.testPush',
+  'POST /twitter_test': 'TwitterController.testTwitter',
 
   'POST /analyze':"AnalyzeController.get_nugs",
   'POST /search':"AnalyzeController.find_run",

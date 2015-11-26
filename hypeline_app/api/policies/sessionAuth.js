@@ -18,7 +18,7 @@ module.exports = function(req, res, next) {
   // or if this is the last policy, the controller
 
   if(!req.body.auth_string){
-    returnForbidden();
+    noUser();
   } else {
     var key = sails.config.crypto['CRYPTO_KEY'];
     var decrypted = CryptoJS.AES.decrypt(req.body.auth_string.toString(), key, { format: JsonFormatter });
@@ -50,16 +50,16 @@ module.exports = function(req, res, next) {
   }
 
   function userDisabled(){
-    return res.forbidden('User is disabled. Please contact us.');
+    return res.send(403, {message: 'User is disabled. Please contact us.', type: 'eject'});
   }
 
   function noUser(){
-    return res.forbidden('No valid user.');
+    return res.send(403, {message: 'You must be logged in to preform this action.', type: 'eject'});
   }
 
   // User is not allowed
   // (default res.forbidden() behavior can be overridden in `config/403.js`)
   function returnForbidden(){
-    return res.forbidden('You are not permitted to perform this action.');
+    return res.send(403, {message: 'You are not permitted to perform this action.'});
   }
 };

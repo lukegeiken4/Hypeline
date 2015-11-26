@@ -11,12 +11,26 @@ var search_base = "https://api.twitter.com/1.1/search/tweets.json";
 module.exports = {
     pages:0,
 
+    testTwitter: function(req, res){
+
+      var run = [];
+
+      if(!req.body.keyword){
+        res.send(500, "Must provide keyword");
+      } else {
+        run.push(sails.controllers.twitter.get_raw_nugs(req.body.keyword,"",1));
+        Promise.all(run).then(function(){
+          res.send(200, {results: data});
+        });
+      }
+    },
+
     get_raw_nugs: function(keyword,until,run_id){
         var self = this;
 
         self.getToken(function(e,access_token,refresh_token,results){
             var options = {
-                url:search_base+"?q=%23"+keyword+"&until="+until+"&count=100",
+                url:search_base+"?q=%23"+keyword+"&until="+until+"&result_type=recent&count=100",
                 headers:{
                     "Authorization":"Bearer "+access_token
                 }
@@ -43,10 +57,10 @@ module.exports = {
 
                 self.parseResults(parsed,raw_data,keyword,run_id);
 
-                    if (parsed.length < 1){
-                        resolve(null);
-                        return;
-                    }
+                if (parsed.length === 0){
+                    resolve(null);
+                    return;
+                }
 
                 SentiAnal.analPush({data:parsed}, function(result){
                     if(result) {
@@ -77,6 +91,8 @@ module.exports = {
 
     parseResults: function(parsed,raw,keyword,run_id){
         for (i=0;i<raw.length;i++){
+          // limiting results to english and no-retweeted for now
+          if(raw[i].lang === "en" && !raw[i].retweeted_status){
             var obj = {};
             obj.tag = keyword;
             obj.origin = "twitter";
@@ -88,10 +104,9 @@ module.exports = {
             obj.related_tags = "";
             obj.keywords = "";
             obj.origin_id = raw[i].id_str;
-
             parsed.push(obj);
+          }
         }
-
     },
 
     getOAuth2: function(){
