@@ -213,6 +213,7 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "                <p class=\"input-group\">\n" +
     "                    <input class=\"form-control\" type=\"text\" ng-model=\"tag\" required />\n" +
     "                </p>\n" +
+    "                <p ng-if=\"inputError\" class=\"alert alert-danger\" ng-bind-html=\"inputError\"></p>\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-12\">\n" +
     "                <label for=\"endDate\" class=\"label label-default\">Platforms</label>\n" +

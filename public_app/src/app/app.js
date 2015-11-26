@@ -3,6 +3,7 @@ angular.module( 'ngBoilerplate', [
   'templates-common',
   'ngBoilerplate.home',
   'ngBoilerplate.about',
+  'ngSanitize',
   'hypeLine.userCreate',
   'hypeLine.userLogin',
   'hypeLine.hypeline',
@@ -69,12 +70,12 @@ angular.module( 'ngBoilerplate', [
       get = function(){
         var user = window.localStorage.getItem('user');
         if(user){
-
           var decrypted = CryptoJS.AES.decrypt(user.toString(), Config.secretKey, { format: formatter });
           data = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
           var lastIndex = data.href.lastIndexOf('/');
           var userId = data.href.substring(lastIndex + 1);
           data.userId = userId;
+          data.authString = user;
         } else {
           data = null;
         }

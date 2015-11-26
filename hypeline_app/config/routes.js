@@ -52,8 +52,9 @@ module.exports.routes = {
   ***************************************************************************/
   'get /test': 'Hype_nugController.testPush',
 
-  'GET /analyze':"AnalyzeController.get_nugs",
-  'GET /search':"AnalyzeController.find_run",
-  'GET /delete_run': "AnalyzeController.delete_run"
+  'POST /analyze':"AnalyzeController.get_nugs",
+  'POST /search':"AnalyzeController.find_run",
+  'POST /delete_run': "AnalyzeController.delete_run",
+  'POST /run': 'RunController.get_user_runs'
 
 };

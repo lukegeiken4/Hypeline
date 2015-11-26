@@ -15,7 +15,7 @@ angular.module( 'hypeLine.hypeline', [
   });
 })
 
-.controller( 'HypelineCtrl', function HypelineController( $scope, $http, Config, $rootScope, AuthService ) {
+.controller( 'HypelineCtrl', function HypelineController( $scope, $http, Config, $rootScope, AuthService, $sanitize ) {
 
   $scope.defaultDates = function() {
     $scope.endDate = new Date();
@@ -30,6 +30,7 @@ angular.module( 'hypeLine.hypeline', [
   $scope.format = 'yyyy-MM-dd';
   $scope.maxDate = new Date();
   $scope.platforms = {};
+  $scope.inputError = false;
 
   var setUser = function(){
     $scope.user = AuthService.get();
@@ -75,8 +76,12 @@ angular.module( 'hypeLine.hypeline', [
   function getUserRuns(){
     $scope.runs = [];
     $scope.runLoading = true;
-    var url = Config.appRoot + '/run?user_id=' + $scope.user.userId;
-    $http.get(url)
+    var params = {
+      user_id: $scope.user.userId,
+      auth_string: $scope.user.authString
+    };
+    var url = Config.appRoot + '/run';
+    $http.post(url, params)
     .then(
       function(data){
         parseUserRuns(data.data);
@@ -95,7 +100,7 @@ angular.module( 'hypeLine.hypeline', [
   function parseUserRuns(data){
     data.forEach(function(run){
       $scope.runs.push({
-        tag: run.keyword,
+        tag: run.keyword.trim(),
         startDate: run.hasOwnProperty('start_date') ? moment(run.start_date).format('MM-DD-YYYY') : '?',
         endDate: run.hasOwnProperty('end_date') ? moment(run.end_date).format('MM-DD-YYYY') : '?',
         runId: run.run_id
@@ -149,14 +154,29 @@ angular.module( 'hypeLine.hypeline', [
 
     function go(){
       $scope.loading = true;
-      var url = Config.appRoot + '/analyze?origin=' + getPlatforms() + '&user_id=' + $scope.user.userId + '&keyword=' + $scope.tag + '&start_date=' + $scope.startDate + '&end_date=' + $scope.endDate;
-      $http.get(url)
+      var platforms = getPlatforms();
+      var params = {
+        origin: platforms,
+        user_id: $scope.user.userId,
+        keyword: $scope.tag,
+        start_date: $scope.startDate,
+        end_date: $scope.endDate,
+        auth_string: $scope.user.authString
+      };
+      var url = Config.appRoot + '/analyze';
+      $http.post(url, params)
       .then(
         function(data){
           getUserRuns();
         },
         function(data){
           console.log('error', data);
+          if(data.data.error){
+            $scope.inputError = data.data.error;
+          }
+          if(data.data.errors){
+            $scope.inputError = data.data.errors.join('<br />');
+          }
         }
       );
     }
@@ -366,7 +386,11 @@ angular.module( 'hypeLine.hypeline', [
     }
 
     function fetch(){
-      $http.get(Config.appRoot + '/search?run_id=' + scope.runid)
+      var params = {
+        run_id: scope.runid,
+        auth_string: scope.$parent.user.authString
+      };
+      $http.post(Config.appRoot + '/search', params)
       .then(
         function(data){
           if(data.data.data.nugs.length > 0){
