@@ -5932,6 +5932,7 @@ ul.terms li,
 ul.details li,
 ul.runs li {
   list-style-type: none;
+  position: relative;
 }
 ul.terms .term,
 ul.details .term,
@@ -5943,6 +5944,13 @@ ul.terms .term:last-of-type,
 ul.details .term:last-of-type,
 ul.runs .term:last-of-type {
   border: 0;
+}
+ul.terms .options,
+ul.details .options,
+ul.runs .options {
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
 }
 ul.terms .detail strong,
 ul.details .detail strong,

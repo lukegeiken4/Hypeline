@@ -77,6 +77,7 @@ module.exports = {
       'vendor/underscore/underscore.min.js'
     ],
     css: [
+      //'vendor/fontawesome4-5-0.min.css'
     ],
     assets: [
 

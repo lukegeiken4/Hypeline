@@ -26,7 +26,7 @@ module.exports = function(req, res, next) {
     var application = getAuthApp();
     application.client.getAccount(data.href, function(err, account){
       if(err){
-        console.log('error fetching account');
+        console.log('error fetching account', err);
         noUser();
       } else {
         if(account.status === 'ENABLED'){

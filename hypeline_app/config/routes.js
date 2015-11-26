@@ -55,6 +55,7 @@ module.exports.routes = {
   'POST /analyze':"AnalyzeController.get_nugs",
   'POST /search':"AnalyzeController.find_run",
   'POST /delete_run': "AnalyzeController.delete_run",
-  'POST /run': 'RunController.get_user_runs'
+  'POST /run': 'RunController.get_user_runs',
+  'POST /run/remove': 'AnalyzeController.delete_run'
 
 };

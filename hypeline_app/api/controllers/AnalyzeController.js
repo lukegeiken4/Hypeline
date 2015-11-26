@@ -146,9 +146,9 @@ module.exports = {
 
     delete_run: function(req,res){
 
-        console.log('a controller', req.body);
+        var run_id = req.body.run_id;
 
-        var run_id = req.query.run_id;
+        console.log(run_id);
 
         Hype_nug.destroy({where:{run_id:run_id}}).exec(function selectCB(err){
             if (err){

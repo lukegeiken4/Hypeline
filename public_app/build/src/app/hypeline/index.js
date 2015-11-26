@@ -31,6 +31,9 @@ angular.module( 'hypeLine.hypeline', [
   $scope.maxDate = new Date();
   $scope.platforms = {};
   $scope.inputError = false;
+  $scope.run = {
+    message: false
+  };
 
   var setUser = function(){
     $scope.user = AuthService.get();
@@ -95,6 +98,33 @@ angular.module( 'hypeLine.hypeline', [
 
   $scope.getRun = function(run){
     $scope.runId = run.runId;
+  };
+
+  $scope.showOptions = function(run){
+    run.showOptions = true;
+  };
+
+  $scope.hideOptions = function(run){
+    run.showOptions = false;
+  };
+
+  $scope.deleteRun = function(run){
+      var params = {
+        run_id: run.runId,
+        auth_string: $scope.user.authString
+      };
+      var url = Config.appRoot + '/run/remove';
+      $http.post(url, params)
+      .then(
+        function(data){
+          $scope.run.message = "Successfully deleted";
+          getUserRuns();
+        },
+        function(data){
+          console.log('Error deleting run', data.data.error);
+          $scope.run.message = "Error";
+        }
+      );
   };
 
   function parseUserRuns(data){

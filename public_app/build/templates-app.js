@@ -250,11 +250,16 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "\n" +
     "      <div class=\"col-xs-4\">\n" +
     "        <label class=\"label label-default\">Past Runs</label>\n" +
+    "        <p ng-if=\"run.message\" class=\"alert alert-info\">{{run.message}}</p>\n" +
     "        <div class=\"panel panel-default past-runs\">\n" +
     "          <div ng-if=\"runLoading\">Loading...</div>\n" +
     "          <ul class=\"runs\" ng-if=\"!runLoading\">\n" +
-    "            <li ng-repeat=\"run in runs\">\n" +
-    "              <span class=\"run\" ng-click=\"getRun(run)\">#{{run.tag}} : <span class=\"small\">[{{run.startDate}} - {{run.endDate}}]</span></span>\n" +
+    "            <li ng-repeat=\"run in runs\"  ng-mouseenter=\"showOptions(run)\" ng-mouseleave=\"hideOptions(run)\" ng-click=\"getRun(run)\">\n" +
+    "              <span class=\"run\">#{{run.tag}} :\n" +
+    "                <span class=\"small\">[{{run.startDate}} - {{run.endDate}}]</span>\n" +
+    "<!--                 <span ng-if=\"run.showOptions\" class=\"options\">OPTS</span> -->\n" +
+    "                <span class=\"options\" ng-click=\"deleteRun(run)\"><i class=\"fa fa-trash\"></i></span>\n" +
+    "              </span>\n" +
     "            </li>\n" +
     "          </ul>\n" +
     "        </div>\n" +

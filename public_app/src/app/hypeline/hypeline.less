@@ -25,6 +25,7 @@ ul.terms, ul.details, ul.runs{
   padding: 0;
   li{
     list-style-type: none;
+    position: relative;
   }
   .term{
     padding: 1rem 0;
@@ -32,6 +33,11 @@ ul.terms, ul.details, ul.runs{
     &:last-of-type{
       border: 0;
     }
+  }
+  .options{
+    position: absolute;
+    right: 5px;
+    cursor: pointer;
   }
   .detail{
     strong{

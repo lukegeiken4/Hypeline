@@ -44,11 +44,16 @@
 
       <div class="col-xs-4">
         <label class="label label-default">Past Runs</label>
+        <p ng-if="run.message" class="alert alert-info">{{run.message}}</p>
         <div class="panel panel-default past-runs">
           <div ng-if="runLoading">Loading...</div>
           <ul class="runs" ng-if="!runLoading">
-            <li ng-repeat="run in runs">
-              <span class="run" ng-click="getRun(run)">#{{run.tag}} : <span class="small">[{{run.startDate}} - {{run.endDate}}]</span></span>
+            <li ng-repeat="run in runs"  ng-mouseenter="showOptions(run)" ng-mouseleave="hideOptions(run)" ng-click="getRun(run)">
+              <span class="run">#{{run.tag}} :
+                <span class="small">[{{run.startDate}} - {{run.endDate}}]</span>
+<!--                 <span ng-if="run.showOptions" class="options">OPTS</span> -->
+                <span class="options" ng-click="deleteRun(run)"><i class="fa fa-trash"></i></span>
+              </span>
             </li>
           </ul>
         </div>
