@@ -83,10 +83,10 @@ module.exports = {
 
     ],
     fonts: [
-      'src/app/fonts/glyphicons-halflings-regular.eot',
-      'src/app/fonts/glyphicons-halflings-regular.svg',
-      'src/app/fonts/glyphicons-halflings-regular.ttf',
-      'src/app/fonts/glyphicons-halflings-regular.woff'
+      'src/fonts/glyphicons-halflings-regular.eot',
+      'src/fonts/glyphicons-halflings-regular.svg',
+      'src/fonts/glyphicons-halflings-regular.ttf',
+      'src/fonts/glyphicons-halflings-regular.woff'
     ]
   },
 };

@@ -1,39 +1,75 @@
 <div class="row">
-  <div class="col-xs-3">
-    <label class="label label-default">Results</label>
-  </div>
-  <div class="col-xs-3">
-    <label for="limit-date" class="label label-default">Limit results by date</label>
-    <input type="checkbox" ng-model="limitDate" />
-  </div>
-  <div class="col-xs-6">
-    <ul class="input-group time-grouping">
-      <li>
-        <label for="second" class="label label-default">Seconds</label>
-        <input type="radio" value="second" id="second" ng-model="timegroup"/>
-      </li>
-      <li>
-        <label for="minute" class="label label-default">Minutes</label>
-        <input type="radio" value="minute" id="minute" ng-model="timegroup"/>
-      </li>
-      <li>
-        <label for="hour" class="label label-default">Hours</label>
-        <input type="radio" value="hour" id="hour" ng-model="timegroup"/>
-      </li>
-      <li>
-        <label for="day" class="label label-default">Days</label>
-        <input type="radio" value="day" id="day" ng-model="timegroup"/>
-      </li>
-    </ul>
-  </div>
-</div>
-<div class="row" ng-if="chart">
-  <div class="col-xs-12">
-    <div ng-if="chart" class="chart">
-        <highchart id="chart-{{id}}" config="chartConfig"></highchart>
+  <div class="options-container clearfix">
+    <div class="options-toggle">
+      <button ng-click="toggleOptions()">[ <i class="fa fa-gear"></i> Chart Options - {{chartOptions ? 'Hide' : 'Show'}} ]</button>
+    </div>
+    <div class="wrapper clearfix" ng-show="chartOptions">
+      <div class="col-xs-12 section">
+        <ul class="input-group time-grouping">
+          <li>
+            <label for="second" class="label label-default">Seconds</label>
+            <input type="radio" value="second" id="second" ng-model="timegroup"/>
+          </li>
+          <li>
+            <label for="minute" class="label label-default">Minutes</label>
+            <input type="radio" value="minute" id="minute" ng-model="timegroup"/>
+          </li>
+          <li>
+            <label for="hour" class="label label-default">Hours</label>
+            <input type="radio" value="hour" id="hour" ng-model="timegroup"/>
+          </li>
+          <li>
+            <label for="day" class="label label-default">Days</label>
+            <input type="radio" value="day" id="day" ng-model="timegroup"/>
+          </li>
+        </ul>
+      </div>
+      <div class="col-xs-12 section">
+        <label for="limit-date" class="label label-default">Limit results by date</label>
+        <input type="checkbox" ng-model="limitDate" />
+        <div class="limit-dates" ng-show="limitDate">
+          <div class="chart-options">
+            <div class="calendar-container row">
+              <div class="col-xs-6">
+                <label for="startDate" class="label label-default">Start Date</label>
+                <p class="input-group">
+                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startDate" is-open="status.start.opened" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" show-weeks="false" close-text="Close" close-on-date-selection="true" show-button-bar="false" ng-click="open($event, 'start')" id="startDate" required />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </p>
+              </div>
+              <div class="col-xs-6">
+                <label for="endDate" class="label label-default">End Date</label>
+                <p class="input-group">
+                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="endDate" is-open="status.end.opened" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" show-weeks="false" close-text="Close" close-on-date-selection="true" show-button-bar="false" ng-click="open($event, 'end')" id="endDate" required />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </p>
+              </div>
+              <div class="apply">
+                <button class="btn btn-primary" ng-click="dateRangeUpdated()">Submit</button>
+                <button class="btn btn-default" ng-click="dateRangeReset()">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+<div class="row">
+  <div class="col-xs-12">
+    <div ng-show="chart" class="chart">
+        <highchart id="chart-{{id}}" config="chartConfig"></highchart>
+    </div>
+    <div ng-show="!chart" class="chart empty">
+      <p>No data to display!</p>
+    </div>
+  </div>
+</div>
+
 
 <div class="row" ng-if="chart">
   <div class="col-xs-4 chart-data">

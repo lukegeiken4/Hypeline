@@ -24,15 +24,15 @@ angular.module( 'hypeLine.hypeline', [
     $scope.datesUpdated = moment().format('x');
   };
 
-  $scope.timegroup = 'minute';
-
-  $scope.defaultDates();
-  $scope.format = 'yyyy-MM-dd';
-  $scope.maxDate = new Date();
   $scope.platforms = {};
   $scope.inputError = false;
   $scope.run = {
     message: false
+  };
+
+  $scope.newRun = true;
+  $scope.openNewRun = function(val){
+    $scope.newRun = val;
   };
 
   var setUser = function(){
@@ -52,31 +52,7 @@ angular.module( 'hypeLine.hypeline', [
 
   $rootScope.$on("user:updated",setUser);
 
-  $scope.open = function($event) {
-    $event.preventDefault();
-    $event.stopPropagation();
-    $scope.status.opened = true;
-  };
-
   $scope.runs = [];
-
-  $scope.setDate = function(year, month, day) {
-    $scope.dt = new Date(year, month, day);
-  };
-
-  $scope.dateOptions = {
-    formatYear: 'yy',
-    startingDay: 1,
-    showWeeks: false
-  };
-
-  $scope.status = {
-    opened: false
-  };
-
-  $scope.applyDates = function(){
-    $scope.datesUpdated = moment().format('x');
-  };
 
   function getUserRuns(){
     $scope.runs = [];
@@ -136,7 +112,8 @@ angular.module( 'hypeLine.hypeline', [
         tag: run.keyword.trim(),
         startDate: run.hasOwnProperty('start_date') ? moment(run.start_date).format('MM-DD-YYYY') : '?',
         endDate: run.hasOwnProperty('end_date') ? moment(run.end_date).format('MM-DD-YYYY') : '?',
-        runId: run.run_id
+        runId: run.run_id,
+        runDate: moment(run.createdAt).format('MM-DD-YYYY @ h:mm a')
       });
     });
     $scope.getRun(_.last($scope.runs));
@@ -227,6 +204,46 @@ angular.module( 'hypeLine.hypeline', [
     scope.chart = false;
     scope.timegroup = 'minute';
     scope.limitDate = false;
+    scope.chartOptions = true;
+    scope.toggleOptions = function(){
+      scope.chartOptions = !scope.chartOptions;
+    };
+
+    // date stuff
+    scope.endDate = new Date();
+    scope.startDate = new Date(moment().startOf('month').utcOffset(0).format('YYYY-MM-DD HH:MM:SS Z'));
+    scope.datesUpdated = moment().format('x');
+    scope.format = 'yyyy-MM-dd';
+    scope.maxDate = new Date();
+
+    scope.open = function($event, picker) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      scope.status[picker].opened = true;
+    };
+
+    scope.dateOptions = {
+      formatYear: 'yy',
+      startingDay: 1,
+      showWeeks: false
+    };
+
+    scope.status = {
+      opened: false
+    };
+
+    scope.applyDates = function(){
+      scope.datesUpdated = moment().format('x');
+    };
+
+    scope.dateRangeUpdated = function(){
+      optionsUpdated({dateFilter: true});
+    };
+
+    scope.dateRangeReset = function(){
+      scope.limitDate = false;
+      optionsUpdated({dateFilter: false});
+    };
 
     var currentData = [];
 
@@ -275,13 +292,13 @@ angular.module( 'hypeLine.hypeline', [
       optionsUpdated();
     });
 
-    scope.$watch('limitDate', function(){
-      optionsUpdated();
+    scope.$watch('limitDate', function(val){
+      scope.limitDate = val;
     });
 
-    function optionsUpdated(){
+    function optionsUpdated(opts){
       if(currentData){
-        updateData(currentData);
+        updateData(currentData, opts);
         updateTickInterval();
       } else {
         fetch();
@@ -330,15 +347,27 @@ angular.module( 'hypeLine.hypeline', [
       scope.chartConfig.series = [];
     }
 
-    function updateData(data){
+    function updateData(data, opts){
       scope.chartConfig.loading = false;
       scope.chart = true;
 
       var groups = _.groupBy(data.nugs, groupByTime);
       var points = _.map(groups, averageSentimentScorePerTimestamp);
+      if(opts && opts.dateFilter){
+        var dates = {
+          start: new Date(scope.startDate).getTime(),
+          end: new Date(scope.endDate).getTime()
+        };
+        var limitPointsByDate = _.partial(filterPointsByDate, dates);
+        points = _.filter(points, limitPointsByDate);
+      }
       var sorted = _.sortBy(points, sortByDate);
       getBracketedResults(currentData);
       getAssociatedData(data.keywords);
+      if(points.length === 0){
+        scope.chart = false;
+      }
+      console.log(points, scope.chart);
 
       updateSeries({data: sorted});
     }
@@ -349,6 +378,11 @@ angular.module( 'hypeLine.hypeline', [
 
     function groupByDate(item){
       return item.date;
+    }
+
+    function filterPointsByDate(dates, point){
+      console.log(point.x >= dates.start, point.y <= dates.end);
+      return point.x >= dates.start && point.y <= dates.end;
     }
 
     function groupByTime(item){
@@ -400,7 +434,6 @@ angular.module( 'hypeLine.hypeline', [
 
     function averageSentimentScorePerTimestamp(item){
       var total = 0;
-      //console.log(item, item[0].modifiedDate);
 
       for(var i=0;i<item.length; i++){
         total += item[i].sentiment;

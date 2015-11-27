@@ -126,41 +126,77 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("hypeline/chart.tpl.html",
     "<div class=\"row\">\n" +
-    "  <div class=\"col-xs-3\">\n" +
-    "    <label class=\"label label-default\">Results</label>\n" +
-    "  </div>\n" +
-    "  <div class=\"col-xs-3\">\n" +
-    "    <label for=\"limit-date\" class=\"label label-default\">Limit results by date</label>\n" +
-    "    <input type=\"checkbox\" ng-model=\"limitDate\" />\n" +
-    "  </div>\n" +
-    "  <div class=\"col-xs-6\">\n" +
-    "    <ul class=\"input-group time-grouping\">\n" +
-    "      <li>\n" +
-    "        <label for=\"second\" class=\"label label-default\">Seconds</label>\n" +
-    "        <input type=\"radio\" value=\"second\" id=\"second\" ng-model=\"timegroup\"/>\n" +
-    "      </li>\n" +
-    "      <li>\n" +
-    "        <label for=\"minute\" class=\"label label-default\">Minutes</label>\n" +
-    "        <input type=\"radio\" value=\"minute\" id=\"minute\" ng-model=\"timegroup\"/>\n" +
-    "      </li>\n" +
-    "      <li>\n" +
-    "        <label for=\"hour\" class=\"label label-default\">Hours</label>\n" +
-    "        <input type=\"radio\" value=\"hour\" id=\"hour\" ng-model=\"timegroup\"/>\n" +
-    "      </li>\n" +
-    "      <li>\n" +
-    "        <label for=\"day\" class=\"label label-default\">Days</label>\n" +
-    "        <input type=\"radio\" value=\"day\" id=\"day\" ng-model=\"timegroup\"/>\n" +
-    "      </li>\n" +
-    "    </ul>\n" +
-    "  </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\" ng-if=\"chart\">\n" +
-    "  <div class=\"col-xs-12\">\n" +
-    "    <div ng-if=\"chart\" class=\"chart\">\n" +
-    "        <highchart id=\"chart-{{id}}\" config=\"chartConfig\"></highchart>\n" +
+    "  <div class=\"options-container clearfix\">\n" +
+    "    <div class=\"options-toggle\">\n" +
+    "      <button ng-click=\"toggleOptions()\">[ <i class=\"fa fa-gear\"></i> Chart Options - {{chartOptions ? 'Hide' : 'Show'}} ]</button>\n" +
+    "    </div>\n" +
+    "    <div class=\"wrapper clearfix\" ng-show=\"chartOptions\">\n" +
+    "      <div class=\"col-xs-12 section\">\n" +
+    "        <ul class=\"input-group time-grouping\">\n" +
+    "          <li>\n" +
+    "            <label for=\"second\" class=\"label label-default\">Seconds</label>\n" +
+    "            <input type=\"radio\" value=\"second\" id=\"second\" ng-model=\"timegroup\"/>\n" +
+    "          </li>\n" +
+    "          <li>\n" +
+    "            <label for=\"minute\" class=\"label label-default\">Minutes</label>\n" +
+    "            <input type=\"radio\" value=\"minute\" id=\"minute\" ng-model=\"timegroup\"/>\n" +
+    "          </li>\n" +
+    "          <li>\n" +
+    "            <label for=\"hour\" class=\"label label-default\">Hours</label>\n" +
+    "            <input type=\"radio\" value=\"hour\" id=\"hour\" ng-model=\"timegroup\"/>\n" +
+    "          </li>\n" +
+    "          <li>\n" +
+    "            <label for=\"day\" class=\"label label-default\">Days</label>\n" +
+    "            <input type=\"radio\" value=\"day\" id=\"day\" ng-model=\"timegroup\"/>\n" +
+    "          </li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
+    "      <div class=\"col-xs-12 section\">\n" +
+    "        <label for=\"limit-date\" class=\"label label-default\">Limit results by date</label>\n" +
+    "        <input type=\"checkbox\" ng-model=\"limitDate\" />\n" +
+    "        <div class=\"limit-dates\" ng-show=\"limitDate\">\n" +
+    "          <div class=\"chart-options\">\n" +
+    "            <div class=\"calendar-container row\">\n" +
+    "              <div class=\"col-xs-6\">\n" +
+    "                <label for=\"startDate\" class=\"label label-default\">Start Date</label>\n" +
+    "                <p class=\"input-group\">\n" +
+    "                    <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"startDate\" is-open=\"status.start.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"true\" show-button-bar=\"false\" ng-click=\"open($event, 'start')\" id=\"startDate\" required />\n" +
+    "                    <span class=\"input-group-btn\">\n" +
+    "                        <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                    </span>\n" +
+    "                </p>\n" +
+    "              </div>\n" +
+    "              <div class=\"col-xs-6\">\n" +
+    "                <label for=\"endDate\" class=\"label label-default\">End Date</label>\n" +
+    "                <p class=\"input-group\">\n" +
+    "                    <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"endDate\" is-open=\"status.end.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"true\" show-button-bar=\"false\" ng-click=\"open($event, 'end')\" id=\"endDate\" required />\n" +
+    "                    <span class=\"input-group-btn\">\n" +
+    "                        <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                    </span>\n" +
+    "                </p>\n" +
+    "              </div>\n" +
+    "              <div class=\"apply\">\n" +
+    "                <button class=\"btn btn-primary\" ng-click=\"dateRangeUpdated()\">Submit</button>\n" +
+    "                <button class=\"btn btn-default\" ng-click=\"dateRangeReset()\">Reset</button>\n" +
+    "              </div>\n" +
+    "            </div>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
+    "<div class=\"row\">\n" +
+    "  <div class=\"col-xs-12\">\n" +
+    "    <div ng-show=\"chart\" class=\"chart\">\n" +
+    "        <highchart id=\"chart-{{id}}\" config=\"chartConfig\"></highchart>\n" +
+    "    </div>\n" +
+    "    <div ng-show=\"!chart\" class=\"chart empty\">\n" +
+    "      <p>No data to display!</p>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "\n" +
     "\n" +
     "<div class=\"row\" ng-if=\"chart\">\n" +
     "  <div class=\"col-xs-4 chart-data\">\n" +
@@ -206,17 +242,25 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
   $templateCache.put("hypeline/index.tpl.html",
     "<div ng-controller=\"HypelineCtrl\">\n" +
     "  <div class=\"row\">\n" +
-    "      <div class=\"col-xs-8\">\n" +
-    "        <ng-form novalidate role=\"form\" name=\"entryPoint\">\n" +
+    "      <div class=\"col-xs-8 new-run\">\n" +
+    "        <div class=\"form-control-group toggle-input\">\n" +
+    "          <button ng-show=\"!newRun\" class=\"form-control btn btn-success\" ng-click=\"openNewRun(true)\">Show</button>\n" +
+    "          <button ng-show=\"newRun\" class=\"form-control btn btn-info\" ng-click=\"openNewRun(false)\">Hide</button>\n" +
+    "        </div>\n" +
+    "        <ng-form novalidate role=\"form\" name=\"entryPoint\" ng-show=\"newRun\" class=\"new-run-form\">\n" +
     "            <div class=\"col-xs-12\">\n" +
-    "                <label for=\"tags\" class=\"label label-default\">Tag</label>\n" +
+    "<!--                 <label for=\"tags\" class=\"label label-default\">Tag</label> -->\n" +
+    "                <h4 class=\"step\">Step 1:</h4>\n" +
+    "                <h5 class=\"step description\">What do you want to research? A single keyword works best.</h5>\n" +
     "                <p class=\"input-group\">\n" +
-    "                    <input class=\"form-control\" type=\"text\" ng-model=\"tag\" required />\n" +
+    "                    <input class=\"form-control\" type=\"text\" placeholder=\"Tag to search\" ng-model=\"tag\" required />\n" +
     "                </p>\n" +
     "                <p ng-if=\"inputError\" class=\"alert alert-danger\" ng-bind-html=\"inputError\"></p>\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-12\">\n" +
-    "                <label for=\"endDate\" class=\"label label-default\">Platforms</label>\n" +
+    "<!--                 <label for=\"endDate\" class=\"label label-default\">Platforms</label> -->\n" +
+    "                <h4 class=\"step\">Step 2:</h4>\n" +
+    "                <h5 class=\"step description\">Which platform would you like to get results from?</h5>\n" +
     "                <ul class=\"input-group platforms\">\n" +
     "                    <li>\n" +
     "                      <label for=\"twitter\" class=\"label label-default\"><img src=\"/assets/imgs/twitter.png\" /></label>\n" +
@@ -241,6 +285,8 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "                </ul>\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-12\">\n" +
+    "                <h4 class=\"step\">Step 3:</h4>\n" +
+    "                <h5 class=\"step description\">Let the magic happen!</h5>\n" +
     "                <p class=\"input-group\">\n" +
     "                    <button type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid\" ng-click=\"go()\">Go!</button>\n" +
     "                </p>\n" +
@@ -249,14 +295,15 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "      </div>\n" +
     "\n" +
     "      <div class=\"col-xs-4\">\n" +
-    "        <label class=\"label label-default\">Past Runs</label>\n" +
+    "        <h4 class=\"step\">Prior Results</h4>\n" +
+    "        <h5 class=\"step description\">Click to view</h5>\n" +
     "        <p ng-if=\"run.message\" class=\"alert alert-info\">{{run.message}}</p>\n" +
     "        <div class=\"panel panel-default past-runs\">\n" +
     "          <div ng-if=\"runLoading\">Loading...</div>\n" +
     "          <ul class=\"runs\" ng-if=\"!runLoading\">\n" +
     "            <li ng-repeat=\"run in runs\"  ng-mouseenter=\"showOptions(run)\" ng-mouseleave=\"hideOptions(run)\" ng-click=\"getRun(run)\">\n" +
     "              <span class=\"run\">#{{run.tag}} :\n" +
-    "                <span class=\"small\">[{{run.startDate}} - {{run.endDate}}]</span>\n" +
+    "                <span class=\"small\">[{{run.runDate}}]</span>\n" +
     "<!--                 <span ng-if=\"run.showOptions\" class=\"options\">OPTS</span> -->\n" +
     "                <span class=\"options\" ng-click=\"deleteRun(run)\"><i class=\"fa fa-trash\"></i></span>\n" +
     "              </span>\n" +
@@ -265,27 +312,7 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "        </div>\n" +
     "      </div>\n" +
     "  </div>\n" +
-    "  <div class=\"row chart-container\">\n" +
-    "    <div ng-if=\"limitDate\">\n" +
-    "      <div class=\"col-xs-12 col-sm-6\">\n" +
-    "          <label for=\"startDate\" class=\"label label-default\">Start Date</label>\n" +
-    "          <p class=\"input-group\">\n" +
-    "              <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"startDate\" is-open=\"status.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"false\" show-button-bar=\"false\" ng-click=\"open($event)\" id=\"startDate\" required />\n" +
-    "              <span class=\"input-group-btn\">\n" +
-    "                  <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
-    "              </span>\n" +
-    "          <p>\n" +
-    "      </div>\n" +
-    "      <div class=\"col-xs-12 col-sm-6\">\n" +
-    "          <label for=\"endDate\" class=\"label label-default\">End Date</label>\n" +
-    "          <p class=\"input-group\">\n" +
-    "              <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"endDate\" is-open=\"status.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"false\" show-button-bar=\"false\" ng-click=\"open($event)\" id=\"endDate\" required />\n" +
-    "              <span class=\"input-group-btn\">\n" +
-    "                  <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
-    "              </span>\n" +
-    "          <p>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
+    "  <div class=\"row chart-container hypeline-results\">\n" +
     "    <div class=\"col-xs-12\">\n" +
     "      <div ng-if=\"noDataError\" class=\"alert alert-info\"></div>\n" +
     "      <results-chart ng-if=\"!noDataError\" type=\"chart\" name=\"results\" runId=\"{{runId}}\"></results-chart>\n" +

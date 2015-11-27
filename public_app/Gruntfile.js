@@ -112,9 +112,11 @@ module.exports = function ( grunt ) {
         files: [
           {
             src: [ '<%= vendor_files.fonts %>' ],
-            dest: '<%= build_dir %>/src/app/fonts/',
+            dest: '<%= build_dir %>/fonts/',
             cwd: '.',
-            expand: true
+            expand: true,
+            flatten: true,
+            filter: 'isFile'
           }
        ]
       },
@@ -124,8 +126,7 @@ module.exports = function ( grunt ) {
             src: [ '<%= vendor_files.assets %>' ],
             dest: '<%= build_dir %>/assets/',
             cwd: '.',
-            expand: true,
-            flatten: true
+            expand: true
           }
        ]
       },

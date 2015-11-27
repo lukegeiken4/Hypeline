@@ -5909,8 +5909,7 @@ a {
   width: 100% !important;
 }
 .chart {
-  border-top: 1px solid #ccc;
-  padding-top: 5rem;
+  padding-top: 1rem;
   width: 100%;
 }
 .chart-label {
@@ -5971,9 +5970,11 @@ ul.runs li:last-of-type {
 .past-runs {
   background: #eee;
   background: rgba(0, 0, 0, 0.03);
+  border-radius: 0;
+  box-shadow: 0 0 0 0;
+  border-color: #ccc;
 }
 ul.time-grouping {
-  float: right;
   padding: 0;
   margin: 0;
 }
@@ -5984,10 +5985,27 @@ ul.time-grouping li {
 ul.time-grouping lilast-of-type {
   margin-right: 0;
 }
+.new-run {
+  border: 1px solid #ccc;
+}
+.new-run .new-run-form {
+  padding: 2rem;
+}
+.new-run .toggle-input {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  z-index: 2;
+}
+.new-run .toggle-input button {
+  font-size: .7rem;
+  font-size: 1rem;
+  padding: 3px 15px;
+  line-height: 1px;
+}
 .platforms {
-  margin: 0;
   padding: 0;
-  margin: 1rem 0;
+  margin: 0;
 }
 .platforms li {
   display: inline-block;
@@ -6004,9 +6022,57 @@ ul.time-grouping lilast-of-type {
   display: block;
   background: transparent;
   padding: 0;
+  float: left;
+  margin-right: 1rem;
 }
 .platforms img {
   width: 100%;
+}
+.limit-dates {
+  margin-top: 2rem;
+}
+.limit-dates .calendar-container {
+  z-index: 1;
+}
+.limit-dates .calendar-container .apply {
+  margin-top: 2rem;
+}
+.hypeline-results {
+  border: 1px solid #ccc;
+  margin-top: 1rem;
+}
+.options-toggle {
+  z-index: 3;
+}
+.options-toggle button {
+  background: transparent;
+  border: 0;
+  color: #bbb;
+  font-size: .9rem;
+  text-transform: uppercase;
+}
+.options-container {
+  position: absolute;
+  width: 40%;
+  left: -1px;
+  top: 0;
+  z-index: 2;
+}
+.options-container .wrapper {
+  padding: 2rem;
+  background: #eee;
+  background: #f8f8f8;
+  border: 1px solid #ccc;
+}
+.options-container .section {
+  padding: 1rem 0 2rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+.options-container .section:last-of-type {
+  margin-bottom: 0;
+  padding-bottom: 1rem;
+  border: 0;
 }
 .about-header {
   color: #3c4fa2;
