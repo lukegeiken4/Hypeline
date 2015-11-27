@@ -156,25 +156,21 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "        <input type=\"checkbox\" ng-model=\"limitDate\" />\n" +
     "        <div class=\"limit-dates\" ng-show=\"limitDate\">\n" +
     "          <div class=\"chart-options\">\n" +
-    "            <div class=\"calendar-container row\">\n" +
-    "              <div class=\"col-xs-6\">\n" +
-    "                <label for=\"startDate\" class=\"label label-default\">Start Date</label>\n" +
-    "                <p class=\"input-group\">\n" +
-    "                    <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"startDate\" is-open=\"status.start.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"true\" show-button-bar=\"false\" ng-click=\"open($event, 'start')\" id=\"startDate\" required />\n" +
-    "                    <span class=\"input-group-btn\">\n" +
-    "                        <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
-    "                    </span>\n" +
-    "                </p>\n" +
-    "              </div>\n" +
-    "              <div class=\"col-xs-6\">\n" +
-    "                <label for=\"endDate\" class=\"label label-default\">End Date</label>\n" +
-    "                <p class=\"input-group\">\n" +
-    "                    <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"endDate\" is-open=\"status.end.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"true\" show-button-bar=\"false\" ng-click=\"open($event, 'end')\" id=\"endDate\" required />\n" +
-    "                    <span class=\"input-group-btn\">\n" +
-    "                        <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
-    "                    </span>\n" +
-    "                </p>\n" +
-    "              </div>\n" +
+    "            <div class=\"calendar-container\">\n" +
+    "              <label for=\"startDate\" class=\"label label-default\">Start Date</label>\n" +
+    "              <p class=\"input-group\">\n" +
+    "                  <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"startDate\" is-open=\"status.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"false\" show-button-bar=\"false\" ng-click=\"open($event)\" id=\"startDate\" required />\n" +
+    "                  <span class=\"input-group-btn\">\n" +
+    "                      <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                  </span>\n" +
+    "              </p>\n" +
+    "              <label for=\"endDate\" class=\"label label-default\">End Date</label>\n" +
+    "              <p class=\"input-group\">\n" +
+    "                  <input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"endDate\" is-open=\"status.opened\" max-date=\"maxDate\" datepicker-options=\"dateOptions\" ng-required=\"true\" show-weeks=\"false\" close-text=\"Close\" close-on-date-selection=\"false\" show-button-bar=\"false\" ng-click=\"open($event)\" id=\"endDate\" required />\n" +
+    "                  <span class=\"input-group-btn\">\n" +
+    "                      <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"fa fa-calendar\"></i></button>\n" +
+    "                  </span>\n" +
+    "              </p>\n" +
     "              <div class=\"apply\">\n" +
     "                <button class=\"btn btn-primary\" ng-click=\"dateRangeUpdated()\">Submit</button>\n" +
     "                <button class=\"btn btn-default\" ng-click=\"dateRangeReset()\">Reset</button>\n" +
@@ -188,11 +184,11 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "</div>\n" +
     "<div class=\"row\">\n" +
     "  <div class=\"col-xs-12\">\n" +
-    "    <div ng-show=\"chart\" class=\"chart\">\n" +
+    "    <div ng-if=\"chart\" class=\"chart\">\n" +
     "        <highchart id=\"chart-{{id}}\" config=\"chartConfig\"></highchart>\n" +
     "    </div>\n" +
-    "    <div ng-show=\"!chart\" class=\"chart empty\">\n" +
-    "      <p>No data to display!</p>\n" +
+    "    <div ng-if=\"!chart\" class=\"\">\n" +
+    "      <p>No data for this time range</p>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +

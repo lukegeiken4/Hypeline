@@ -204,7 +204,7 @@ angular.module( 'hypeLine.hypeline', [
     scope.chart = false;
     scope.timegroup = 'minute';
     scope.limitDate = false;
-    scope.chartOptions = true;
+    scope.chartOptions = false;
     scope.toggleOptions = function(){
       scope.chartOptions = !scope.chartOptions;
     };
@@ -250,7 +250,7 @@ angular.module( 'hypeLine.hypeline', [
     scope.chartConfig = {
         series: [],
         title: {
-           text: "Metric"
+           text: ""
         },
         loading: true,
         xAxis: {
@@ -258,8 +258,8 @@ angular.module( 'hypeLine.hypeline', [
           tickInterval: updateTickInterval()
         },
         yAxis: {
-          labels: {
-            enabled: false
+          title: {
+            text: 'Score'
           }
         },
         options: {
@@ -278,10 +278,16 @@ angular.module( 'hypeLine.hypeline', [
                 }
               }
             }
-
           },
           tooltip: {
             shared: true
+          },
+          yAxis: {
+            title: {
+              text: "Score"
+            },
+            max: 100,
+            min: 0
           }
         }
     };
@@ -335,8 +341,8 @@ angular.module( 'hypeLine.hypeline', [
         scope.chartConfig.series[0].name = allSeries.data[0].tag;
         scope.chartConfig.title.text = "#" + allSeries.data[0].tag + " [ " + currentData.nugs.length + " data points ]";
       }
-      scope.chartConfig.yAxis.max = 100;
-      scope.chartConfig.yAxis.min = 0;
+      //scope.chartConfig.yAxis.max = 100;
+      //scope.chartConfig.yAxis.min = 0;
     }
 
     function getDate(item){
@@ -367,8 +373,6 @@ angular.module( 'hypeLine.hypeline', [
       if(points.length === 0){
         scope.chart = false;
       }
-      console.log(points, scope.chart);
-
       updateSeries({data: sorted});
     }
 

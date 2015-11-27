@@ -29,25 +29,21 @@
         <input type="checkbox" ng-model="limitDate" />
         <div class="limit-dates" ng-show="limitDate">
           <div class="chart-options">
-            <div class="calendar-container row">
-              <div class="col-xs-6">
-                <label for="startDate" class="label label-default">Start Date</label>
-                <p class="input-group">
-                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startDate" is-open="status.start.opened" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" show-weeks="false" close-text="Close" close-on-date-selection="true" show-button-bar="false" ng-click="open($event, 'start')" id="startDate" required />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
-                    </span>
-                </p>
-              </div>
-              <div class="col-xs-6">
-                <label for="endDate" class="label label-default">End Date</label>
-                <p class="input-group">
-                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="endDate" is-open="status.end.opened" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" show-weeks="false" close-text="Close" close-on-date-selection="true" show-button-bar="false" ng-click="open($event, 'end')" id="endDate" required />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
-                    </span>
-                </p>
-              </div>
+            <div class="calendar-container">
+              <label for="startDate" class="label label-default">Start Date</label>
+              <p class="input-group">
+                  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startDate" is-open="status.opened" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" show-weeks="false" close-text="Close" close-on-date-selection="false" show-button-bar="false" ng-click="open($event)" id="startDate" required />
+                  <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+                  </span>
+              </p>
+              <label for="endDate" class="label label-default">End Date</label>
+              <p class="input-group">
+                  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="endDate" is-open="status.opened" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" show-weeks="false" close-text="Close" close-on-date-selection="false" show-button-bar="false" ng-click="open($event)" id="endDate" required />
+                  <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+                  </span>
+              </p>
               <div class="apply">
                 <button class="btn btn-primary" ng-click="dateRangeUpdated()">Submit</button>
                 <button class="btn btn-default" ng-click="dateRangeReset()">Reset</button>
@@ -61,11 +57,11 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <div ng-show="chart" class="chart">
+    <div ng-if="chart" class="chart">
         <highchart id="chart-{{id}}" config="chartConfig"></highchart>
     </div>
-    <div ng-show="!chart" class="chart empty">
-      <p>No data to display!</p>
+    <div ng-if="!chart" class="">
+      <p>No data for this time range</p>
     </div>
   </div>
 </div>
