@@ -24,6 +24,7 @@ angular.module( 'hypeLine.hypeline', [
     $scope.datesUpdated = moment().format('x');
   };
 
+  $scope.defaultDates();
   $scope.platforms = {};
   $scope.inputError = false;
   $scope.run = {
@@ -88,6 +89,8 @@ angular.module( 'hypeLine.hypeline', [
   };
 
   $scope.deleteRun = function(run){
+    console.log('delete');
+/*
       var params = {
         run_id: run.runId,
         auth_string: $scope.user.authString
@@ -104,6 +107,12 @@ angular.module( 'hypeLine.hypeline', [
           $scope.run.message = "Error";
         }
       );
+*/
+  };
+
+  $scope.getMore = function(run){
+    console.log(run);
+    $scope.go(run);
   };
 
   function parseUserRuns(data){
@@ -113,28 +122,25 @@ angular.module( 'hypeLine.hypeline', [
         startDate: run.hasOwnProperty('start_date') ? moment(run.start_date).format('MM-DD-YYYY') : '?',
         endDate: run.hasOwnProperty('end_date') ? moment(run.end_date).format('MM-DD-YYYY') : '?',
         runId: run.run_id,
-        runDate: moment(run.createdAt).format('MM-DD-YYYY @ h:mm a')
+        runDate: moment(run.createdAt).format('MM-DD-YYYY @ h:mm a'),
+        origin: run.media.join(',')
       });
     });
     $scope.getRun(_.last($scope.runs));
   }
 
-  function graphRun(run){
-    console.log(run);
-  }
-
-  $scope.go = function(){
+  $scope.go = function(run){
     getPlatforms();
     if(!$scope.user){
       setUser();
       if($scope.user){
-        go();
+        go(run);
       } else {
         console.log('No user');
         $location.path('user/login');
       }
     } else {
-      go();
+      go(run);
     }
 
     function getPlatforms(){
@@ -162,7 +168,7 @@ angular.module( 'hypeLine.hypeline', [
       return platformString.join(',');
     }
 
-    function go(){
+    function go(run){
       if($scope.user){
         $scope.loading = true;
         var platforms = getPlatforms();
@@ -174,10 +180,18 @@ angular.module( 'hypeLine.hypeline', [
           end_date: $scope.endDate,
           auth_string: $scope.user.authString
         };
+        if(run){
+          params.run_id = run.runId;
+          params.origin = run.origin;
+          params.keyword = run.tag;
+        }
         var url = Config.appRoot + '/analyze';
         $http.post(url, params)
         .then(
           function(data){
+            if(run){
+              $scope.$broadcast('results:updated');
+            }
             getUserRuns();
           },
           function(data){
@@ -193,7 +207,6 @@ angular.module( 'hypeLine.hypeline', [
       }
     }
   };
-
 
 })
 
@@ -312,6 +325,11 @@ angular.module( 'hypeLine.hypeline', [
     }
 
     scope.$parent.$watch('runId', function(){
+      fetch();
+    });
+
+    scope.$parent.$on('results:updated', function(){
+      console.log('more results on the way');
       fetch();
     });
 

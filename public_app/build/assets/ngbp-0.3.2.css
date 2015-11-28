@@ -5968,6 +5968,16 @@ ul.runs .options {
   right: 5px;
   cursor: pointer;
 }
+ul.terms .options .fa,
+ul.details .options .fa,
+ul.runs .options .fa {
+  margin-right: 15px;
+}
+ul.terms .options .fa:last-of-type,
+ul.details .options .fa:last-of-type,
+ul.runs .options .fa:last-of-type {
+  margin-right: 0;
+}
 ul.terms .detail strong,
 ul.details .detail strong,
 ul.runs .detail strong {

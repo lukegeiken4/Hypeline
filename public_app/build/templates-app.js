@@ -301,7 +301,11 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "              <span class=\"run\">#{{run.tag}} :\n" +
     "                <span class=\"small\">[{{run.runDate}}]</span>\n" +
     "<!--                 <span ng-if=\"run.showOptions\" class=\"options\">OPTS</span> -->\n" +
-    "                <span class=\"options\" ng-click=\"deleteRun(run)\"><i class=\"fa fa-trash\"></i></span>\n" +
+    "                <span class=\"options\">\n" +
+    "                  <i class=\"fa fa-plus-circle\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Get more results\" ng-click=\"getMore(run)\"></i>\n" +
+    "                  <i class=\"fa fa-trash\" ng-click=\"deleteRun(run)\"></i>\n" +
+    "                </span>\n" +
+    "\n" +
     "              </span>\n" +
     "            </li>\n" +
     "          </ul>\n" +

@@ -30,12 +30,22 @@ module.exports = {
           res.send(500, {errors: errors});
         } else {
 
+          var run_id;
+          var existing_run = false;
+
+          if(req.body.run_id){
+            run_id = req.body.run_id;
+            existing_run = true;
+          } else {
+            run_id = Date.now();
+          }
+
           var origins = req.body.origin.split(",") || null;
           var response = {};
           var keyword = req.body.keyword;
           var until = req.body.end_time || ""; //yyyy-mm-dd
           var user_id = req.body.user_id;
-          var run_id = Date.now();
+
           var start_date = "";
 
           if (req.body.start_date){
@@ -87,15 +97,17 @@ module.exports = {
 
           Promise.all(p_stack).then(function(){
 
-              Run.create(run).exec(function createCB(err, created){
-                  if(err) {
-                      console.log(err);
-                  }else{
-                      console.log('Created run with id of  ' + created.id);
-                  }
+              if(!existing_run){
+                Run.create(run).exec(function createCB(err, created){
+                    if(err) {
+                        console.log(err);
+                    }else{
+                        console.log('Created run with id of  ' + created.id);
+                    }
 
-                  return;
-              });
+                    return;
+                });
+              }
 
               return res.json({data:run});
           });
