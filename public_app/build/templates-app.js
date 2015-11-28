@@ -196,7 +196,7 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "\n" +
     "<div class=\"row\" ng-if=\"chart\">\n" +
     "  <div class=\"col-xs-4 chart-data\">\n" +
-    "    <h4>Top Ten Results</h4>\n" +
+    "    <h4 class=\"sub-heading\">Top Ten Results</h4>\n" +
     "    <ul class=\"terms\">\n" +
     "      <li ng-repeat=\"term in topTen\" class=\"term\">\n" +
     "        <ul class=\"details\">\n" +
@@ -208,7 +208,7 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "    </ul>\n" +
     "  </div>\n" +
     "  <div class=\"col-xs-4 chart-data\">\n" +
-    "    <h4>Bottom Ten Results</h4>\n" +
+    "    <h4 class=\"sub-heading\">Bottom Ten Results</h4>\n" +
     "    <ul class=\"terms\">\n" +
     "      <li ng-repeat=\"term in bottomTen\" class=\"term\">\n" +
     "        <ul class=\"details\">\n" +
@@ -220,7 +220,7 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
     "    </ul>\n" +
     "  </div>\n" +
     "  <div class=\"col-xs-4 chart-data\">\n" +
-    "    <h4>Associated Data</h4>\n" +
+    "    <h4 class=\"sub-heading\">Associated Data</h4>\n" +
     "    <ul class=\"terms\">\n" +
     "      <li ng-repeat=\"keyword in keywords\" class=\"term\">\n" +
     "        <ul class=\"details\">\n" +
@@ -247,7 +247,7 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "            <div class=\"col-xs-12\">\n" +
     "<!--                 <label for=\"tags\" class=\"label label-default\">Tag</label> -->\n" +
     "                <h4 class=\"step\">Step 1:</h4>\n" +
-    "                <h5 class=\"step description\">What do you want to research? A single keyword works best.</h5>\n" +
+    "                <h5 class=\"step description sub-heading\">What do you want to research? A single keyword works best.</h5>\n" +
     "                <p class=\"input-group\">\n" +
     "                    <input class=\"form-control\" type=\"text\" placeholder=\"Tag to search\" ng-model=\"tag\" required />\n" +
     "                </p>\n" +
@@ -256,7 +256,7 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "            <div class=\"col-xs-12\">\n" +
     "<!--                 <label for=\"endDate\" class=\"label label-default\">Platforms</label> -->\n" +
     "                <h4 class=\"step\">Step 2:</h4>\n" +
-    "                <h5 class=\"step description\">Which platform would you like to get results from?</h5>\n" +
+    "                <h5 class=\"step description sub-heading\">Which platform would you like to get results from?</h5>\n" +
     "                <ul class=\"input-group platforms\">\n" +
     "                    <li>\n" +
     "                      <label for=\"twitter\" class=\"label label-default\"><img src=\"/assets/imgs/twitter.png\" /></label>\n" +
@@ -282,7 +282,7 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "            </div>\n" +
     "            <div class=\"col-xs-12\">\n" +
     "                <h4 class=\"step\">Step 3:</h4>\n" +
-    "                <h5 class=\"step description\">Let the magic happen!</h5>\n" +
+    "                <h5 class=\"step description sub-heading\">Let the magic happen!</h5>\n" +
     "                <p class=\"input-group\">\n" +
     "                    <button type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid\" ng-click=\"go()\">Go!</button>\n" +
     "                </p>\n" +

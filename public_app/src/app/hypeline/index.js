@@ -316,7 +316,14 @@ angular.module( 'hypeLine.hypeline', [
     });
 
     function pointClicked(event){
-      console.log(this);
+      //console.log(this);
+      //var grouped = _.groupBy(currentData, groupByTime);
+      //console.log(grouped);
+      //var pointData = getResultsForPoint(point.x);
+    }
+
+    function getResultsForPoint(point){
+      return point;
     }
 
     function getBracketedResults(data){
@@ -341,8 +348,6 @@ angular.module( 'hypeLine.hypeline', [
         scope.chartConfig.series[0].name = allSeries.data[0].tag;
         scope.chartConfig.title.text = "#" + allSeries.data[0].tag + " [ " + currentData.nugs.length + " data points ]";
       }
-      //scope.chartConfig.yAxis.max = 100;
-      //scope.chartConfig.yAxis.min = 0;
     }
 
     function getDate(item){
@@ -399,7 +404,6 @@ angular.module( 'hypeLine.hypeline', [
       } else {
         group = moment(item.date).startOf(scope.timegroup);
       }
-      //console.log(scope.$parent.timegroup, item.date, group.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'), group);
       item.modifiedDate = group.format('YYYY-MM-DDTHH:mm:ss.SSSSZ');
       return item.modifiedDate;
     }
