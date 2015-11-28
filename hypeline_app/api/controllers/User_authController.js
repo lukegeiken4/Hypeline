@@ -34,27 +34,35 @@ module.exports = {
 
     var client = this.getAuthApp();
     var data = req.body;
+    var token = req.body.token;
 
-    client.client.getApplication(client.applicationHref, function(err, application) {
-      var account = {
-        givenName: data.firstName,
-        surname: data.lastName,
-        username: data.username,
-        email: data.email,
-        password: data.password,
-        customData: {
-          org: data.organization || null
-        }
-      };
-      application.createAccount(account, function(err, createdAccount) {
-          if(err){
-            console.log(err);
-            return res.send(503, {error: err.userMessage});
-          } else {
-            return res.send(200, {message: 'user created'});
+    if(!req.body.token || !this.validToken(req.body.token)){
+      res.send(401, {error: "You need a valid access token to join this beta program."});
+    } else {
+      console.log('valid');
+
+      client.client.getApplication(client.applicationHref, function(err, application) {
+        var account = {
+          givenName: data.firstName,
+          surname: data.lastName,
+          username: data.username,
+          email: data.email,
+          password: data.password,
+          customData: {
+            org: data.organization || null
           }
+        };
+        application.createAccount(account, function(err, createdAccount) {
+            if(err){
+              console.log(err);
+              return res.send(503, {error: err.userMessage});
+            } else {
+              return res.send(200, {message: 'user created'});
+            }
+        });
       });
-    });
+
+    }
   },
 
   getUser: function(data){
@@ -155,6 +163,16 @@ module.exports = {
   },
 
   setAuth: function(account){
+
+  },
+
+  validToken: function(token){
+
+    var validTokens = [
+      'ABC789'
+    ];
+
+    return _.contains(validTokens, token);
 
   },
 
