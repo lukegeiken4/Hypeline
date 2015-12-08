@@ -15,7 +15,7 @@ angular.module( 'hypeLine.hypeline', [
   });
 })
 
-.controller( 'HypelineCtrl', function HypelineController( $scope, $http, Config, $rootScope, AuthService, $sanitize ) {
+.controller( 'HypelineCtrl', function HypelineController( $location, $scope, $http, Config, $rootScope, AuthService, $sanitize ) {
 
   $scope.defaultDates = function() {
     $scope.endDate = new Date();

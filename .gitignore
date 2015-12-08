@@ -68,7 +68,7 @@ config/local.js
 
 node_modules
 bower_components
-
+public_app/node_modules/*
 
 
 

@@ -26,11 +26,26 @@ angular.module( 'ngBoilerplate', [
   });
 })
 
-.factory( 'Config', function ConfigFactory($rootScope){
+.factory( 'Config', function ConfigFactory($rootScope, $location){
+
+  var area = $location.host();
+
+  if(area.indexOf('http://192.169.165.29') > -1 || area.indexOf('hypeline.co') > -1){
+
+    console.log('sending server request');
+    return {
+        appRoot: 'http://hypeline-app.herokuapp.com/',
+        secretKey: 'HpFNfvyWuVMuUK8c'
+    };
+
+  } else {
+    console.log('sending local request');
     return {
         appRoot: 'http://localhost:1337',
         secretKey: 'HpFNfvyWuVMuUK8c'
     };
+
+  }
 })
 
 .factory( 'Messages', function MessageFactory(){

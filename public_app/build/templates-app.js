@@ -374,39 +374,52 @@ angular.module("user/create.tpl.html", []).run(["$templateCache", function($temp
     "    <div ng-if=\"error\" class=\"alert alert-danger\">{{error}}</div>\n" +
     "    <form role=\"form\" ng-submit=\"createUser()\">\n" +
     "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-12 col-sm-6 form-group\">\n" +
+    "          <div class=\"col-xs-12 col-sm-6 col-sm-offset-3\">\n" +
+    "            <h2>Hello!</h2>\n" +
+    "            <p>We are currently in private beta. If you would like to help us beta test, please send an email to <a href=\"mailto:beta@hypelineapp.co\">beta@hypelineapp.co</a> and we'll get you on the list. Thank you.</p>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-6 col-sm-3 col-sm-offset-3 form-group\">\n" +
     "                <label for=\"firstName\">First Name</label>\n" +
     "                <input type=\"text\" class=\"form-control\" id=\"firstName\" ng-model=\"user.firstName\" />\n" +
     "            </div>\n" +
-    "            <div class=\"col-xs-12 col-sm-6 form-group\">\n" +
+    "            <div class=\"col-xs-12 col-sm-3 form-group\">\n" +
     "                <label for=\"lastName\">Last Name</label>\n" +
     "                <input type=\"text\" class=\"form-control\" id=\"lastName\" ng-model=\"user.lastName\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
+    "            <div class=\"col-xs-12 col-sm-6 col-sm-offset-3 form-group\">\n" +
     "                <label for=\"email\">Email</label>\n" +
     "                <input type=\"email\" class=\"form-control\" id=\"email\" ng-model=\"user.email\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
+    "            <div class=\"col-xs-12 col-sm-6 col-sm-offset-3  form-group\">\n" +
     "                <label for=\"userName\">User Name</label>\n" +
     "                <input type=\"text\" class=\"form-control\" id=\"userName\" ng-model=\"user.userName\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-12 col-sm-12 form-group\">\n" +
+    "            <div class=\"col-xs-12 col-sm-6 col-sm-offset-3  form-group\">\n" +
     "                <label for=\"password\">Password</label>\n" +
     "                <input type=\"password\" class=\"form-control\" id=\"password\" ng-model=\"user.password\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-12\">\n" +
+    "            <div class=\"col-xs-12 col-sm-6 col-sm-offset-3  form-group\">\n" +
+    "                <label for=\"token\">Beta Token</label>\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"token\" ng-model=\"user.token\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12 col-sm-6 col-sm-offset-3 \">\n" +
     "                <input class=\"btn btn-primary\" type=\"submit\" value=\"Create User\" id=\"createUser\"></input>\n" +
     "            </div>\n" +
     "        </div>\n" +
