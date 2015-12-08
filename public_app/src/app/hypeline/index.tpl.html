@@ -8,8 +8,8 @@
         <ng-form novalidate role="form" name="entryPoint" ng-show="newRun" class="new-run-form">
             <div class="col-xs-12">
 <!--                 <label for="tags" class="label label-default">Tag</label> -->
-                <h4 class="step">Step 1:</h4>
-                <h5 class="step description sub-heading">What do you want to research? A single keyword works best.</h5>
+<!--                 <h4 class="step">Step 1:</h4> -->
+                <h5 class="step description sub-heading">1. What do you want to research? A single keyword works best.</h5>
                 <p class="input-group">
                     <input class="form-control" type="text" placeholder="Tag to search" ng-model="tag" required />
                 </p>
@@ -17,8 +17,8 @@
             </div>
             <div class="col-xs-12">
 <!--                 <label for="endDate" class="label label-default">Platforms</label> -->
-                <h4 class="step">Step 2:</h4>
-                <h5 class="step description sub-heading">Which platform would you like to get results from?</h5>
+<!--                 <h4 class="step">Step 2:</h4> -->
+                <h5 class="step description sub-heading">2. Which platform would you like to get results from?</h5>
                 <ul class="input-group platforms">
                     <li>
                       <label for="twitter" class="label label-default"><img src="/assets/imgs/twitter.png" /></label>
@@ -43,8 +43,8 @@
                 </ul>
             </div>
             <div class="col-xs-12">
-                <h4 class="step">Step 3:</h4>
-                <h5 class="step description sub-heading">Let the magic happen!</h5>
+<!--                 <h4 class="step">Step 3:</h4> -->
+                <h5 class="step description sub-heading">3. Let the magic happen!</h5>
                 <p class="input-group">
                     <button type="submit" value="submit" class="btn btn-primary" ng-disabled="entryPoint.$invalid" ng-click="go()">Go!</button>
                 </p>
@@ -53,8 +53,8 @@
       </div>
 
       <div class="col-xs-4">
-        <h4 class="step">Prior Results</h4>
-        <h5 class="step description">Click to view</h5>
+<!--         <h4 class="step">Prior Results</h4> -->
+        <h5 class="step description sub-heading">Prior runs (click <i class="fa fa-plus-circle"></i> to add more results)</h5>
         <p ng-if="run.message" class="alert alert-info">{{run.message}}</p>
         <div class="panel panel-default past-runs">
           <div ng-if="runLoading">Loading...</div>

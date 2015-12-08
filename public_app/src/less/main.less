@@ -72,6 +72,9 @@ h2 {
 .btn-primary{
   background: @primary-color;
   border-color: @primary-color;
+  &.cta{
+    margin-top: 50px;
+  }
 }
 
 /**
@@ -122,6 +125,7 @@ a{
  * TODO: In a later version of this boilerplate, I'd like to automate this.
  */
 
+@import 'generic.less';
 @import '../app/home/home.less';
 @import '../app/hypeline/hypeline.less';
 @import '../app/about/about.less';

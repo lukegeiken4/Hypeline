@@ -5848,6 +5848,9 @@ h2 {
   background: #3c4fa2;
   border-color: #3c4fa2;
 }
+.btn-primary.cta {
+  margin-top: 50px;
+}
 /**
  * Footer
  */
@@ -5889,8 +5892,15 @@ a {
  *
  * TODO: In a later version of this boilerplate, I'd like to automate this.
  */
+.section {
+  padding: 50px 0;
+  border-bottom: 1px solid #ccc;
+}
+.section:last-of-type {
+  border-bottom: 0;
+}
 .jumbotron {
-  margin: 40px 0 80px 0;
+  margin: 40px 0 30px 0;
   text-align: center;
 }
 .jumbotron h1 {
@@ -5921,6 +5931,9 @@ a {
   vertical-align: -10%;
   font-size: 28px;
   line-height: 1;
+}
+.marketing p {
+  color: #3c4fa2;
 }
 .highcharts-container {
   width: 100% !important;
@@ -6103,6 +6116,16 @@ ul.time-grouping lilast-of-type {
 }
 .about-header {
   color: #3c4fa2;
+}
+.about .full img {
+  width: 100%;
+}
+.about .half img {
+  width: 50%;
+}
+.about h3 {
+  background: #ebebeb;
+  padding: 15px;
 }
 #pricing-anchor {
   text-decoration: none;

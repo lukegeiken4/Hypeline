@@ -2,49 +2,53 @@ angular.module('templates-app', ['about/about.tpl.html', 'home/home.tpl.html', '
 
 angular.module("about/about.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("about/about.tpl.html",
-    "<div class=\"row\">\n" +
+    "<div class=\"row about\">\n" +
     "  <h1 class=\"page-header about-header\">\n" +
     "    Hypeline\n" +
-    "    <small>The basics</small>\n" +
+    "    <small> | The basics</small>\n" +
     "  </h1>\n" +
+    "  <h3><i class=\"fa fa-search\"></i> The Hunt</h3>\n" +
     "  <p>\n" +
-    "    We provide you with as much social sentiment as you need. Take what you want from it!\n" +
+    "    Searching is as simple as specifying a keyword (hashtag) and selecting which platforms you wish to pull data from.\n" +
+    "  </p>\n" +
+    "  <div class=\"full\">\n" +
+    "    <img src=\"/assets/imgs/search.png\" />\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <h3><i class=\"fa fa-list\"></i> The Results</h3>\n" +
+    "  <p>\n" +
+    "    We'll store all your previous runs and allow you to revisit them or add more results to a specific run. <br />\n" +
+    "    (Coming soon!) The ability to compare separate runs on the same graph.\n" +
+    "  </p>\n" +
+    "  <div class=\"half\">\n" +
+    "    <img src=\"/assets/imgs/review.png\" />\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <h3><i class=\"fa fa-bar-chart\"></i> The Graph</h3>\n" +
+    "  <p>\n" +
+    "    View your results on a timeline. This timeline is configurable by various time grouping to truly analyze a trend.\n" +
+    "  </p>\n" +
+    "  <p class=\"full\">\n" +
+    "     <img src=\"/assets/imgs/graph.png\" />\n" +
     "  </p>\n" +
     "\n" +
-    "  <div>\n" +
-    "    <img src=\"/assets/imgs/top_app.png\" />\n" +
-    "  </div>\n" +
-    "  \n" +
-    "  <h3>Social sentiment</h3>\n" +
-    "\n" +
+    "  <h3><i class=\"fa fa-level-down\"></i> The Deep Dive</h3>\n" +
     "  <p>\n" +
-    "    As a business owner active on social media, you are likely tracking the number social mentions about your brand. But are these messages positive or negative about your brand?\n" +
-    "    <br/>\n" +
-    "    This is Social Sentiment.\n" +
-    "    <img src=\"/assets/imgs/graph.png\" />\n" +
+    "    We'll also show you the top and bottom results for a given run to make sure we're doing our job!\n" +
+    "  </p>\n" +
+    "  <p class=\"full\">\n" +
+    "    <img src=\"/assets/imgs/results.png\" />\n" +
     "  </p>\n" +
     "\n" +
     "  <p>\n" +
     "\n" +
     "  <h1 class=\"page-header about-header\">\n" +
-    "    Who should use this?\n" +
+    "    Any questions?\n" +
     "  </h1>\n" +
     "  <p>\n" +
-    "    Business owners who are active social media users and want to: \n" +
-    "      <ul>\n" +
-    "        <li>improve their social media marketing</li>\n" +
-    "        <li>identify current and potential trends on social media</li>\n" +
-    "        <li>understand how your customers, fans and followers  feel about your brand</li>\n" +
-    "      </ul>\n" +
-    "  </p>\n" +
-    "\n" +
-    "\n" +
-    "  <h1 class=\"page-header about-header\" id=\"pricing\">\n" +
-    "    <a id=\"pricing-anchor\">Pricing<a>\n" +
-    "    <small>Affordable for any business</small>\n" +
-    "  </h1>\n" +
-    "  <p>\n" +
-    "    $67 / per 3 users\n" +
+    "    We'd be glad to talk! <br />\n" +
+    "    Drop us a line at <a href=\"mailto:hypelineco@gmail.com\">hypelineco@gmail.com</a>. <br />\n" +
+    "    If you'd like to see a working demo, <a href=\"/#/demo\">we've got that too</a></p>\n" +
     "  </p>\n" +
     "</div>\n" +
     "\n" +
@@ -57,68 +61,56 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "  <img src=\"/assets/imgs/logo_large.png\" />\n" +
     "\n" +
     "  <p class=\"lead\">\n" +
-    "    Semiotics irony tofu ugh put a bird on it letterpress ennui, gluten-free helvetica biodiesel hashtag squid. Yr bespoke DIY poutine banh mi williamsburg, normcore try-hard trust fund church-key shoreditch tumblr. Squid actually lo-fi, YOLO locavore umami blog heirloom microdosing fanny pack twee banh mi waistcoat occupy.\n" +
+    "    Here at Hypeline, we have one simple mission: analyze and trend the social voice. Whether you're looking to measure the effectiveness of a\n" +
+    "    social marketing campaign, gauging public sentiment of your favorite political candidate, or simply keeping up on the tone of your sports team,\n" +
+    "    we're here to help.\n" +
     "  </p>\n" +
     "\n" +
     "  <div class=\"btn-group\">\n" +
-    "    <a href=\"/#/about\" class=\"btn btn-large btn-default\">\n" +
-    "      <i class=\"fa fa-question-circle\"></i>\n" +
-    "      What we do\n" +
-    "    </a>\n" +
-    "    <a href=\"/#/app\" class=\"btn btn-large btn-primary\">\n" +
-    "      <i class=\"fa fa-rocket\"></i>\n" +
-    "      Get Started\n" +
+    "    <a href=\"/#/demo\" class=\"btn btn-large btn-primary cta\">\n" +
+    "      <i class=\"fa fa-heart\"></i>\n" +
+    "      See us in action\n" +
     "    </a>\n" +
     "  </div>\n" +
+    "\n" +
     "</div>\n" +
     "\n" +
-    "<div class=\"marketing\">\n" +
+    "<div class=\"marketing section\">\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-thumbs-up\"></i> Good to Go!</h4>\n" +
+    "      <h4><i class=\"fa fa-thumbs-up\"></i> Data</h4>\n" +
     "      <p>\n" +
-    "        Bullet point for stuff.\n" +
+    "        Easy data gathering from multiple platforms.\n" +
     "      </p>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
     "      <h4><i class=\"fa fa-magic\"></i> Complete Analysis</h4>\n" +
     "      <p>\n" +
-    "        Bullet point for more stuff.\n" +
+    "        Superb sentiment analysis from our friends at <a href=\"https://indico.io/\">Indico.io</a> (they're seriously awesome)!\n" +
     "      </p>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-retweet\"></i> Real time trending</h4>\n" +
+    "      <h4><i class=\"fa fa-bar-chart\"></i> Real time trending</h4>\n" +
     "      <p>\n" +
-    "        So much awesome. So little time.\n" +
-    "      </p>\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "  <div class=\"row\">\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-star\"></i> And dinosaurs</h4>\n" +
-    "      <p>\n" +
-    "        This is pretty much the best thing ever.\n" +
-    "        <a href=\"http://angularjs.org\">More &raquo;</a>\n" +
-    "      </p>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-bar-chart\"></i> Less suck. More stats</h4>\n" +
-    "      <p>\n" +
-    "        You want stats? We've got stats/\n" +
-    "        <a href=\"http://lesscss.org\">More &raquo;</a>\n" +
-    "      </p>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
-    "      <h4><i class=\"fa fa-usd\"></i> Give us all your money</h4>\n" +
-    "      <p>\n" +
-    "        I'm about to retire.\n" +
-    "        <a href=\"http://joshdmiller.github.com/angular-placeholders\">\n" +
-    "          More &raquo;\n" +
-    "        </a>\n" +
+    "        Trend results with data grouping of your choosing.\n" +
     "      </p>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
+    "\n" +
+    "<div class=\"section\">\n" +
+    "  <p>\n" +
+    "    We providing simple tools to access and gather tailored information from various social media networks and analyze the sentiment of each and\n" +
+    "    every data point to give you the insight and trend curve to let you know exactly what the public sentiment of your query is. Better yet, you can\n" +
+    "    trend that data by user-specified time groupings. <a href=\"/#/demo\">Go on! Have some fun!</a>\n" +
+    "  </p>\n" +
+    "\n" +
+    "  <p>\n" +
+    "    Right now, we're in an extremely limited beta. If you'd like an invite, send an email to <a href=\"mailto:hypelineco@gmail.com\">hypelineco@gmail.com</a>\n" +
+    "    and let us know! We'd be interested to know what Hypeline can provide for you.\n" +
+    "  </p>\n" +
+    "</div>\n" +
+    "\n" +
     "\n" +
     "");
 }]);
@@ -246,8 +238,8 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "        <ng-form novalidate role=\"form\" name=\"entryPoint\" ng-show=\"newRun\" class=\"new-run-form\">\n" +
     "            <div class=\"col-xs-12\">\n" +
     "<!--                 <label for=\"tags\" class=\"label label-default\">Tag</label> -->\n" +
-    "                <h4 class=\"step\">Step 1:</h4>\n" +
-    "                <h5 class=\"step description sub-heading\">What do you want to research? A single keyword works best.</h5>\n" +
+    "<!--                 <h4 class=\"step\">Step 1:</h4> -->\n" +
+    "                <h5 class=\"step description sub-heading\">1. What do you want to research? A single keyword works best.</h5>\n" +
     "                <p class=\"input-group\">\n" +
     "                    <input class=\"form-control\" type=\"text\" placeholder=\"Tag to search\" ng-model=\"tag\" required />\n" +
     "                </p>\n" +
@@ -255,8 +247,8 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "            </div>\n" +
     "            <div class=\"col-xs-12\">\n" +
     "<!--                 <label for=\"endDate\" class=\"label label-default\">Platforms</label> -->\n" +
-    "                <h4 class=\"step\">Step 2:</h4>\n" +
-    "                <h5 class=\"step description sub-heading\">Which platform would you like to get results from?</h5>\n" +
+    "<!--                 <h4 class=\"step\">Step 2:</h4> -->\n" +
+    "                <h5 class=\"step description sub-heading\">2. Which platform would you like to get results from?</h5>\n" +
     "                <ul class=\"input-group platforms\">\n" +
     "                    <li>\n" +
     "                      <label for=\"twitter\" class=\"label label-default\"><img src=\"/assets/imgs/twitter.png\" /></label>\n" +
@@ -281,8 +273,8 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "                </ul>\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-12\">\n" +
-    "                <h4 class=\"step\">Step 3:</h4>\n" +
-    "                <h5 class=\"step description sub-heading\">Let the magic happen!</h5>\n" +
+    "<!--                 <h4 class=\"step\">Step 3:</h4> -->\n" +
+    "                <h5 class=\"step description sub-heading\">3. Let the magic happen!</h5>\n" +
     "                <p class=\"input-group\">\n" +
     "                    <button type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid\" ng-click=\"go()\">Go!</button>\n" +
     "                </p>\n" +
@@ -291,8 +283,8 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "      </div>\n" +
     "\n" +
     "      <div class=\"col-xs-4\">\n" +
-    "        <h4 class=\"step\">Prior Results</h4>\n" +
-    "        <h5 class=\"step description\">Click to view</h5>\n" +
+    "<!--         <h4 class=\"step\">Prior Results</h4> -->\n" +
+    "        <h5 class=\"step description sub-heading\">Prior runs (click <i class=\"fa fa-plus-circle\"></i> to add more results)</h5>\n" +
     "        <p ng-if=\"run.message\" class=\"alert alert-info\">{{run.message}}</p>\n" +
     "        <div class=\"panel panel-default past-runs\">\n" +
     "          <div ng-if=\"runLoading\">Loading...</div>\n" +
@@ -344,9 +336,6 @@ angular.module("nav/nav.tpl.html", []).run(["$templateCache", function($template
     "      <ul class=\"list-inline\">\n" +
     "        <li>\n" +
     "          <a href=\"#/about\">Info</a>\n" +
-    "        </li>\n" +
-    "        <li>\n" +
-    "          <a href=\"#/about#pricing\">Pricing</a>\n" +
     "        </li>\n" +
     "      </ul>\n" +
     "    </div>\n" +
