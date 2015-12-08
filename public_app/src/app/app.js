@@ -34,7 +34,7 @@ angular.module( 'ngBoilerplate', [
 
     console.log('sending server request');
     return {
-        appRoot: 'http://hypeline-app.herokuapp.com/',
+        appRoot: 'http://hypeline-app.herokuapp.com',
         secretKey: 'HpFNfvyWuVMuUK8c'
     };
 
