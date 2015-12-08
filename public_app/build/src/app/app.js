@@ -29,6 +29,7 @@ angular.module( 'ngBoilerplate', [
 .factory( 'Config', function ConfigFactory($rootScope, $location){
 
   var area = $location.host();
+  console.log(area);
 
   if(area.indexOf('http://192.169.165.29') > -1 || area.indexOf('hypeline.co') > -1){
 
