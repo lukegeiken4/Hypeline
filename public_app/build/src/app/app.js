@@ -31,18 +31,14 @@ angular.module( 'ngBoilerplate', [
   var area = $location.host();
 
   if(area.indexOf('192.169.165.29') > -1 || area.indexOf('hypeline.co') > -1){
-
-    console.log('sending server request');
     return {
         appRoot: 'http://hypeline-app.herokuapp.com',
         secretKey: 'HpFNfvyWuVMuUK8c'
     };
 
   } else {
-    console.log('sending local request');
     return {
-        //appRoot: 'http://localhost:1337',
-        appRoot: 'http://hypeline-app.herokuapp.com',
+        appRoot: 'http://localhost:1337',
         secretKey: 'HpFNfvyWuVMuUK8c'
     };
 
