@@ -5,8 +5,6 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-var crypto = require("cryptojs").Crypto;
-//var crypto = require('crypto');
 var node_cryptojs = require('node-cryptojs-aes');
 var CryptoJS = node_cryptojs.CryptoJS;
 var JsonFormatter = node_cryptojs.JsonFormatter;
