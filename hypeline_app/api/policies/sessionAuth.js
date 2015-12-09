@@ -17,7 +17,18 @@ module.exports = function(req, res, next) {
   // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
 
-  if(!req.body.auth_string){
+  if(req.body.demo && req.body.demo === true){
+    var application = getAuthApp();
+    application.client.getAccount('https://api.stormpath.com/v1/accounts/2iTohWzF9SOKMIJ0B3gnuX', function(err, account){
+      if(err){
+        console.log('error fetching account', err);
+        noUser();
+      } else {
+        return next();
+      }
+    });
+
+  } else if(!req.body.auth_string){
     noUser();
   } else {
     var key = sails.config.crypto['CRYPTO_KEY'];

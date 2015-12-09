@@ -20,7 +20,7 @@ angular.module( 'ngBoilerplate', [
 
 .controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-    if ( angular.isDefined( toState.data.pageTitle ) ) {
+    if ( angular.isDefined( toState.data && toState.data.pageTitle ) ) {
       //$scope.pageTitle = toState.data.pageTitle + ' | Hypeline' ;
       $scope.pageTitle = 'Hypeline' ;
     }
@@ -36,7 +36,6 @@ angular.module( 'ngBoilerplate', [
         appRoot: 'http://hypeline-app.herokuapp.com',
         secretKey: 'HpFNfvyWuVMuUK8c'
     };
-
   } else {
     return {
         appRoot: 'http://localhost:1337',
@@ -152,6 +151,7 @@ angular.module( 'ngBoilerplate', [
       handle = function(data){
         Messages.set('login', data.message);
         if(data.type === 'eject'){
+          console.log('ejecting');
           this.logout(false);
           $location.path('/user/login');
         }
@@ -180,12 +180,12 @@ angular.module( 'ngBoilerplate', [
   $rootScope.$on('$stateChangeStart', function () {
     var area = $location.url().split('/')[1];
     if(
-      (
-        area === 'app'
-      ) &&
-      !AuthService.isLoggedIn()){
-        $location.path('user/login');
-      }
+        (
+          area === 'app'
+        ) && !AuthService.isLoggedIn()
+    ){
+      $location.path('user/login');
+    }
   });
 
 })

@@ -276,7 +276,7 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "<!--                 <h4 class=\"step\">Step 3:</h4> -->\n" +
     "                <h5 class=\"step description sub-heading\">3. Let the magic happen!</h5>\n" +
     "                <p class=\"input-group\">\n" +
-    "                    <button type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid\" ng-click=\"go()\">Go!</button>\n" +
+    "                    <button type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid || demo\" ng-click=\"go()\">{{ demo ? \"Disabled for demo\" : \"Go!\"}}</button>\n" +
     "                </p>\n" +
     "            </div>\n" +
     "        </form>\n" +
@@ -293,7 +293,7 @@ angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($t
     "              <span class=\"run\">#{{run.tag}} :\n" +
     "                <span class=\"small\">[{{run.runDate}}]</span>\n" +
     "<!--                 <span ng-if=\"run.showOptions\" class=\"options\">OPTS</span> -->\n" +
-    "                <span class=\"options\">\n" +
+    "                <span class=\"options\" ng-if=\"!demo\">\n" +
     "                  <i class=\"fa fa-plus-circle\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Get more results\" ng-click=\"getMore(run)\"></i>\n" +
     "                  <i class=\"fa fa-trash\" ng-click=\"deleteRun(run)\"></i>\n" +
     "                </span>\n" +

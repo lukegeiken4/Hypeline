@@ -3,15 +3,26 @@ angular.module( 'hypeLine.hypeline', [
 ])
 
 .config(function config( $stateProvider ) {
-  $stateProvider.state( 'hypeline', {
+  $stateProvider
+  .state( 'hypeline', {
     url: '/app',
     views: {
       "main": {
         controller: 'HypelineCtrl',
         templateUrl: 'hypeline/index.tpl.html'
       }
-    },
-    data:{ pageTitle: 'Get your hypeline' }
+    }
+  })
+  .state( 'demo' , {
+    url: '/demo',
+    views: {
+      "main": {
+        controller: function($scope) {
+          $scope.demoPage = true;
+        },
+        templateUrl: 'hypeline/index.tpl.html'
+      }
+    }
   });
 })
 
@@ -23,6 +34,8 @@ angular.module( 'hypeLine.hypeline', [
     $scope.tag = null;
     $scope.datesUpdated = moment().format('x');
   };
+
+  $scope.demo = $scope.demoPage || false;
 
   $scope.defaultDates();
   $scope.platforms = {};
@@ -38,14 +51,16 @@ angular.module( 'hypeLine.hypeline', [
 
   var setUser = function(){
     $scope.user = AuthService.get();
-    if($scope.user){
+    if($scope.user || $scope.demo){
       getUserRuns();
     } else {
-      AuthService.eject();
+      if(!$scope.demo){
+        AuthService.eject();
+      }
     }
   };
 
-  if($scope.user){
+  if($scope.user || $scope.demo){
     getUserRuns();
   } else {
     setUser();
@@ -58,10 +73,14 @@ angular.module( 'hypeLine.hypeline', [
   function getUserRuns(){
     $scope.runs = [];
     $scope.runLoading = true;
-    var params = {
-      user_id: $scope.user.userId,
-      auth_string: $scope.user.authString
-    };
+    var params = {};
+    if(!$scope.demo){
+      params.user_id = $scope.user.userId;
+      params.auth_string = $scope.user.authString;
+    } else {
+      params.user_id = '2iTohWzF9SOKMIJ0B3gnuX';
+      params.demo = $scope.demo;
+    }
     var url = Config.appRoot + '/run';
     $http.post(url, params)
     .then(
@@ -77,7 +96,9 @@ angular.module( 'hypeLine.hypeline', [
   }
 
   $scope.getRun = function(run){
-    $scope.runId = run.runId;
+    if(run){
+      $scope.runId = run.runId;
+    }
   };
 
   $scope.showOptions = function(run){
@@ -131,7 +152,8 @@ angular.module( 'hypeLine.hypeline', [
 
   $scope.go = function(run){
     getPlatforms();
-    if(!$scope.user){
+    if(!$scope.user && !$scope.demo){
+      console.log('ehre');
       setUser();
       if($scope.user){
         go(run);
@@ -169,17 +191,25 @@ angular.module( 'hypeLine.hypeline', [
     }
 
     function go(run){
-      if($scope.user){
+      if($scope.user || $scope.demo){
         $scope.loading = true;
         var platforms = getPlatforms();
-        var params = {
-          origin: platforms,
-          user_id: $scope.user.userId,
-          keyword: $scope.tag,
-          start_date: $scope.startDate,
-          end_date: $scope.endDate,
-          auth_string: $scope.user.authString
-        };
+        var params = {};
+        if($scope.demo){
+          params.user_id = '2iTohWzF9SOKMIJ0B3gnuX';
+          params.keyword = $scope.tag;
+          params.start_date = $scope.startDate;
+          params.end_date = $scope.endDate;
+          params.demo = $scope.demo;
+          params.origin = platforms;
+        } else {
+          params.origin = platforms;
+          params.user_id = $scope.user.userId;
+          params.keyword = $scope.tag;
+          params.start_date = $scope.startDate;
+          params.end_date = $scope.endDate;
+          params.auth_string = $scope.user.authString;
+        }
         if(run){
           params.run_id = run.runId;
           params.origin = run.origin;
@@ -480,11 +510,15 @@ angular.module( 'hypeLine.hypeline', [
     }
 
     function fetch(){
-      if(scope.$parent.user){
+      if(scope.$parent.user || scope.$parent.demo){
         var params = {
-          run_id: scope.runid,
-          auth_string: scope.$parent.user.authString
+          run_id: scope.runid
         };
+        if(scope.$parent.demo){
+          params.demo = scope.$parent.demo;
+        } else {
+          params.auth_string = scope.$parent.user.authString;
+        }
         $http.post(Config.appRoot + '/search', params)
         .then(
           function(data){

@@ -14,6 +14,10 @@ module.exports = {
           errors.push("You must specify at least one platform to search.");
         }
 
+        if(req.body.demo){
+          res.send(500, {error: "Search not allowed in demo"});
+        }
+
         if(!req.body.keyword){
           errors.push("You must specify a keyword");
         }

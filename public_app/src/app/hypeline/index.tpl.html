@@ -46,7 +46,7 @@
 <!--                 <h4 class="step">Step 3:</h4> -->
                 <h5 class="step description sub-heading">3. Let the magic happen!</h5>
                 <p class="input-group">
-                    <button type="submit" value="submit" class="btn btn-primary" ng-disabled="entryPoint.$invalid" ng-click="go()">Go!</button>
+                    <button type="submit" value="submit" class="btn btn-primary" ng-disabled="entryPoint.$invalid || demo" ng-click="go()">{{ demo ? "Disabled for demo" : "Go!"}}</button>
                 </p>
             </div>
         </form>
@@ -63,7 +63,7 @@
               <span class="run">#{{run.tag}} :
                 <span class="small">[{{run.runDate}}]</span>
 <!--                 <span ng-if="run.showOptions" class="options">OPTS</span> -->
-                <span class="options">
+                <span class="options" ng-if="!demo">
                   <i class="fa fa-plus-circle" data-toggle="tooltip" data-placement="top" title="Get more results" ng-click="getMore(run)"></i>
                   <i class="fa fa-trash" ng-click="deleteRun(run)"></i>
                 </span>
