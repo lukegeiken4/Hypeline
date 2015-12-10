@@ -2,7 +2,7 @@
 var sys = require('sys');
 var exec = require('child_process').exec;
 var indico = require('indico.io');
-indico.apiKey =  '7c494dbd995378039f6e01915e09a94a';
+indico.apiKey =  sails.config.indico.API_KEY;
 
 module.exports = {
 

@@ -30,6 +30,10 @@ module.exports = {
 
   crypto: {
     CRYPTO_KEY: 'HpFNfvyWuVMuUK8c'
+  },
+
+  indico: {
+    API_KEY: '0d7fdea37441d5908672b0db548fb569'
   }
 
   /***************************************************************************

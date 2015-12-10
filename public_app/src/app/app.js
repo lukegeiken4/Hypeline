@@ -151,7 +151,6 @@ angular.module( 'ngBoilerplate', [
       handle = function(data){
         Messages.set('login', data.message);
         if(data.type === 'eject'){
-          console.log('ejecting');
           this.logout(false);
           $location.path('/user/login');
         }

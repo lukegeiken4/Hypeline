@@ -132,7 +132,6 @@ angular.module( 'hypeLine.hypeline', [
   };
 
   $scope.getMore = function(run){
-    console.log(run);
     $scope.go(run);
   };
 

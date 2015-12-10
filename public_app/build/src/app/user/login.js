@@ -2,7 +2,7 @@ angular.module( 'hypeLine.userLogin', [
   'ui.router'
 ])
 
-.config(function config( $stateProvider ) {
+.config(["$stateProvider", function config( $stateProvider ) {
   $stateProvider.state( 'userLogin', {
     url: '/user/login',
     views: {
@@ -13,9 +13,9 @@ angular.module( 'hypeLine.userLogin', [
     },
     data:{ pageTitle: 'User Login' }
   });
-})
+}])
 
-.controller( 'UserLoginCtrl', function LoginController( $scope, $http, Config, $location, AuthService, Messages, $sanitize ) {
+.controller( 'UserLoginCtrl', ["$scope", "$http", "Config", "$location", "AuthService", "Messages", "$sanitize", function LoginController( $scope, $http, Config, $location, AuthService, Messages, $sanitize ) {
 
     var messages = Messages.get('login');
     if(messages){
@@ -28,7 +28,6 @@ angular.module( 'hypeLine.userLogin', [
       $http.post(Config.appRoot + '/user/login', $scope.user)
       .then(
           function(data){
-              console.log('success', data);
               AuthService.set(data.data.account, true);
               $scope.loading = false;
           },
@@ -40,7 +39,7 @@ angular.module( 'hypeLine.userLogin', [
       );
     };
 
-})
+}])
 
 ;
 

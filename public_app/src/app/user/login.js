@@ -28,7 +28,6 @@ angular.module( 'hypeLine.userLogin', [
       $http.post(Config.appRoot + '/user/login', $scope.user)
       .then(
           function(data){
-              console.log('success', data);
               AuthService.set(data.data.account, true);
               $scope.loading = false;
           },
