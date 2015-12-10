@@ -167,7 +167,9 @@ module.exports = {
   validToken: function(token){
 
     var validTokens = [
-      'ABC789'
+      'ABC789',
+      'GE5N7Y',
+      'TK8C45'
     ];
 
     return _.contains(validTokens, token);
