@@ -9,7 +9,7 @@
     </button>
     <div class="navbar-brand clearfix">
         <p>
-          <a href="/"><img src="/assets/imgs/hypeline_logo_small.png" /></a>
+          <a href="/"><img src="/assets/imgs/logo_small.jpg" /></a>
         </p>
     </div>
     <div class="navbar-info clearfix">
@@ -20,17 +20,22 @@
       </ul>
     </div>
   </div>
-  <div ng-if="user" class="nav navbar-nav navbar-right">
-    <p>
-      <a href="#/app" class="btn btn-success">App</a>
-      <a href="#/app" ng-click="logout()" href="#/user/logout" class="btn">Logout</a>
-    </p>
-  </div>
-  <div ng-if="!user" class="nav navbar-nav navbar-right">
-    <p>
-      <a href="#/user/create" class="btn btn-primary">Sign Up</a>
-      <a href="#/user/login" class="btn">Log In</a>
+  <div class="nav navbar-nav navbar-right">
+    <p ng-if="user">
+      <span ng-if="user">
+        <a href="#/app" class="btn btn-success">App</a>
+        <a href="#/app" ng-click="logout()" href="#/user/logout" class="btn">Logout</a>
+      </span>
+      <span ng-if="!user">
+        <a href="#/user/create" class="btn btn-primary">Sign Up</a>
+        <a href="#/user/login" class="btn">Log In</a>
+      </span>
     </p>
   </div>
   <div class="collapse navbar-collapse" collapse="menuCollapsed"></div>
+</div>
+<div class="indico clearfix">
+  <p>
+    <a href="http://indico.io">Powered By <img src="/assets/imgs/indico.png" /></a>
+  </p>
 </div>

@@ -329,7 +329,7 @@ angular.module("nav/nav.tpl.html", []).run(["$templateCache", function($template
     "    </button>\n" +
     "    <div class=\"navbar-brand clearfix\">\n" +
     "        <p>\n" +
-    "          <a href=\"/\"><img src=\"/assets/imgs/hypeline_logo_small.png\" /></a>\n" +
+    "          <a href=\"/\"><img src=\"/assets/imgs/logo_small.jpg\" /></a>\n" +
     "        </p>\n" +
     "    </div>\n" +
     "    <div class=\"navbar-info clearfix\">\n" +
@@ -340,19 +340,24 @@ angular.module("nav/nav.tpl.html", []).run(["$templateCache", function($template
     "      </ul>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div ng-if=\"user\" class=\"nav navbar-nav navbar-right\">\n" +
-    "    <p>\n" +
-    "      <a href=\"#/app\" class=\"btn btn-success\">App</a>\n" +
-    "      <a href=\"#/app\" ng-click=\"logout()\" href=\"#/user/logout\" class=\"btn\">Logout</a>\n" +
-    "    </p>\n" +
-    "  </div>\n" +
-    "  <div ng-if=\"!user\" class=\"nav navbar-nav navbar-right\">\n" +
-    "    <p>\n" +
-    "      <a href=\"#/user/create\" class=\"btn btn-primary\">Sign Up</a>\n" +
-    "      <a href=\"#/user/login\" class=\"btn\">Log In</a>\n" +
+    "  <div class=\"nav navbar-nav navbar-right\">\n" +
+    "    <p ng-if=\"user\">\n" +
+    "      <span ng-if=\"user\">\n" +
+    "        <a href=\"#/app\" class=\"btn btn-success\">App</a>\n" +
+    "        <a href=\"#/app\" ng-click=\"logout()\" href=\"#/user/logout\" class=\"btn\">Logout</a>\n" +
+    "      </span>\n" +
+    "      <span ng-if=\"!user\">\n" +
+    "        <a href=\"#/user/create\" class=\"btn btn-primary\">Sign Up</a>\n" +
+    "        <a href=\"#/user/login\" class=\"btn\">Log In</a>\n" +
+    "      </span>\n" +
     "    </p>\n" +
     "  </div>\n" +
     "  <div class=\"collapse navbar-collapse\" collapse=\"menuCollapsed\"></div>\n" +
+    "</div>\n" +
+    "<div class=\"indico clearfix\">\n" +
+    "  <p>\n" +
+    "    <a href=\"http://indico.io\">Powered By <img src=\"/assets/imgs/indico.png\" /></a>\n" +
+    "  </p>\n" +
     "</div>\n" +
     "");
 }]);

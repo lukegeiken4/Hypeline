@@ -38,7 +38,8 @@ angular.module( 'ngBoilerplate', [
     };
   } else {
     return {
-        appRoot: 'http://localhost:1337',
+        //appRoot: 'http://localhost:1337',
+        appRoot: 'http://hypeline-app.herokuapp.com',
         secretKey: 'HpFNfvyWuVMuUK8c'
     };
 
