@@ -341,7 +341,7 @@ angular.module("nav/nav.tpl.html", []).run(["$templateCache", function($template
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"nav navbar-nav navbar-right\">\n" +
-    "    <p ng-if=\"user\">\n" +
+    "    <p>\n" +
     "      <span ng-if=\"user\">\n" +
     "        <a href=\"#/app\" class=\"btn btn-success\">App</a>\n" +
     "        <a href=\"#/app\" ng-click=\"logout()\" href=\"#/user/logout\" class=\"btn\">Logout</a>\n" +
@@ -356,7 +356,7 @@ angular.module("nav/nav.tpl.html", []).run(["$templateCache", function($template
     "</div>\n" +
     "<div class=\"indico clearfix\">\n" +
     "  <p>\n" +
-    "    <a href=\"http://indico.io\">Powered By <img src=\"/assets/imgs/indico.png\" /></a>\n" +
+    "    <a target=\"_blank\" href=\"http://indico.io\">Powered By <img src=\"/assets/imgs/indico.png\" /></a>\n" +
     "  </p>\n" +
     "</div>\n" +
     "");
@@ -370,7 +370,7 @@ angular.module("user/create.tpl.html", []).run(["$templateCache", function($temp
     "        <div class=\"row\">\n" +
     "          <div class=\"col-xs-12 col-sm-6 col-sm-offset-3\">\n" +
     "            <h2>Hello!</h2>\n" +
-    "            <p>We are currently in private beta. If you would like to help us beta test, please send an email to <a href=\"mailto:beta@hypelineapp.co\">beta@hypelineapp.co</a> and we'll get you on the list. Thank you.</p>\n" +
+    "            <p>We are currently in private beta. If you would like to help us beta test, please send an email to <a href=\"mailto:hypelineco@gmail.com\">hypelineco@gmail.com</a> and we'll get you on the list. Thank you.</p>\n" +
     "          </div>\n" +
     "        </div>\n" +
     "        <div class=\"row\">\n" +
