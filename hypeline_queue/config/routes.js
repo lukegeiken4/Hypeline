@@ -17,7 +17,7 @@
  * CoffeeScript for the front-end.
  *
  * For more information on configuring custom routes, check out:
- * http://sailsjs.org/#!/documentation/concepts/Routes/RouteTargetSyntax.html
+ * http://sailsjs.org/#/documentation/concepts/Routes/RouteTargetSyntax.html
  */
 
 module.exports.routes = {
@@ -34,32 +34,16 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  },
+  }
 
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
   *                                                                          *
-  * If a request to a URL doesn't match any of the custom routes above, it   *
+  *  If a request to a URL doesn't match any of the custom routes above, it  *
   * is matched against Sails route blueprints. See `config/blueprints.js`    *
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
 
-  'POST /user/login': 'User_authController.authUser',
-  'POST /user/create': 'User_authController.createUser',
-  'POST /user/send_reset': 'User_authController.sendUserReset',
-  'POST /user/reset': 'User_authController.resetPassword',
-
-  'GET /test': 'Hype_nugController.testPush',
-  'POST /twitter_test': 'TwitterController.testTwitter',
-
-  'POST /analyze':"AnalyzeController.get_nugs",
-  'POST /search':"AnalyzeController.find_run",
-  'POST /delete_run': "AnalyzeController.delete_run",
-  'POST /run': 'RunController.get_user_runs',
-  'POST /run/remove': 'AnalyzeController.delete_run',
-  'POST /schedule/create': 'SchedulerController.schedule_run',
-  'POST /schedule/runs': 'SchedulerController.get_user_scheduled_runs',
-  'POST /schedule/test/queue': 'SchedulerController.test_queue'
 };
