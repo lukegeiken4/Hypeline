@@ -68,6 +68,8 @@ module.exports = {
 
     analPush: function(data) {
 
+      var models = new Promise(function(resolve, reject){
+
         //Check data
         //Create string of text to use as python param
         var model_data = data.data;
@@ -126,18 +128,20 @@ module.exports = {
         Promise.all([
             senti, tags, keywords
         ]).then(function(){
-
-            for(var i = 0; i < model_data.length; i++) {
-                Hype_nug.create(model_data[i]).exec(function createCB(err, created){
-                    if(err){
-                        console.log(err);
-                    } else {
-                        console.log("Created "+created.id);
-                    }
-                });
-            }
-            callback(true);
+            Hype_nug.create([model_data]).exec(function(err, models){
+              if(err){
+                console.log('ERROR', err);
+                reject(err);
+              } else {
+                console.log("Created %s HypeNugs", _.flatten(models).length);
+                resolve(models);
+              }
+            });
         });
+
+      });
+
+      return models;
 
     }
 };

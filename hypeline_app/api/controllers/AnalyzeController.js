@@ -62,6 +62,7 @@ module.exports = {
           var keyword = req.body.keyword;
           var until = req.body.end_time || ""; //yyyy-mm-dd
           var user_id = req.body.user_id;
+          var analyzeRun = _.bind(this.analyze_run, this);
 
           var start_date = "";
 
@@ -92,19 +93,19 @@ module.exports = {
                       p_stack.push(twitter);
                       break;
                   case "instagram":
-                      p_stack.push(sails.controllers.instagram.get_raw_nugs(keyword,until,run_id));
+                      //p_stack.push(sails.controllers.instagram.get_raw_nugs(keyword,until,run_id));
                       break;
                   case "vine":
-                      p_stack.push(sails.controllers.vine.get_raw_nugs(keyword,until,run_id));
+                      //p_stack.push(sails.controllers.vine.get_raw_nugs(keyword,until,run_id));
                       break;
                   case "gplus":
-                      p_stack.push(sails.controllers.gplus.get_raw_nugs(keyword,until,run_id));
+                      //p_stack.push(sails.controllers.gplus.get_raw_nugs(keyword,until,run_id));
                       break;
                   case "tumblr":
-                      p_stack.push(sails.controllers.tumblr.get_raw_nugs(keyword,until,run_id));
+                      //p_stack.push(sails.controllers.tumblr.get_raw_nugs(keyword,until,run_id));
                       break;
                   default:
-                      response.error = "No module for "+origin;
+                      response.error = "No module for " + origin;
                       break;
               }
           }
@@ -113,21 +114,30 @@ module.exports = {
 
           Promise.all(p_stack).then(function(data){
 
-              if(!existing_run){
-                Run.create(run).exec(function createCB(err, created){
-                    if(err) {
-                        console.log('ERROR [ANALYZER] : %s', err);
-                    }else{
-                        console.log('Created run with id of  ' + created.id);
-                    }
+              var data = analyzeRun(_.flatten(data));
+              var returnResults = function(models){
 
-                    return;
-                });
-              } else {
-                console.log('Have run id, resuts fetched');
-              }
+                if(!existing_run){
+                  Run.create(run).exec(function createCB(err, created){
+                      if(err) {
+                          console.log('ERROR [ANALYZER] : %s', err);
+                      }else{
+                          console.log('Created run with id of  ' + created.id);
+                      }
 
-              return res.json({data:run, nugs: _.flatten(data)});
+                      return;
+                  });
+                } else {
+                  console.log('Have run id, resuts fetched');
+                }
+
+                return res.json({data:run, nugs: _.flatten(models)});
+
+              };
+
+              data.then(returnResults);
+
+
           });
 
           if (p_stack.length < 1){
@@ -136,6 +146,11 @@ module.exports = {
 
         }
 
+    },
+
+    analyze_run: function(data){
+      var analyze = SentiAnal.analPush({data:_.flatten(data)});
+      return analyze;
     },
 
     find_run:function(req,res){

@@ -24,7 +24,8 @@ module.exports = {
     },
 
     get_data: function(keyword, until, run_id){
-      var results = this.entrypoint(keyword, new Date().getTime(), 100, run_id);
+      //var results = this.entrypoint(keyword, new Date().getTime(), 100, run_id);
+      var results = this.entrypoint(keyword, new Date().getTime(), 3, run_id);
       return results;
     },
 
@@ -121,11 +122,10 @@ module.exports = {
 
     },
 
-
     get_results_page: function(options, runData){
 
-      var filterResults = _.bind(this.filterResults, this);
-      var parseResults = _.bind(this.parseData, this, runData.keyword, runData.runId);
+      var filterResults = _.bind(this.filter_results, this);
+      var parseResults = _.bind(this.parse_data, this, runData.keyword, runData.runId);
 
       var resultsBatch = new Promise(function(resolve, reject){
 
@@ -153,20 +153,7 @@ module.exports = {
       return resultsBatch;
     },
 
-    get_raw_nugs: function(keyword,until,run_id){
-        var self = this;
-
-        var getToken = this.getToken(function(e,access_token,refresh_token,results){
-            var options = {
-                url:search_base+"?q=%23"+keyword+"&until="+until+"&result_type=recent&count=100",
-                headers:{
-                    "Authorization":"Bearer "+access_token
-                }
-            };
-        });
-    },
-
-    parseData: function(keyword, runId, result){
+    parse_data: function(keyword, runId, result){
       var obj = {};
       obj.tag = keyword;
       obj.origin = "twitter";
@@ -182,7 +169,7 @@ module.exports = {
       return obj;
     },
 
-    filterResults: function(result){
+    filter_results: function(result){
       return result.lang === "en" && !result.retweeted_status;
     },
 
