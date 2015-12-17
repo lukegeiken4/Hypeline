@@ -17,7 +17,9 @@ module.exports = function(req, res, next) {
   // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
 
-  if(req.body.demo && req.body.demo === true){
+
+
+  if(req.body.demo && (req.body.demo === true || req.body.demo === "true")){
     var application = getAuthApp();
     application.client.getAccount('https://api.stormpath.com/v1/accounts/2iTohWzF9SOKMIJ0B3gnuX', function(err, account){
       if(err){
@@ -27,6 +29,10 @@ module.exports = function(req, res, next) {
         return next();
       }
     });
+
+  } else if(req.body.scheduled && (req.body.scheduled === true || req.body.scheduled === "true")){
+
+    next();
 
   } else if(!req.body.auth_string){
     noUser();

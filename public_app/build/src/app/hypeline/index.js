@@ -2,7 +2,7 @@ angular.module( 'hypeLine.hypeline', [
   'ui.router'
 ])
 
-.config(["$stateProvider", function config( $stateProvider ) {
+.config(function config( $stateProvider ) {
   $stateProvider
   .state( 'hypeline', {
     url: '/app',
@@ -17,16 +17,16 @@ angular.module( 'hypeLine.hypeline', [
     url: '/demo',
     views: {
       "main": {
-        controller: ["$scope", function($scope) {
+        controller: function($scope) {
           $scope.demoPage = true;
-        }],
+        },
         templateUrl: 'hypeline/index.tpl.html'
       }
     }
   });
-}])
+})
 
-.controller( 'HypelineCtrl', ["$location", "$scope", "$http", "Config", "$rootScope", "AuthService", "$sanitize", function HypelineController( $location, $scope, $http, Config, $rootScope, AuthService, $sanitize ) {
+.controller( 'HypelineCtrl', function HypelineController( $location, $scope, $http, Config, $rootScope, AuthService, $sanitize ) {
 
   $scope.defaultDates = function() {
     $scope.endDate = new Date();
@@ -110,8 +110,6 @@ angular.module( 'hypeLine.hypeline', [
   };
 
   $scope.deleteRun = function(run){
-    console.log('delete');
-/*
       var params = {
         run_id: run.runId,
         auth_string: $scope.user.authString
@@ -128,7 +126,6 @@ angular.module( 'hypeLine.hypeline', [
           $scope.run.message = "Error";
         }
       );
-*/
   };
 
   $scope.getMore = function(run){
@@ -237,9 +234,9 @@ angular.module( 'hypeLine.hypeline', [
     }
   };
 
-}])
+})
 
-.directive('resultsChart', ["$http", "Config", "$log", function($http, Config, $log){
+.directive('resultsChart', function($http, Config, $log){
 
   var linkFn = function(scope, elem, attrs){
 
@@ -550,7 +547,7 @@ angular.module( 'hypeLine.hypeline', [
     link: linkFn
   };
 
-}])
+})
 
 ;
 

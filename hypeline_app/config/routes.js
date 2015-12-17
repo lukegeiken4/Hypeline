@@ -52,14 +52,12 @@ module.exports.routes = {
   'POST /user/reset': 'User_authController.resetPassword',
 
   'GET /test': 'Hype_nugController.testPush',
-  'POST /twitter_test': 'TwitterController.testTwitter',
+  'POST /twitter_test': 'NewTwitterController.testTwitter',
 
   'POST /analyze':"AnalyzeController.get_nugs",
   'POST /search':"AnalyzeController.find_run",
   'POST /delete_run': "AnalyzeController.delete_run",
   'POST /run': 'RunController.get_user_runs',
   'POST /run/remove': 'AnalyzeController.delete_run',
-  'POST /schedule/create': 'SchedulerController.schedule_run',
-  'POST /schedule/runs': 'SchedulerController.get_user_scheduled_runs',
-  'POST /schedule/test/queue': 'SchedulerController.test_queue'
+  'POST /schedule/test/queue': 'RunController.test_queue'
 };

@@ -16,6 +16,7 @@ module.exports = {
   consume_message: function(){
 
     var connection = this.ensure_queue();
+    var processMessage = this.process_message;
 
     connection.then(function(queue){
       process.once('SIGNIT', function(){
@@ -27,7 +28,7 @@ module.exports = {
 
         queueReady = queueReady.then(function(_queueExists){
           return channel.consume(queuingQueue, function(msg){
-            console.log(" [o] Received '%s'", msg.content.toString());
+            processMessage(msg);
           }, {noAck: true})
         });
 
@@ -37,6 +38,10 @@ module.exports = {
 
       })
     }).then(null, console.warn);
+  },
+
+  process_message: function(message){
+    console.log(" [o] Received '%s'", message.content.toString());
   }
 
 };

@@ -110,8 +110,6 @@ angular.module( 'hypeLine.hypeline', [
   };
 
   $scope.deleteRun = function(run){
-    console.log('delete');
-/*
       var params = {
         run_id: run.runId,
         auth_string: $scope.user.authString
@@ -128,7 +126,6 @@ angular.module( 'hypeLine.hypeline', [
           $scope.run.message = "Error";
         }
       );
-*/
   };
 
   $scope.getMore = function(run){

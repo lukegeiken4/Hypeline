@@ -27,6 +27,14 @@ module.exports = {
     },
     end_date:{
         type:"datetime"
+    },
+    one_time: {
+      type: "boolean",
+      default: true
+    },
+    frequency: {
+      type: "integer",
+      default: 0
     }
   },
   schema:true,

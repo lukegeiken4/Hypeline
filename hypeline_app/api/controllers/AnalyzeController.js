@@ -5,16 +5,23 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+ var when = require('when');
+ var uuid = require('uuid');
+
 module.exports = {
     get_nugs: function(req,res){
 
         var errors = [];
 
+        if(req.body.media){
+          req.body.origin = req.body.media.join(',');
+        }
+
         if(!req.body.origin){
           errors.push("You must specify at least one platform to search.");
         }
 
-        if(req.body.demo){
+        if(req.body.demo && !req.body.test_run){
           res.send(500, {error: "Search not allowed in demo"});
         }
 
@@ -30,8 +37,9 @@ module.exports = {
           errors.push("Keyword cannot contain any spaces");
         }
 
-        if(req.body.keyword && errors.length > 0){
+        if(errors.length > 0){
           res.send(500, {errors: errors});
+          return;
         } else {
 
           var run_id;
@@ -41,7 +49,12 @@ module.exports = {
             run_id = req.body.run_id;
             existing_run = true;
           } else {
-            run_id = Date.now();
+            run_id = uuid.v1({
+              node: [0x10, 0x23, 0x45, 0x67, 0x89, 0xab],
+              clockseq: 0x1234,
+              msecs: new Date().getTime(),
+              nsecs: 5678
+            });
           }
 
           var origins = req.body.origin.split(",") || null;
@@ -75,7 +88,8 @@ module.exports = {
               var origin = origins[i];
                 switch(origin){
                   case "twitter":
-                      p_stack.push(sails.controllers.twitter.get_raw_nugs(keyword,until,run_id));
+                      var twitter = sails.controllers.newtwitter.get_data(keyword,until,run_id);
+                      p_stack.push(twitter);
                       break;
                   case "instagram":
                       p_stack.push(sails.controllers.instagram.get_raw_nugs(keyword,until,run_id));
@@ -93,27 +107,27 @@ module.exports = {
                       response.error = "No module for "+origin;
                       break;
               }
-
-
           }
 
           var messages = [];
 
-          Promise.all(p_stack).then(function(){
+          Promise.all(p_stack).then(function(data){
 
               if(!existing_run){
                 Run.create(run).exec(function createCB(err, created){
                     if(err) {
-                        console.log(err);
+                        console.log('ERROR [ANALYZER] : %s', err);
                     }else{
                         console.log('Created run with id of  ' + created.id);
                     }
 
                     return;
                 });
+              } else {
+                console.log('Have run id, resuts fetched');
               }
 
-              return res.json({data:run});
+              return res.json({data:run, nugs: _.flatten(data)});
           });
 
           if (p_stack.length < 1){

@@ -1,6 +1,7 @@
 // EmailService.js - in api/services
 var sys = require('sys');
 var exec = require('child_process').exec;
+var when = require('when');
 var indico = require('indico.io');
 indico.apiKey =  sails.config.indico.API_KEY;
 
@@ -65,7 +66,7 @@ module.exports = {
         callback();
     },
 
-    analPush: function(data, callback) {
+    analPush: function(data) {
 
         //Check data
         //Create string of text to use as python param
@@ -90,7 +91,7 @@ module.exports = {
             });
         });
 
-        //Related Tage
+        //Related Tag
         var tags = new Promise(function(resolve, reject) {
             indico.text_tags(batchInput)
             .then(function(response){
@@ -137,5 +138,6 @@ module.exports = {
             }
             callback(true);
         });
+
     }
 };
