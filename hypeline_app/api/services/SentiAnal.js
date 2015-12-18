@@ -88,7 +88,7 @@ module.exports = {
                 });
             })
             .catch(function(logError){
-                console.log(logError);
+                console.log('ERROR [SENTIMENT] : %s', logError);
                 reject();
             });
         });
@@ -97,14 +97,13 @@ module.exports = {
         var tags = new Promise(function(resolve, reject) {
             indico.text_tags(batchInput)
             .then(function(response){
-
                 SentiAnal.setAnalInfo(model_data, response, "text_tags",function(){
                     resolve();
                 });
 
             })
             .catch(function(logError){
-                console.log(logError);
+                console.log('ERROR [SENTIMENT] : %s', logError);;
                 reject();
             });
         });
@@ -113,13 +112,12 @@ module.exports = {
         var keywords = new Promise(function(resolve, reject){
             indico.keywords(batchInput)
             .then(function(response){
-
                 SentiAnal.setAnalInfo(model_data, response, "keywords",function(){
                     resolve();
                 });
             })
             .catch(function(logError){
-                console.log(logError);
+                console.log('ERROR [SENTIMENT] : %s', logError);
                 reject();
             });
         });

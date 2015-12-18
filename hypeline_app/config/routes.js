@@ -56,6 +56,7 @@ module.exports.routes = {
   'POST /gplus_test': 'NewGplusController.testRun',
   'POST /instagram_test': 'NewInstagramController.testRun',
   'POST /vine_test': 'NewVineController.testRun',
+  'POST /tumblr_test': 'NewTumblrController.testRun',
 
   'POST /analyze':"AnalyzeController.get_nugs",
   'POST /search':"AnalyzeController.find_run",

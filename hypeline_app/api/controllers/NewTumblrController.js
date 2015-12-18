@@ -1,14 +1,14 @@
 /**
- * VineController
+ * GPlusController
  *
- * @description :: Server-side logic for managing Vines
+ * @description :: Server-side logic for managing Google Plus posts
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
 var Promise = require('bluebird');
 var request = require("request");
-var gPlusToken = sails.config.globals.gplus_access;
-var search_base = "https://api.vineapp.com/timelines/tags/";
+var tumblrToken = sails.config.globals.tumblr_key;
+var search_base = "https://api.tumblr.com/v2/";
 var parsedResults = [];
 var pagePromises = [];
 
@@ -23,7 +23,7 @@ module.exports = {
     },
 
     get_data: function(keyword, until, run_id){
-      var results = this.entrypoint(keyword, new Date().getTime(), 20, run_id);
+      var results = this.entrypoint(keyword, new Date().getTime(), 1, run_id);
       return results;
     },
 
@@ -47,7 +47,7 @@ module.exports = {
         .then(function(results){
           resolve(parsedResults);
         }).catch(function(error){
-          console.log('ERROR [VINE] : %s', error);
+          console.log('ERROR [GPLUS] : %s', error);
           reject(error);
         });
 
@@ -59,7 +59,7 @@ module.exports = {
     construct_url: function(options){
 
       var request = {
-          url: search_base + options.keyword
+          url: search_base + "tagged?filter=text&tag=" + options.keyword + "&limit=" + options.count + "&api_key=" + tumblrToken
       };
 
       return request;
@@ -85,28 +85,29 @@ module.exports = {
       var getMorePages = function(res){
         pageCount++;
         if(res && pageCount < 10){
-          request.url = search_base + runData.keyword + "?page=" + res;
+          request.url = getUrl(runData).url + res;
           return getResults(request, runData);
         } else {
           return;
         }
       };
       var errFunction = function(error){
-        console.log('ERROR [VINE] : %s', error.stack);
+        console.log('ERROR [GPLUS] : %s', error.stack);
         reject(error);
       }
 
      return page
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
+            //@ NOT SUPPORTED IN TUMBLR
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
             .catch(errFunction);
 
     },
@@ -120,11 +121,11 @@ module.exports = {
 
         request.get(options,function(err, response, body){
           if(err){
-            console.log('ERROR [VINE] : %s', err);
+            console.log('ERROR [GPLUS] : %s', err);
           } else {
             var raw = JSON.parse(body);
-            var data = raw.data.records;
-            var next = raw.data.nextPage;
+            var data = raw.response;
+            //var next = raw.nextPageToken;
 
             var parsed = _.chain(data)
                      .filter(filterResults)
@@ -133,7 +134,8 @@ module.exports = {
 
             parsedResults = parsedResults.concat(parsed);
 
-            resolve(next);
+            resolve(null);
+            //resolve(next);
           }
         });
 
@@ -146,17 +148,28 @@ module.exports = {
       var obj = {};
       var regex = this.get_regex();
       obj.tag = keyword;
-      obj.origin = "vine";
+      obj.origin = "tumblr";
       obj.date_run = new Date().toISOString();
       obj.run_id = runId;
       obj.sentiment = 0.0;
-      obj.date =  new Date(result.created).toISOString();
-      obj.text = result.description.replace(/\r?\n|\r/g, " ").replace(regex,"");
+      obj.date =  new Date(parseInt(result.timestamp)*1000).toISOString();
+      obj.text = this.get_body_text(result);;
       obj.related_tags = "";
       obj.keywords = "";
-      obj.origin_id = result.postId;
+      obj.origin_id = result.id;
 
       return obj;
+    },
+
+    get_body_text: function(result){
+      var regex = this.get_regex();
+      var text = "";
+      if (result.body){
+          text = result.body.replace(/\r?\n|\r/g, " ").replace(/<(?:.|\n)*?>/g, '').replace(regex,"");
+      }else if (result.caption){
+          text = result.caption.replace(/\r?\n|\r/g, " ").replace(/<(?:.|\n)*?>/g, '').replace(regex,"");
+      }
+      return text;
     },
 
     get_regex: function(){
@@ -165,7 +178,7 @@ module.exports = {
 
     filter_results: function(result){
       var regex = this.get_regex();
-      var text = result.description.replace(/\r?\n|\r/g, " ").replace(regex,"");
+      var text = this.get_body_text(result);
       return !_.isEmpty(text);
     }
 };
