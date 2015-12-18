@@ -125,7 +125,7 @@ module.exports = {
     get_results_page: function(options, runData){
 
       var filterResults = _.bind(this.filter_results, this);
-      var parseResults = _.bind(this.parse_data, this, runData.keyword, runData.runId);
+      var parseResults = _.bind(this.parse_data, this, runData.keyword, runData.run_id);
 
       var resultsBatch = new Promise(function(resolve, reject){
 

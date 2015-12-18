@@ -99,6 +99,8 @@ module.exports = {
                       //p_stack.push(sails.controllers.vine.get_raw_nugs(keyword,until,run_id));
                       break;
                   case "gplus":
+                      var gplus = sails.controllers.newgplus.get_data(keyword,until,run_id);
+                      p_stack.push(gplus);
                       //p_stack.push(sails.controllers.gplus.get_raw_nugs(keyword,until,run_id));
                       break;
                   case "tumblr":

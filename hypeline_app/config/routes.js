@@ -53,6 +53,7 @@ module.exports.routes = {
 
   'GET /test': 'Hype_nugController.testPush',
   'POST /twitter_test': 'NewTwitterController.testTwitter',
+  'POST /gplus_test': 'NewGplusController.testGPlus',
 
   'POST /analyze':"AnalyzeController.get_nugs",
   'POST /search':"AnalyzeController.find_run",
