@@ -93,10 +93,13 @@ module.exports = {
                       p_stack.push(twitter);
                       break;
                   case "instagram":
-                      //p_stack.push(sails.controllers.instagram.get_raw_nugs(keyword,until,run_id));
+                      var instagram = sails.controllers.newinstagram.get_data(keyword,until,run_id);
+                      p_stack.push(instagram);
                       break;
                   case "vine":
                       //p_stack.push(sails.controllers.vine.get_raw_nugs(keyword,until,run_id));
+                      var vine = sails.controllers.newvine.get_data(keyword, until, run_id);
+                      p_stack.push(vine);
                       break;
                   case "gplus":
                       var gplus = sails.controllers.newgplus.get_data(keyword,until,run_id);

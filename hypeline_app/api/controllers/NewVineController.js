@@ -1,14 +1,14 @@
 /**
- * GPlusController
+ * VineController
  *
- * @description :: Server-side logic for managing Google Plus posts
+ * @description :: Server-side logic for managing Vines
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
 var Promise = require('bluebird');
 var request = require("request");
 var gPlusToken = sails.config.globals.gplus_access;
-var search_base = "https://www.googleapis.com/plus/v1/activities";
+var search_base = "https://api.vineapp.com/timelines/tags/";
 var parsedResults = [];
 var pagePromises = [];
 
@@ -47,7 +47,7 @@ module.exports = {
         .then(function(results){
           resolve(parsedResults);
         }).catch(function(error){
-          console.log('ERROR [GPLUS] : %s', error);
+          console.log('ERROR [VINE] : %s', error);
           reject(error);
         });
 
@@ -59,7 +59,7 @@ module.exports = {
     construct_url: function(options){
 
       var request = {
-          url: search_base + "?orderBy=recent&query=" + options.keyword + "&maxResults=" + options.count + "&key=" + gPlusToken + "&pageToken="
+          url: search_base + options.keyword
       };
 
       return request;
@@ -85,28 +85,28 @@ module.exports = {
       var getMorePages = function(res){
         pageCount++;
         if(res && pageCount < 10){
-          request.url = getUrl(runData).url + res;
+          request.url = search_base + runData.keyword + "?page=" + res;
           return getResults(request, runData);
         } else {
           return;
         }
       };
       var errFunction = function(error){
-        console.log('ERROR [GPLUS] : %s', error.stack);
+        console.log('ERROR [VINE] : %s', error.stack);
         reject(error);
       }
 
      return page
             .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
-            .then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
+            //.then(getMorePages)
             .catch(errFunction);
 
     },
@@ -120,11 +120,11 @@ module.exports = {
 
         request.get(options,function(err, response, body){
           if(err){
-            console.log('ERROR [GPLUS] : %s', err);
+            console.log('ERROR [VINE] : %s', err);
           } else {
             var raw = JSON.parse(body);
-            var data = raw.items;
-            var next = raw.nextPageToken;
+            var data = raw.data.records;
+            var next = raw.data.nextPage;
 
             var parsed = _.chain(data)
                      .filter(filterResults)
@@ -146,15 +146,15 @@ module.exports = {
       var obj = {};
       var regex = this.get_regex();
       obj.tag = keyword;
-      obj.origin = "gplus";
+      obj.origin = "vine";
       obj.date_run = new Date().toISOString();
       obj.run_id = runId;
       obj.sentiment = 0.0;
-      obj.date =  new Date(result.published).toISOString();
-      obj.text = result.title.replace(/\r?\n|\r/g, " ").replace(regex,"");
+      obj.date =  new Date(result.created).toISOString();
+      obj.text = result.description.replace(/\r?\n|\r/g, " ").replace(regex,"");
       obj.related_tags = "";
       obj.keywords = "";
-      obj.origin_id = result.id;
+      obj.origin_id = result.postId;
 
       return obj;
     },
@@ -165,7 +165,7 @@ module.exports = {
 
     filter_results: function(result){
       var regex = this.get_regex();
-      var text = result.title.replace(/\r?\n|\r/g, " ").replace(regex,"");
+      var text = result.description.replace(/\r?\n|\r/g, " ").replace(regex,"");
       return !_.isEmpty(text);
     }
 };

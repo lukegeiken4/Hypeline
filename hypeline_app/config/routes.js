@@ -52,8 +52,10 @@ module.exports.routes = {
   'POST /user/reset': 'User_authController.resetPassword',
 
   'GET /test': 'Hype_nugController.testPush',
-  'POST /twitter_test': 'NewTwitterController.testTwitter',
-  'POST /gplus_test': 'NewGplusController.testGPlus',
+  'POST /twitter_test': 'NewTwitterController.testRun',
+  'POST /gplus_test': 'NewGplusController.testRun',
+  'POST /instagram_test': 'NewInstagramController.testRun',
+  'POST /vine_test': 'NewVineController.testRun',
 
   'POST /analyze':"AnalyzeController.get_nugs",
   'POST /search':"AnalyzeController.find_run",

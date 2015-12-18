@@ -1,17 +1,17 @@
 /**
- * TwitterController
+ * InstagramController
  *
- * @description :: Server-side logic for managing Twitters
+ * @description :: Server-side logic for managing Instagram posts
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
 var Promise = require('bluebird');
-var OAuthPromise = Promise.promisifyAll(require("oauth").OAuth2);
 var request = require("request");
-var OAuth2 = require("oauth").OAuth2;
-var search_base = "https://api.twitter.com/1.1/search/tweets.json";
+var when = require("when");
+var instgramToken = sails.config.globals.instagram_access;
+var search_base = "https://api.instagram.com/v1/tags/";
 var parsedResults = [];
-var pagePromises = [];
+var topTag = "";
 
 module.exports = {
     pages:0,
@@ -33,7 +33,7 @@ module.exports = {
       var constructUrl = _.bind(this.construct_url, this);
       var getPages = _.bind(this.get_all_pages, this);
       var getResults = _.bind(this.get_results_page, this);
-      var getOAuthToken = _.bind(this.getToken, this);
+      var getTopTag = _.bind(this.get_top_tag);
 
       var promise = new Promise(function(resolve, reject){
 
@@ -44,19 +44,24 @@ module.exports = {
           run_id: run_id
         };
 
-        var getToken = getOAuthToken()
-        .then(function(data){
+        var tagsUrl = constructUrl(options, "initial");
+        var tags = getTopTag(tagsUrl);
 
-          var request = constructUrl(data, options);
-          var pages = getPages(request, options);
+        tags.then(function(tag){
+          topTag = tag;
+        }).catch(function(err){
+          console.log('ERROR [INSTAGRAM] : %s', err);
+        });
 
-          return pages;
-
-        }).then(function(results){
-          resolve(parsedResults);
-        }).catch(function(error){
-          console.log('ERROR [TWITTER] : %s', error);
-          reject(error);
+        when(tags).then(function(){
+          var request = constructUrl(options, "fetch");
+          var pages = getPages(request, options)
+          .then(function(results){
+            resolve(parsedResults);
+          }).catch(function(error){
+            console.log('ERROR [INSTAGRAM] : %s', error);
+            reject(error);
+          });
         });
 
       });
@@ -64,14 +69,40 @@ module.exports = {
       return promise;
     },
 
-    construct_url: function(oauth, options){
+    get_top_tag: function(url){
 
-      var request = {
-          url: search_base + "?q=%23" + options.keyword + "&result_type=recent&count=" + options.count,
-          headers:{
-              "Authorization":"Bearer " + oauth.accessToken
+      return new Promise(function(resolve, reject){
+
+        var tag_cb = function(err, response, body){
+          if (err){
+              console.log('ERROR [INSTAGRAM] in get_top_tag : %s', err);
+          } else {
+            var raw = JSON.parse(body);
+            var tags = raw.data;
+
+            if (tags.length < 1){
+              reject("No tags found");
+            } else {
+              var topTag = tags[0].name;
+              resolve(topTag);
+            }
           }
-      };
+        }
+
+        request.get(url, tag_cb);
+
+      });
+    },
+
+    construct_url: function(options, type){
+
+      var request = {};
+
+      if(type === "initial"){
+        request.url = search_base + "search/?count=" + options.count + "&q=" + options.keyword + "&access_token=" + instgramToken;
+      } else {
+        request.url = search_base + topTag + "/media/recent?count=" + options.count + "&access_token=" + instgramToken + "&min_tag_id=";
+      }
 
       return request;
 
@@ -89,20 +120,21 @@ module.exports = {
 
       var getResults = _.bind(this.get_results_page, this);
       var getAllPages = _.bind(this.get_all_pages, this);
+      var getUrl = _.bind(this.construct_url, this);
 
       var page = getResults(request, runData);
       var pageCount = 0;
       var getMorePages = function(res){
         pageCount++;
         if(res && pageCount < 10){
-          request.url = search_base + res;
+          request.url = res;
           return getResults(request, runData);
         } else {
           return;
         }
       };
       var errFunction = function(error){
-        console.log('ERROR [TWITTER] : %s', error.stack);
+        console.log('ERROR [TWITTER] in get_all_pages : %s', error.stack);
         reject(error);
       }
 
@@ -130,11 +162,11 @@ module.exports = {
 
         request.get(options,function(err, response, body){
           if(err){
-            console.log('ERROR [TWITTER] : %s', err);
+            console.log('ERROR [INSTAGRAM] in get_results_page : %s', err);
           } else {
             var raw = JSON.parse(body);
-            var data = raw.statuses;
-            var next = raw.search_metadata.next_results;
+            var data = raw.data;
+            var next = raw.pagination.next_url;
 
             var parsed = _.chain(data)
                      .filter(filterResults)
@@ -155,62 +187,21 @@ module.exports = {
     parse_data: function(keyword, runId, result){
       var obj = {};
       obj.tag = keyword;
-      obj.origin = "twitter";
+      obj.origin = "instagram";
       obj.date_run = new Date().toISOString();
       obj.run_id = runId;
       obj.sentiment = 0.0;
-      obj.date = new Date(Date.parse(result.created_at)).toISOString();
-      obj.text = result.text.replace(/\r?\n|\r/g, " ").replace(/\'/g,"");
+      obj.date =  new Date(parseInt(result.caption.created_time)*1000).toISOString();
+      obj.text = result.caption.text.replace(/\r?\n|\r/g, " ").replace(/\'/g,"");
       obj.related_tags = "";
       obj.keywords = "";
-      obj.origin_id = result.id_str;
+      obj.origin_id = result.id;
 
       return obj;
     },
 
     filter_results: function(result){
-      return result.lang === "en" && !result.retweeted_status;
-    },
-
-    getOAuth2: function(){
-        var auth = new OAuth2(
-          sails.config.globals.twitter_key,
-          sails.config.globals.twitter_secret,
-          "https://api.twitter.com/",
-          null,
-          "oauth2/token",
-          null
-        );
-
-        return auth;
-    },
-
-    getToken:function(callback){
-        var oauth2 = this.getOAuth2();
-
-        var promise =  new Promise(function(resolve, reject){
-          var cb = function(e, access_token, refresh_token, results){
-              var obj = {
-                e: e,
-                accessToken: access_token,
-                refreshToken: refresh_token,
-                results: results
-              };
-
-              resolve(obj);
-          };
-
-          oauth2.getOAuthAccessToken(
-            '',
-            {
-              'grant_type':'client_credentials'
-            },
-            cb
-          );
-        });
-
-      return promise;
-
+      return true;
     }
 };
 
