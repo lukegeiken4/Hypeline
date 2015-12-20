@@ -24,6 +24,7 @@ module.exports = {
 
     get_data: function(keyword, until, run_id){
       var results = this.entrypoint(keyword, new Date().getTime(), 1, run_id);
+      console.log("[INSTAGRAM] fetching results");
       return results;
     },
 
@@ -45,9 +46,10 @@ module.exports = {
         var request = constructUrl(options);
         var pages = getPages(request, options)
         .then(function(results){
+          console.log("[TUMBLR] fetched %s results", parsedResults.length);
           resolve(parsedResults);
         }).catch(function(error){
-          console.log('ERROR [GPLUS] : %s', error);
+          console.log('ERROR [TUMBLR] : %s', error);
           reject(error);
         });
 
@@ -92,7 +94,7 @@ module.exports = {
         }
       };
       var errFunction = function(error){
-        console.log('ERROR [GPLUS] : %s', error.stack);
+        console.log('ERROR [TUMBLR] : %s', error.stack);
         reject(error);
       }
 
@@ -121,7 +123,7 @@ module.exports = {
 
         request.get(options,function(err, response, body){
           if(err){
-            console.log('ERROR [GPLUS] : %s', err);
+            console.log('ERROR [TUMBLR] : %s', err);
           } else {
             var raw = JSON.parse(body);
             var data = raw.response;

@@ -51,14 +51,22 @@ module.exports.routes = {
   'POST /user/send_reset': 'User_authController.sendUserReset',
   'POST /user/reset': 'User_authController.resetPassword',
 
-  'GET /test': 'Hype_nugController.testPush',
-  'POST /twitter_test': 'NewTwitterController.testRun',
-  'POST /gplus_test': 'NewGplusController.testRun',
-  'POST /instagram_test': 'NewInstagramController.testRun',
-  'POST /vine_test': 'NewVineController.testRun',
-  'POST /tumblr_test': 'NewTumblrController.testRun',
+  // USING THESE FOR TESTING IF NECESSARY
+  //'GET /test': 'Hype_nugController.testPush',
+  //'POST /twitter_test': 'NewTwitterController.testRun',
+  //'POST /gplus_test': 'NewGplusController.testRun',
+  //'POST /instagram_test': 'NewInstagramController.testRun',
+  //'POST /vine_test': 'NewVineController.testRun',
+  //'POST /tumblr_test': 'NewTumblrController.testRun',
+
+  //'GET /test/create': 'TestController.createModels',
+  //'GET /test/check': 'TestController.checkModels',
+  //'GET /test/destroy': 'TestController.destroyModels',
+  //'GET /test/duplicates': 'TestController.findDupes',
+  //'GET /test/runs': 'TestController.findRuns',
 
   'POST /analyze':"AnalyzeController.get_nugs",
+  'POST /analyze/unique':"AnalyzeController.get_unique_ids",
   'POST /search':"AnalyzeController.find_run",
   'POST /delete_run': "AnalyzeController.delete_run",
   'POST /run': 'RunController.get_user_runs',

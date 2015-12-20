@@ -25,6 +25,7 @@ module.exports = {
 
     get_data: function(keyword, until, run_id){
       var results = this.entrypoint(keyword, new Date().getTime(), 100, run_id);
+      console.log("[TWITTER] fetching results");
       return results;
     },
 
@@ -53,6 +54,7 @@ module.exports = {
           return pages;
 
         }).then(function(results){
+          console.log("[TWITTER] fetched %s results", parsedResults.length);
           resolve(parsedResults);
         }).catch(function(error){
           console.log('ERROR [TWITTER] : %s', error);

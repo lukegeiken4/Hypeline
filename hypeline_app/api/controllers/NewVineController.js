@@ -24,6 +24,7 @@ module.exports = {
 
     get_data: function(keyword, until, run_id){
       var results = this.entrypoint(keyword, new Date().getTime(), 20, run_id);
+      console.log("[TWITTER] fetching results");
       return results;
     },
 
@@ -45,6 +46,7 @@ module.exports = {
         var request = constructUrl(options);
         var pages = getPages(request, options)
         .then(function(results){
+          console.log("[VINE] fetched %s results", parsedResults.length);
           resolve(parsedResults);
         }).catch(function(error){
           console.log('ERROR [VINE] : %s', error);

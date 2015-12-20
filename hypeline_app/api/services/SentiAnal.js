@@ -78,64 +78,73 @@ module.exports = {
             batchInput[i] = model_data[i].text;
         }
 
-        // Sentiment Data
-        var senti = new Promise(function(resolve, reject){
+        if(batchInput.length > 0){
 
-            indico.sentimentHQ(batchInput)
-            .then(function(response){
-                SentiAnal.setAnalInfo(model_data, response, "sentiment",function(){
-                    resolve();
-                });
-            })
-            .catch(function(logError){
-                console.log('ERROR [SENTIMENT] : %s', logError);
-                reject();
-            });
-        });
+          // Sentiment Data
+          var senti = new Promise(function(resolve, reject){
 
-        //Related Tag
-        var tags = new Promise(function(resolve, reject) {
-            indico.text_tags(batchInput)
-            .then(function(response){
-                SentiAnal.setAnalInfo(model_data, response, "text_tags",function(){
-                    resolve();
-                });
+              indico.sentimentHQ(batchInput)
+              .then(function(response){
+                  SentiAnal.setAnalInfo(model_data, response, "sentiment",function(){
+                      resolve();
+                  });
+              })
+              .catch(function(logError){
+                  console.log('ERROR [SENTIMENT] : %s', logError);
+                  reject();
+              });
+          });
 
-            })
-            .catch(function(logError){
-                console.log('ERROR [SENTIMENT] : %s', logError);;
-                reject();
-            });
-        });
+          //Related Tag
+          var tags = new Promise(function(resolve, reject) {
+              indico.text_tags(batchInput)
+              .then(function(response){
+                  SentiAnal.setAnalInfo(model_data, response, "text_tags",function(){
+                      resolve();
+                  });
 
-        //Keywords
-        var keywords = new Promise(function(resolve, reject){
-            indico.keywords(batchInput)
-            .then(function(response){
-                SentiAnal.setAnalInfo(model_data, response, "keywords",function(){
-                    resolve();
-                });
-            })
-            .catch(function(logError){
-                console.log('ERROR [SENTIMENT] : %s', logError);
-                reject();
-            });
-        });
+              })
+              .catch(function(logError){
+                  console.log('ERROR [SENTIMENT] : %s', logError);;
+                  reject();
+              });
+          });
 
-        //When promises are done
-        Promise.all([
-            senti, tags, keywords
-        ]).then(function(){
-            Hype_nug.create([model_data]).exec(function(err, models){
-              if(err){
-                console.log('ERROR', err);
-                reject(err);
-              } else {
-                console.log("Created %s HypeNugs", _.flatten(models).length);
-                resolve(models);
-              }
-            });
-        });
+          //Keywords
+          var keywords = new Promise(function(resolve, reject){
+              indico.keywords(batchInput)
+              .then(function(response){
+                  SentiAnal.setAnalInfo(model_data, response, "keywords",function(){
+                      resolve();
+                  });
+              })
+              .catch(function(logError){
+                  console.log('ERROR [SENTIMENT] : %s', logError);
+                  reject();
+              });
+          });
+
+          //When promises are done
+          Promise.all([
+              senti, tags, keywords
+          ]).then(function(){
+              Hype_nug.create([model_data]).exec(function(err, models){
+                if(err){
+                  console.log('ERROR', err);
+                  reject(err);
+                } else {
+                  console.log("Created %s HypeNugs", _.flatten(models).length);
+                  resolve(models);
+                }
+              });
+          });
+
+        } else {
+
+          console.log('No models to process');
+          resolve(null);
+
+        }
 
       });
 

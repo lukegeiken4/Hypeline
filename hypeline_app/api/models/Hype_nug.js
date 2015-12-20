@@ -50,8 +50,18 @@ module.exports = {
     keywords:{
         type:"json"/*,
         required: true*/
+    },
+    unique_key: {
+      type: "string",
+      required: true
     }
   },
-  schema:true
+
+  schema:true,
+
+  beforeValidation: function(values, cb){
+    values.unique_key = values.run_id + "-" + values.origin_id;
+    cb();
+  }
 };
 
