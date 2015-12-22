@@ -94,7 +94,10 @@ module.exports = {
 
       	var nugs = findNugs(run);
 
-      	if(_.isEmpty(run)){
+      	if(run.user_id !== req.options.authUser.userId){
+        	console.error('ERROR [RUN CONTROLLER] - User [%s] not permitted to destroy run [%s]', req.options.authUser.href, run.id);
+          res.json(301, {error: "You are not permitted to perform this action."})
+      	} else if(_.isEmpty(run)){
           res.json(200, {result: run, message: "No run found"});
       	} else {
 
