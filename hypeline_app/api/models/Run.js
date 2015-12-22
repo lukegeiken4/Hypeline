@@ -30,11 +30,11 @@ module.exports = {
     },
     one_time: {
       type: "boolean",
-      default: true
+      defaultsTo: true
     },
     frequency: {
       type: "integer",
-      default: 0
+      defaultsTo: 0
     }
   },
   schema:true,

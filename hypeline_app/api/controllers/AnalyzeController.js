@@ -9,6 +9,12 @@
  var uuid = require('uuid');
 
 module.exports = {
+
+    process_received: function(message){
+      console.log(' #### HERE ###');
+      console.log(message);
+    },
+
     get_nugs: function(req,res){
 
         var runStamp = new Date();
@@ -135,8 +141,6 @@ module.exports = {
 
               filtered.then(function(filteredResults){
 
-                //console.log(" --- RESULTS ---", filteredResults);
-
                 var dataPoints = analyzeRun(filteredResults);
                 var returnResults = function(models){
 
@@ -194,7 +198,7 @@ module.exports = {
           });
 
           if (p_stack.length < 1){
-              return res.json({data:"Unavailable"});
+              return res.json(200, {data:"No platforms defined"});
           }
 
         }

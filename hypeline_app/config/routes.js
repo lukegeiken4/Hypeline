@@ -51,19 +51,24 @@ module.exports.routes = {
   'POST /user/send_reset': 'User_authController.sendUserReset',
   'POST /user/reset': 'User_authController.resetPassword',
 
-  // USING THESE FOR TESTING IF NECESSARY
-  //'GET /test': 'Hype_nugController.testPush',
-  //'POST /twitter_test': 'NewTwitterController.testRun',
-  //'POST /gplus_test': 'NewGplusController.testRun',
-  //'POST /instagram_test': 'NewInstagramController.testRun',
-  //'POST /vine_test': 'NewVineController.testRun',
-  //'POST /tumblr_test': 'NewTumblrController.testRun',
+  // @TODO ADMIN STUFF, MAKE THESE HAVE SPECIAL POLICIES
 
-  //'GET /test/create': 'TestController.createModels',
-  //'GET /test/check': 'TestController.checkModels',
-  //'GET /test/destroy': 'TestController.destroyModels',
-  //'GET /test/duplicates': 'TestController.findDupes',
-  //'GET /test/runs': 'TestController.findRuns',
+  // USING THESE FOR TESTING IF NECESSARY
+  //'GET /test': 'Hype_nugController.testPush', TEST PUSH OF NUGS
+  //'POST /twitter_test': 'NewTwitterController.testRun', GET TWITTER RESULTS (DON'T PROCCESS SENTIMENT)
+  //'POST /gplus_test': 'NewGplusController.testRun', GET GPLUS RESULTS (DON'T PROCCESS SENTIMENT)
+  //'POST /instagram_test': 'NewInstagramController.testRun', GET INSTA RESULTS (DON'T PROCCESS SENTIMENT)
+  //'POST /vine_test': 'NewVineController.testRun', GET VINE RESULTS (DON'T PROCCESS SENTIMENT)
+  //'POST /tumblr_test': 'NewTumblrController.testRun', GET TUMBLR RESULTS (DON'T PROCCESS SENTIMENT)
+
+  //'GET /test/duplicates': 'TestController.findDupes', EXAMPLE FOR MONGO NATIVE CALL, USED TO FIND DUPLICATES HERE
+  //'GET /test/runs': 'TestController.run_test', FIND FIRST RUN AND ALL NUGS
+  //'POST /test/runs': 'TestController.run_test', FIND A RUN AND ALL NUGS (ACCEPTS RUN_ID)
+  //'GET /test/orphans': 'TestController.destroy_orphan_nugs', USE THIS TO CHECK FOR NUGS WITHOUT RUN_ID
+  //'GET /test/create': 'TestController.create_dummy_run', CREATES A RUN WITH RUN_ID OF '1' (USED FOR TESTING PLATFORMS)
+  //'POST /run/test/make': 'TestController.make_complete' IF YOU NEED TO MAKE A SMALL RUN TO TEST WITH
+  //'GET /test/destroy': 'TestController.destroy_test_run', DESTROY RUN CREATED ABOVE
+  //'POST /nugs/find': 'TestController.find_nug_by_id', IF YOU NEED TO FIND ALL NUGS OF A KEYWORD
 
   'POST /analyze':"AnalyzeController.get_nugs",
   'POST /analyze/unique':"AnalyzeController.get_unique_ids",
@@ -71,5 +76,8 @@ module.exports.routes = {
   'POST /delete_run': "AnalyzeController.delete_run",
   'POST /run': 'RunController.get_user_runs',
   'POST /run/remove': 'AnalyzeController.delete_run',
-  'POST /schedule/test/queue': 'RunController.test_queue'
+  'POST /schedule/test/queue': 'RunController.test_queue',
+  'POST /run/remove': 'RunController.remove_run_and_nugs',
+  'POST /run/all': 'RunController.get_all_runs'
+
 };

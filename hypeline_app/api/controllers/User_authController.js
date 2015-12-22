@@ -37,7 +37,7 @@ module.exports = {
     if(!req.body.token || !this.validToken(req.body.token)){
       res.send(401, {error: "You need a valid access token to join this beta program."});
     } else {
-      console.log('valid');
+      console.log('Valid token received [%s]',req.body.token);
 
       client.client.getApplication(client.applicationHref, function(err, application) {
         var account = {
