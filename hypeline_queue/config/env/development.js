@@ -24,6 +24,13 @@ module.exports = {
   queuing: {
     URL: 'amqp://guest:guest@localhost:15672',
     QUEUE: 'scheduled'
+  },
+
+  app: {
+    PROCESS: {
+      url: 'http://localhost:1337/schedule/run',
+      method: 'POST'
+    }
   }
 
 };

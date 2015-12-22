@@ -53,8 +53,8 @@ module.exports = function(req, res, next) {
         if(account.status === 'ENABLED'){
 
           var userAccount = account;
-          account.userId = generateId(account);
-
+          userAccount.userId = generateId(account);
+          userAccount.authString = req.body.auth_string;
           req.options.authUser = userAccount;
           return next();
         } else {

@@ -10,9 +10,27 @@
 
 module.exports = {
 
-    process_received: function(message){
-      console.log(' #### HERE ###');
-      console.log(message);
+    process_received: function(req, res){
+      console.log(' --- Queue request received ---', new Date());
+      console.log(req.body);
+
+      var run = sails.controllers.run.get_run(req.body.run_id);
+      var getNugs = this.get_nugs;
+
+      run.then(function(run){
+
+        req.body.origin = run.media.join(',');
+        req.body.keyword = run.keyword;
+
+        //res.json(200, {message: "received run", run: req.body});
+        getNugs(req, res);
+
+
+      }).catch(function(err){
+        res.json(500, {error: err});
+      });
+
+      //res.json(200, {message: "received"});
     },
 
     get_nugs: function(req,res){

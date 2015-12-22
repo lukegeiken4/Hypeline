@@ -76,6 +76,7 @@ module.exports.routes = {
   'POST /delete_run': "AnalyzeController.delete_run",
   'POST /run': 'RunController.get_user_runs',
   'POST /run/remove': 'AnalyzeController.delete_run',
+  'POST /schedule/run': 'AnalyzeController.process_received',
   'POST /schedule/test/queue': 'RunController.test_queue',
   'POST /run/remove': 'RunController.remove_run_and_nugs',
   'POST /run/all': 'RunController.get_all_runs'

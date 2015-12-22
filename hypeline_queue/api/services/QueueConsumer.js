@@ -4,6 +4,8 @@ var amqp = require('amqplib');
 var queuingServer = sails.config.queuing.URL;
 var queuingQueue = sails.config.queuing.QUEUE;
 var when = require('when');
+var request = require('request');
+var appUrlOptions = sails.config.app['PROCESS'];
 
 module.exports = {
 
@@ -11,6 +13,10 @@ module.exports = {
     console.log('ensuring queue');
     //amqp.connect(queuingServer).then(function(queue){
     return amqp.connect();
+  },
+
+  get_connection: function(){
+    return amqp.createConnection({host: 'localhost'});
   },
 
   consume_message: function(){
@@ -28,8 +34,8 @@ module.exports = {
 
         queueReady = queueReady.then(function(_queueExists){
           return channel.consume(queuingQueue, function(msg){
-            processMessage(msg);
-          }, {noAck: true})
+            processMessage(channel, msg);
+          })
         });
 
         return queueReady.then(function(_consumer){
@@ -40,8 +46,21 @@ module.exports = {
     }).then(null, console.warn);
   },
 
-  process_message: function(message){
+  process_message: function(channel, message){
     console.log(" [o] Received '%s'", message.content.toString());
+
+    var requestOptions = appUrlOptions;
+    requestOptions.json = JSON.parse(message.content.toString());
+    console.log(appUrlOptions);
+
+    request(requestOptions, function(err, response, body){
+      if(err){
+        console.error("QUEUEING [CONSUMER] - Post failed [%s]", message.content.toString());
+      } else {
+        console.log("QUEUEING [CONSUMER] - Message [%s] posted for processing, received %s", message.content.toString(), JSON.stringify(body));
+        channel.ack(message);
+      }
+    });
   }
 
 };

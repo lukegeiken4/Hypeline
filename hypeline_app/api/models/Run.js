@@ -35,6 +35,10 @@ module.exports = {
     frequency: {
       type: "integer",
       defaultsTo: 0
+    },
+    last_ran: {
+      type: "datetime",
+      defaultsTo: new Date().toISOString()
     }
   },
   schema:true,

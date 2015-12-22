@@ -51,30 +51,49 @@ module.exports = {
   	}
 	},
 
+	push_to_queue: function(run, cb){
+
+  	var message = JSON.stringify({
+    	run_id: run.run_id,
+    	time_queued: new Date().getTime(),
+    	scheduled: true
+  	});
+
+/*
+  	var cb = function(message){
+    	console.log("QUEUING - pushed message %s to queue", message);
+  	};
+*/
+  	Queueing.queue_message('scheduled', message, cb);
+
+	},
+
 
 	test_queue: function(req, res){
 
-  	Run.find({where: {user_id: req.body.user_id}}).exec(function(err, runs){
-    	if(err){
-      	console.log(err);
-    	} else {
-      	console.log(runs);
+  	var pushToQueue = _.bind(this.push_to_queue, this);
 
-/*
-  	  	var message = JSON.stringify({
-        	message: "test message",
-        	id: 123
-      	});
-      	var cb = function(){
-        	res.json(200, {message: "queued message"});
-      	};
-      	Queueing.queue_message('scheduled', message, cb);
-*/
-      	res.json(200, {reesult: "message queued", message: message});
+  	if(!req.body.run_id){
+    	res.json(500, {error: "Must specify run_id"});
+  	} else {
 
-    	}
-  	});
+    	var run = Run.findOne({where: {run_id: req.body.run_id}});
 
+    	run.then(function(run){
+
+      	  var cb = function(){
+        	  console.log("QUEUING - pushed run_id [%s] to queue", run.run_id);
+        	  res.json(200, {result: run});
+      	  };
+
+          pushToQueue(run, cb);
+
+        	//res.json(200, {result: run});
+    	}).catch(function(err){
+      	res.json(500, {error: err});
+    	});
+
+  	}
 
 	},
 
@@ -135,6 +154,11 @@ module.exports = {
 	find_run_nugs: function(run){
     var nugs = Hype_nug.find({run_id: String(run.run_id)});
     return nugs;
+	},
+
+	get_run: function(run_id){
+  	var run = Run.findOne({run_id: run_id});
+  	return run;
 	},
 
 	destroy_nugs: function(nugs){
