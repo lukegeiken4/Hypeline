@@ -51,7 +51,19 @@ module.exports = {
   	}
 	},
 
-	push_to_queue: function(run, cb){
+	queue_runs: function(runs){
+
+    var cb = function(){
+  	  console.log("QUEUING RUN");
+    };
+
+    var queue = _.partial(this.push_to_queue, cb);
+
+    _.each(runs, queue);
+
+	},
+
+	push_to_queue: function(cb, run){
 
   	var message = JSON.stringify({
     	run_id: run.run_id,
@@ -59,15 +71,51 @@ module.exports = {
     	scheduled: true
   	});
 
-/*
-  	var cb = function(message){
-    	console.log("QUEUING - pushed message %s to queue", message);
-  	};
-*/
   	Queueing.queue_message('scheduled', message, cb);
 
 	},
 
+  scheduler: function(req, res){
+    var runs = Run.find();
+    var filterRuns = _.bind(this.filter_runs_for_queue);
+    var queueRuns = _.bind(this.queue_runs, this);
+
+    runs.then(function(runs){
+      var runsToQueue = _.filter(runs, filterRuns);
+      queueRuns(runsToQueue);
+      res.json(200, {message: "pushed runs", runs: runsToQueue});
+    }).catch(function(err){
+      console.log('ERROR [FINDING SCHEDULED RUNS] : %s', err);
+      res.json(500, {error: err});
+    });
+  },
+
+  filter_runs_for_queue: function(run){
+
+    var lastRan = _.isUndefined(run.last_ran) ? false : run.last_ran;
+    var oneTime = (run.one_time === "true" || _.isUndefined(run.one_time)) ? true : false;
+    var frequency = _.isUndefined(run.frequency) ? 0 : run.frequency;
+    var pushToQueue = false;
+
+    if(!oneTime && !lastRan){
+      pushToQueue = true;
+    }
+
+    if(!oneTime && lastRan){
+
+      var updated = new Date(lastRan).getTime();
+      var now = new Date().getTime();
+      // frequency should be in minutes, so we'll cal minutes as the diff
+      var diff = Math.floor((now - updated) / (1000*60))
+
+      if(frequency > 0 && diff > frequency){
+        pushToQueue = true;
+      }
+
+    }
+
+    return pushToQueue;
+  },
 
 	test_queue: function(req, res){
 
@@ -86,7 +134,7 @@ module.exports = {
         	  res.json(200, {result: run});
       	  };
 
-          pushToQueue(run, cb);
+          pushToQueue(cb, run);
 
         	//res.json(200, {result: run});
     	}).catch(function(err){

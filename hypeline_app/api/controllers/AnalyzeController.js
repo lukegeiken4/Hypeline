@@ -181,17 +181,27 @@ module.exports = {
                     }
 
                   } else {
-                    run = Run.find({run_id: run_id});
+                    run = Run.findOne({run_id: run_id});
                     cbFunc = function(run){
-                      console.log("Run updated - %s - [%s]", run.run_id, runStamp);
-                      console.log(' --- Run Complete [%s] ---', runStamp);
-                      Hype_nug.find({run_id: run.run_id}).exec(function(err, nugs){
-                        if(err){
-                          res.json(500, {error: err});
-                        } else {
-                          return res.json({run_data:run, nugs: nugs});
-                        }
+
+                      run.last_ran = new Date().toISOString();
+                      var saveRun = run.save();
+
+                      saveRun.then(function(run){
+                        console.log("Run updated - %s - [%s]", run.run_id, runStamp);
+                        console.log(' --- Run Complete [%s] ---', runStamp);
+                        Hype_nug.find({run_id: String(run.run_id)}).exec(function(err, nugs){
+                          if(err){
+                            res.json(500, {error: err});
+                          } else {
+                            return res.json({run_data:run, data_points: nugs.length});
+                          }
+                        });
+                      }).catch(function(err){
+                        console.error('ERROR [ANALYZER] - error saving run %s', run.run_id);
+                        res.json(500, {error: err});
                       });
+
                     };
 
                     errFunc = function(err){

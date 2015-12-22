@@ -79,6 +79,7 @@ module.exports.routes = {
   'POST /schedule/run': 'AnalyzeController.process_received',
   'POST /schedule/test/queue': 'RunController.test_queue',
   'POST /run/remove': 'RunController.remove_run_and_nugs',
-  'POST /run/all': 'RunController.get_all_runs'
+  'POST /run/all': 'RunController.get_all_runs',
+  'POST /schedule/cron': 'RunController.scheduler',
 
 };
