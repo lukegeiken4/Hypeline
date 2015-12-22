@@ -17,7 +17,8 @@ module.exports = function(req, res, next) {
   // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
 
-  console.log('Authorizing user %s', new Date());
+  console.log('Authorizing user @ %s', new Date());
+  var generateId = _.bind(getUserId, this);
 
   if(req.body.demo && (req.body.demo === true || req.body.demo === "true")){
     console.log('Demo request');
@@ -50,6 +51,11 @@ module.exports = function(req, res, next) {
         noUser();
       } else {
         if(account.status === 'ENABLED'){
+
+          var userAccount = account;
+          account.userId = generateId(account);
+
+          req.options.authUser = userAccount;
           return next();
         } else {
           console.error('User [%s] is not enabled', account.href);
@@ -83,5 +89,11 @@ module.exports = function(req, res, next) {
   // (default res.forbidden() behavior can be overridden in `config/403.js`)
   function returnForbidden(){
     return res.send(403, {message: 'You are not permitted to perform this action.'});
+  }
+
+  function getUserId(user){
+    var lastIndex = user.href.lastIndexOf('/');
+    var userId = user.href.substring(lastIndex + 1);
+    return userId;
   }
 };
