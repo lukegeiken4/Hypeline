@@ -1,4 +1,4 @@
-angular.module('templates-app', ['about/about.tpl.html', 'home/home.tpl.html', 'hypeline/chart.tpl.html', 'hypeline/index.tpl.html', 'nav/nav.tpl.html', 'user/create.tpl.html', 'user/login.tpl.html']);
+angular.module('templates-app', ['about/about.tpl.html', 'home/home.tpl.html', 'hypeline/chart.tpl.html', 'hypeline/index.tpl.html', 'hypeline/run.tpl.html', 'nav/nav.tpl.html', 'user/create.tpl.html', 'user/login.tpl.html']);
 
 angular.module("about/about.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("about/about.tpl.html",
@@ -228,91 +228,103 @@ angular.module("hypeline/chart.tpl.html", []).run(["$templateCache", function($t
 
 angular.module("hypeline/index.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("hypeline/index.tpl.html",
-    "<div ng-controller=\"HypelineCtrl\">\n" +
+    "<div>\n" +
     "  <div class=\"row\">\n" +
-    "      <div class=\"col-xs-8 new-run\">\n" +
-    "        <div class=\"form-control-group toggle-input\">\n" +
-    "          <button ng-show=\"!newRun\" class=\"form-control btn btn-success\" ng-click=\"openNewRun(true)\">Show</button>\n" +
-    "          <button ng-show=\"newRun\" class=\"form-control btn btn-info\" ng-click=\"openNewRun(false)\">Hide</button>\n" +
-    "        </div>\n" +
-    "        <ng-form novalidate role=\"form\" name=\"entryPoint\" ng-show=\"newRun\" class=\"new-run-form\">\n" +
-    "            <div class=\"col-xs-12\">\n" +
-    "<!--                 <label for=\"tags\" class=\"label label-default\">Tag</label> -->\n" +
-    "<!--                 <h4 class=\"step\">Step 1:</h4> -->\n" +
-    "                <h5 class=\"step description sub-heading\">1. What do you want to research? A single keyword works best.</h5>\n" +
-    "                <p class=\"input-group\">\n" +
-    "                    <input class=\"form-control\" type=\"text\" placeholder=\"Tag to search\" ng-model=\"tag\" required />\n" +
-    "                </p>\n" +
-    "                <p ng-if=\"inputError\" class=\"alert alert-danger\" ng-bind-html=\"inputError\"></p>\n" +
-    "            </div>\n" +
-    "            <div class=\"col-xs-12\">\n" +
-    "<!--                 <label for=\"endDate\" class=\"label label-default\">Platforms</label> -->\n" +
-    "<!--                 <h4 class=\"step\">Step 2:</h4> -->\n" +
-    "                <h5 class=\"step description sub-heading\">2. Which platform would you like to get results from?</h5>\n" +
-    "                <ul class=\"input-group platforms\">\n" +
-    "                    <li>\n" +
-    "                      <label for=\"twitter\" class=\"label label-default\"><img src=\"/assets/imgs/twitter.png\" /></label>\n" +
-    "                      <input type=\"checkbox\" value=\"twitter\" id=\"twitter\" ng-model=\"platforms.twitter\"/>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                      <label for=\"tumblr\" class=\"label label-default\"><img src=\"/assets/imgs/tumblr.png\" /></label>\n" +
-    "                      <input type=\"checkbox\" value=\"tumblr\" id=\"tumblr\" ng-model=\"platforms.tumblr\"/>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                      <label for=\"insta\" class=\"label label-default\"><img src=\"/assets/imgs/instagram.png\" /></label>\n" +
-    "                      <input type=\"checkbox\" value=\"instagram\" id=\"insta\" ng-model=\"platforms.instagram\"/>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                      <label for=\"gplus\" class=\"label label-default\"><img src=\"/assets/imgs/gplus.jpg\" /></label>\n" +
-    "                      <input type=\"checkbox\" value=\"gplus\" id=\"gplus\" ng-model=\"platforms.gplus\"/>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                      <label for=\"vine\" class=\"label label-default\"><img src=\"/assets/imgs/vine.jpg\" /></label>\n" +
-    "                      <input type=\"checkbox\" value=\"vine\" id=\"vine\" ng-model=\"platforms.vine\"/>\n" +
-    "                    </li>\n" +
-    "                </ul>\n" +
-    "            </div>\n" +
-    "            <div class=\"col-xs-12\">\n" +
-    "<!--                 <h4 class=\"step\">Step 3:</h4> -->\n" +
-    "                <h5 class=\"step description sub-heading\">3. Let the magic happen!</h5>\n" +
-    "                <p class=\"input-group\">\n" +
-    "                    <button type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid || demo\" ng-click=\"go()\">{{ demo ? \"Disabled for demo\" : \"Go!\"}}</button>\n" +
-    "                </p>\n" +
-    "            </div>\n" +
-    "        </form>\n" +
-    "      </div>\n" +
+    "    <div class=\"col-xs-3 app-menu\">\n" +
+    "      <ul class=\"menu actions\">\n" +
+    "        <li><a href=\"#/app/run\"><i class=\"fa fa-plus-circle\"></i> Create new</a></li>\n" +
+    "      </ul>\n" +
     "\n" +
-    "      <div class=\"col-xs-4\">\n" +
-    "<!--         <h4 class=\"step\">Prior Results</h4> -->\n" +
-    "        <h5 class=\"step description sub-heading\">Prior runs (click <i class=\"fa fa-plus-circle\"></i> to add more results)</h5>\n" +
+    "      <div class=\"active-runs\">\n" +
     "        <p ng-if=\"run.message\" class=\"alert alert-info\">{{run.message}}</p>\n" +
-    "        <div class=\"panel panel-default past-runs\">\n" +
-    "          <div ng-if=\"runLoading\">Loading...</div>\n" +
-    "          <ul class=\"runs\" ng-if=\"!runLoading\">\n" +
-    "            <li ng-repeat=\"run in runs\"  ng-mouseenter=\"showOptions(run)\" ng-mouseleave=\"hideOptions(run)\" ng-click=\"getRun(run)\">\n" +
-    "              <span class=\"run\">#{{run.tag}} :\n" +
-    "                <span class=\"small\">[{{run.runDate}}]</span>\n" +
-    "<!--                 <span ng-if=\"run.showOptions\" class=\"options\">OPTS</span> -->\n" +
-    "                <span class=\"options\" ng-if=\"!demo\">\n" +
-    "                  <i class=\"fa fa-plus-circle\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Get more results\" ng-click=\"getMore(run)\"></i>\n" +
-    "                  <i class=\"fa fa-trash\" ng-click=\"deleteRun(run)\"></i>\n" +
-    "                </span>\n" +
+    "        <div ng-if=\"runLoading\">Loading...</div>\n" +
+    "        <div class=\"runs-disabled\" ng-if=\"loadingRun && !runLoading\">\n" +
+    "          <p>Retrieving...</p>\n" +
+    "        </div>\n" +
+    "        <ul class=\"menu runs\" ng-if=\"!runLoading\">\n" +
+    "          <li ng-repeat=\"run in runs\"  ng-mouseenter=\"showOptions(run)\" ng-mouseleave=\"hideOptions(run)\">\n" +
+    "            <div class=\"loading\" ng-if=\"loadingRun == run.runId\"><i class=\"fa fa-cog fa-spin\"></i></div>\n" +
+    "            <span class=\"run\" ng-click=\"getRun(run)\">#{{run.tag}} :\n" +
+    "              <span class=\"small\">[{{run.runDate}}]</span>\n" +
     "\n" +
-    "              </span>\n" +
-    "            </li>\n" +
-    "          </ul>\n" +
+    "            </span>\n" +
+    "            <span class=\"options\" ng-if=\"!demo && run.showOptions\">\n" +
+    "              <i class=\"fa fa-edit\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Edit\" ng-click=\"editRun(run)\"></i>\n" +
+    "              <i class=\"fa fa-trash\" ng-click=\"deleteRun(run)\"></i>\n" +
+    "            </span>\n" +
+    "          </li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"col-xs-9 action\">\n" +
+    "      <div ng-if=\"section == 'run'\" new-run class=\"new-run\"></div>\n" +
+    "      <div ng-if=\"section == 'results'\">\n" +
+    "        <div ng-if=\"noDataError\" class=\"alert alert-info\">No data!</div>\n" +
+    "        <div ng-if=\"!noDataError\" class=\"row chart-container hypeline-results\">\n" +
+    "          <results-chart type=\"chart\" name=\"results\" runId=\"{{runId}}\"></results-chart>\n" +
     "        </div>\n" +
     "      </div>\n" +
-    "  </div>\n" +
-    "  <div class=\"row chart-container hypeline-results\">\n" +
-    "    <div class=\"col-xs-12\">\n" +
-    "      <div ng-if=\"noDataError\" class=\"alert alert-info\"></div>\n" +
-    "      <results-chart ng-if=\"!noDataError\" type=\"chart\" name=\"results\" runId=\"{{runId}}\"></results-chart>\n" +
     "    </div>\n" +
+    "\n" +
     "  </div>\n" +
     "</div>\n" +
     "\n" +
     "\n" +
+    "");
+}]);
+
+angular.module("hypeline/run.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("hypeline/run.tpl.html",
+    "<div class=\"loading\" ng-show=\"loadEdit\">Loading run...</div>\n" +
+    "<div ng-show=\"runError\">\n" +
+    "  <p class=\"alert alert-danger\">{{runError}}</p>\n" +
+    "</div>\n" +
+    "<ng-form novalidate role=\"form\" name=\"entryPoint\" ng-show=\"newRun && !loadEdit\" class=\"new-run-form\">\n" +
+    "    <div class=\"col-xs-12\">\n" +
+    "        <h5 class=\"step description sub-heading\">What do you want to research? A single keyword works best.</h5>\n" +
+    "        <p class=\"input-group\">\n" +
+    "            <input class=\"form-control\" type=\"text\" placeholder=\"Tag to search\" ng-model=\"tag\" ng-disabled=\"editExistingRun\" required />\n" +
+    "        </p>\n" +
+    "        <p ng-if=\"inputError\" class=\"alert alert-danger\" ng-bind-html=\"inputError\"></p>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-xs-12\">\n" +
+    "        <h5 class=\"step description sub-heading\">Which platform would you like to get results from?</h5>\n" +
+    "        <ul class=\"input-group platforms\">\n" +
+    "            <li>\n" +
+    "              <label for=\"twitter\" class=\"label label-default\"><img src=\"/assets/imgs/twitter.png\" /></label>\n" +
+    "              <input type=\"checkbox\" value=\"twitter\" id=\"twitter\" ng-model=\"platforms.twitter\" ng-disabled=\"editExistingRun\"/>\n" +
+    "            </li>\n" +
+    "            <li>\n" +
+    "              <label for=\"tumblr\" class=\"label label-default\"><img src=\"/assets/imgs/tumblr.png\" /></label>\n" +
+    "              <input type=\"checkbox\" value=\"tumblr\" id=\"tumblr\" ng-model=\"platforms.tumblr\" ng-disabled=\"editExistingRun\"/>\n" +
+    "            </li>\n" +
+    "            <li>\n" +
+    "              <label for=\"insta\" class=\"label label-default\"><img src=\"/assets/imgs/instagram.png\" /></label>\n" +
+    "              <input type=\"checkbox\" value=\"instagram\" id=\"insta\" ng-model=\"platforms.instagram\" ng-disabled=\"editExistingRun\"/>\n" +
+    "            </li>\n" +
+    "            <li>\n" +
+    "              <label for=\"gplus\" class=\"label label-default\"><img src=\"/assets/imgs/gplus.jpg\" /></label>\n" +
+    "              <input type=\"checkbox\" value=\"gplus\" id=\"gplus\" ng-model=\"platforms.gplus\" ng-disabled=\"editExistingRun\"/>\n" +
+    "            </li>\n" +
+    "            <li>\n" +
+    "              <label for=\"vine\" class=\"label label-default\"><img src=\"/assets/imgs/vine.jpg\" /></label>\n" +
+    "              <input type=\"checkbox\" value=\"vine\" id=\"vine\" ng-model=\"platforms.vine\" ng-disabled=\"editExistingRun\"/>\n" +
+    "            </li>\n" +
+    "        </ul>\n" +
+    "        <div class=\"col-xs-12 input-group\">\n" +
+    "          <h5 class=\"step description sub-heading\">Continually fetch results?</h5>\n" +
+    "          <input type=\"checkbox\" value=\"true\" id=\"scheduled\" ng-model=\"scheduled\" />\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"col-xs-12 submit-box\">\n" +
+    "        <p class=\"input-group\">\n" +
+    "            <button ng-if=\"!editExistingRun\" type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid || demo\" ng-click=\"go()\">{{ demo ? \"Disabled for demo\" : \"Go!\"}}</button>\n" +
+    "            <button ng-if=\"editExistingRun\" type=\"submit\" value=\"submit\" class=\"btn btn-primary\" ng-disabled=\"entryPoint.$invalid || demo\" ng-click=\"go()\">{{ demo ? \"Disabled for demo\" : \"Update Run\"}}</button>\n" +
+    "        </p>\n" +
+    "    </div>\n" +
+    "</form>\n" +
     "");
 }]);
 
@@ -343,8 +355,8 @@ angular.module("nav/nav.tpl.html", []).run(["$templateCache", function($template
     "  <div class=\"nav navbar-nav navbar-right\">\n" +
     "    <p>\n" +
     "      <span ng-if=\"user\">\n" +
-    "        <a href=\"#/app\" class=\"btn btn-success\">App</a>\n" +
-    "        <a href=\"#/app\" ng-click=\"logout()\" href=\"#/user/logout\" class=\"btn\">Logout</a>\n" +
+    "        <a href=\"#/app/\" class=\"btn btn-success\">App</a>\n" +
+    "        <a href=\"/\" ng-click=\"logout()\" href=\"#/user/logout\" class=\"btn\">Logout</a>\n" +
     "      </span>\n" +
     "      <span ng-if=\"!user\">\n" +
     "        <a href=\"#/user/create\" class=\"btn btn-primary\">Sign Up</a>\n" +

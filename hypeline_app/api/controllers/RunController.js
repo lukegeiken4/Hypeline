@@ -19,6 +19,24 @@ module.exports = {
     })
 	},
 
+	get_user_run: function(req, res){
+
+  	var run = Run.findOne({run_id: req.body.run_id});
+
+  	run.then(function(run){
+
+    	if(req.options.authUser.userId !== run.user_id){
+      	console.error("User %s is trying to edit run %s", req.options.authUser.userId, run.run_id);
+      	res.json(401, {error: "You are not permitted to view or edit this run."});
+    	} else {
+      	res.json(200, {result: run});
+    	}
+  	}).catch(function(err){
+    	res.json(500, {error: err});
+  	});
+
+	},
+
 	process_scheduled_run: function(req, res){
 
   	if(!req.body.messageJson){
@@ -96,6 +114,7 @@ module.exports = {
     var oneTime = (run.one_time === "true" || _.isUndefined(run.one_time)) ? true : false;
     var frequency = _.isUndefined(run.frequency) ? 0 : run.frequency;
     var pushToQueue = false;
+
 
     if(!oneTime && !lastRan){
       pushToQueue = true;

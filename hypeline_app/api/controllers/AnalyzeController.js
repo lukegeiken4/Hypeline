@@ -113,7 +113,6 @@ module.exports = {
           var run = {
               run_id: run_id,
               media:origins,
-              user_id:user_id,
               keyword:keyword,
               start_date:start_date,
               end_date:end_date
@@ -162,12 +161,15 @@ module.exports = {
                 var dataPoints = analyzeRun(filteredResults);
                 var returnResults = function(models){
 
-                  var run;
+                  var findRun;
                   var cbFunc;
                   var errFunc;
 
                   if(!existing_run){
-                    run = Run.create(run);
+                    run.user_id = req.options.authUser.userId;
+                    console.log(run);
+                    findRun = Run.create(run);
+
                     cbFunc = function(run){
                       console.log("New run created - %s - [%s]", run.run_id, runStamp);
                       console.log(' --- Run Complete [%s] ---', runStamp);
@@ -181,11 +183,12 @@ module.exports = {
                     }
 
                   } else {
-                    run = Run.findOne({run_id: run_id});
+                    findRun = Run.findOne({run_id: run_id});
                     cbFunc = function(run){
 
                       run.last_ran = new Date().toISOString();
                       var saveRun = run.save();
+
 
                       saveRun.then(function(run){
                         console.log("Run updated - %s - [%s]", run.run_id, runStamp);
@@ -211,7 +214,7 @@ module.exports = {
                     }
                   }
 
-                  run
+                  findRun
                   .then(cbFunc)
                   .catch(errFunc);
 

@@ -5952,53 +5952,80 @@ a {
 .chart-data:last-of-type {
   border: 0;
 }
+.action {
+  border-left: 1px solid #eee;
+}
 ul.terms,
 ul.details,
-ul.runs {
+ul.runs,
+ul.menu {
   margin: 0;
   padding: 0;
 }
 ul.terms li,
 ul.details li,
-ul.runs li {
+ul.runs li,
+ul.menu li {
   list-style-type: none;
   position: relative;
 }
 ul.terms .term,
 ul.details .term,
-ul.runs .term {
+ul.runs .term,
+ul.menu .term {
   padding: 1rem 0;
   border-bottom: 1px dashed #ccc;
 }
 ul.terms .term:last-of-type,
 ul.details .term:last-of-type,
-ul.runs .term:last-of-type {
+ul.runs .term:last-of-type,
+ul.menu .term:last-of-type {
   border: 0;
 }
 ul.terms .options,
 ul.details .options,
-ul.runs .options {
+ul.runs .options,
+ul.menu .options {
   position: absolute;
   right: 5px;
   cursor: pointer;
 }
 ul.terms .options .fa,
 ul.details .options .fa,
-ul.runs .options .fa {
+ul.runs .options .fa,
+ul.menu .options .fa {
   margin-right: 15px;
 }
 ul.terms .options .fa:last-of-type,
 ul.details .options .fa:last-of-type,
-ul.runs .options .fa:last-of-type {
+ul.runs .options .fa:last-of-type,
+ul.menu .options .fa:last-of-type {
   margin-right: 0;
 }
 ul.terms .detail strong,
 ul.details .detail strong,
-ul.runs .detail strong {
+ul.runs .detail strong,
+ul.menu .detail strong {
   background: #eee;
   text-transform: uppercase;
   font-size: .8rem;
   padding: 3px 3rem 3px 2px;
+}
+.active-runs {
+  position: relative;
+}
+.active-runs .runs-disabled {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+}
+.active-runs .runs-disabled p {
+  text-align: center;
+  padding: .5rem 0;
+  width: 50%;
+  margin: 15% auto;
 }
 ul.runs li {
   padding: 1rem;
@@ -6007,6 +6034,24 @@ ul.runs li {
 }
 ul.runs li:last-of-type {
   border: 0;
+}
+ul.runs li.disabled {
+  cursor: default;
+  background: #ccc;
+}
+ul.runs li .loading {
+  position: absolute;
+  right: 1rem;
+}
+.app-menu ul.actions {
+  margin-bottom: 5rem;
+}
+.app-menu ul.actions li {
+  padding: 1rem;
+  border: 1px solid #eee;
+}
+.app-menu ul.actions li .fa-plus-circle {
+  color: #5cb85c;
 }
 .past-runs {
   background: #eee;
@@ -6026,11 +6071,11 @@ ul.time-grouping li {
 ul.time-grouping lilast-of-type {
   margin-right: 0;
 }
-.new-run {
-  border: 1px solid #ccc;
-}
 .new-run .new-run-form {
   padding: 2rem;
+}
+.new-run .new-run-form .submit-box {
+  margin-top: 2rem;
 }
 .new-run .toggle-input {
   position: absolute;
@@ -6077,10 +6122,6 @@ ul.time-grouping lilast-of-type {
 }
 .limit-dates .calendar-container .apply {
   margin-top: 2rem;
-}
-.hypeline-results {
-  border: 1px solid #ccc;
-  margin-top: 1rem;
 }
 .options-toggle {
   z-index: 3;

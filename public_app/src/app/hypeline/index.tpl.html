@@ -1,84 +1,42 @@
-<div ng-controller="HypelineCtrl">
+<div>
   <div class="row">
-      <div class="col-xs-8 new-run">
-        <div class="form-control-group toggle-input">
-          <button ng-show="!newRun" class="form-control btn btn-success" ng-click="openNewRun(true)">Show</button>
-          <button ng-show="newRun" class="form-control btn btn-info" ng-click="openNewRun(false)">Hide</button>
-        </div>
-        <ng-form novalidate role="form" name="entryPoint" ng-show="newRun" class="new-run-form">
-            <div class="col-xs-12">
-<!--                 <label for="tags" class="label label-default">Tag</label> -->
-<!--                 <h4 class="step">Step 1:</h4> -->
-                <h5 class="step description sub-heading">1. What do you want to research? A single keyword works best.</h5>
-                <p class="input-group">
-                    <input class="form-control" type="text" placeholder="Tag to search" ng-model="tag" required />
-                </p>
-                <p ng-if="inputError" class="alert alert-danger" ng-bind-html="inputError"></p>
-            </div>
-            <div class="col-xs-12">
-<!--                 <label for="endDate" class="label label-default">Platforms</label> -->
-<!--                 <h4 class="step">Step 2:</h4> -->
-                <h5 class="step description sub-heading">2. Which platform would you like to get results from?</h5>
-                <ul class="input-group platforms">
-                    <li>
-                      <label for="twitter" class="label label-default"><img src="/assets/imgs/twitter.png" /></label>
-                      <input type="checkbox" value="twitter" id="twitter" ng-model="platforms.twitter"/>
-                    </li>
-                    <li>
-                      <label for="tumblr" class="label label-default"><img src="/assets/imgs/tumblr.png" /></label>
-                      <input type="checkbox" value="tumblr" id="tumblr" ng-model="platforms.tumblr"/>
-                    </li>
-                    <li>
-                      <label for="insta" class="label label-default"><img src="/assets/imgs/instagram.png" /></label>
-                      <input type="checkbox" value="instagram" id="insta" ng-model="platforms.instagram"/>
-                    </li>
-                    <li>
-                      <label for="gplus" class="label label-default"><img src="/assets/imgs/gplus.jpg" /></label>
-                      <input type="checkbox" value="gplus" id="gplus" ng-model="platforms.gplus"/>
-                    </li>
-                    <li>
-                      <label for="vine" class="label label-default"><img src="/assets/imgs/vine.jpg" /></label>
-                      <input type="checkbox" value="vine" id="vine" ng-model="platforms.vine"/>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-xs-12">
-<!--                 <h4 class="step">Step 3:</h4> -->
-                <h5 class="step description sub-heading">3. Let the magic happen!</h5>
-                <p class="input-group">
-                    <button type="submit" value="submit" class="btn btn-primary" ng-disabled="entryPoint.$invalid || demo" ng-click="go()">{{ demo ? "Disabled for demo" : "Go!"}}</button>
-                </p>
-            </div>
-        </form>
-      </div>
+    <div class="col-xs-3 app-menu">
+      <ul class="menu actions">
+        <li><a href="#/app/run"><i class="fa fa-plus-circle"></i> Create new</a></li>
+      </ul>
 
-      <div class="col-xs-4">
-<!--         <h4 class="step">Prior Results</h4> -->
-        <h5 class="step description sub-heading">Prior runs (click <i class="fa fa-plus-circle"></i> to add more results)</h5>
+      <div class="active-runs">
         <p ng-if="run.message" class="alert alert-info">{{run.message}}</p>
-        <div class="panel panel-default past-runs">
-          <div ng-if="runLoading">Loading...</div>
-          <ul class="runs" ng-if="!runLoading">
-            <li ng-repeat="run in runs"  ng-mouseenter="showOptions(run)" ng-mouseleave="hideOptions(run)" ng-click="getRun(run)">
-              <span class="run">#{{run.tag}} :
-                <span class="small">[{{run.runDate}}]</span>
-<!--                 <span ng-if="run.showOptions" class="options">OPTS</span> -->
-                <span class="options" ng-if="!demo">
-                  <i class="fa fa-plus-circle" data-toggle="tooltip" data-placement="top" title="Get more results" ng-click="getMore(run)"></i>
-                  <i class="fa fa-trash" ng-click="deleteRun(run)"></i>
-                </span>
+        <div ng-if="runLoading">Loading...</div>
+        <div class="runs-disabled" ng-if="loadingRun && !runLoading">
+          <p>Retrieving...</p>
+        </div>
+        <ul class="menu runs" ng-if="!runLoading">
+          <li ng-repeat="run in runs"  ng-mouseenter="showOptions(run)" ng-mouseleave="hideOptions(run)">
+            <div class="loading" ng-if="loadingRun == run.runId"><i class="fa fa-cog fa-spin"></i></div>
+            <span class="run" ng-click="getRun(run)">#{{run.tag}} :
+              <span class="small">[{{run.runDate}}]</span>
 
-              </span>
-            </li>
-          </ul>
+            </span>
+            <span class="options" ng-if="!demo && run.showOptions">
+              <i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit" ng-click="editRun(run)"></i>
+              <i class="fa fa-trash" ng-click="deleteRun(run)"></i>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-xs-9 action">
+      <div ng-if="section == 'run'" new-run class="new-run"></div>
+      <div ng-if="section == 'results'">
+        <div ng-if="noDataError" class="alert alert-info">No data!</div>
+        <div ng-if="!noDataError" class="row chart-container hypeline-results">
+          <results-chart type="chart" name="results" runId="{{runId}}"></results-chart>
         </div>
       </div>
-  </div>
-  <div class="row chart-container hypeline-results">
-    <div class="col-xs-12">
-      <div ng-if="noDataError" class="alert alert-info"></div>
-      <results-chart ng-if="!noDataError" type="chart" name="results" runId="{{runId}}"></results-chart>
     </div>
+
   </div>
 </div>
 

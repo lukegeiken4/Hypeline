@@ -19,7 +19,11 @@
   }
 }
 
-ul.terms, ul.details, ul.runs{
+.action{
+  border-left: 1px solid #eee;
+}
+
+ul.terms, ul.details, ul.runs, ul.menu{
   margin: 0;
   padding: 0;
   li{
@@ -54,6 +58,23 @@ ul.terms, ul.details, ul.runs{
   }
 }
 
+.active-runs{
+  position: relative;
+  .runs-disabled{
+    position: absolute;
+    background: rgba(255,255,255,.8);
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    p{
+      text-align: center;
+      padding: .5rem 0;
+      width: 50%;
+      margin: 15% auto;
+    }
+  }
+}
+
 ul.runs{
   li{
     padding: 1rem;
@@ -61,6 +82,27 @@ ul.runs{
     cursor: pointer;
     &:last-of-type{
       border: 0;
+    }
+    &.disabled{
+      cursor: default;
+      background: #ccc;
+    }
+    .loading{
+      position: absolute;
+      right: 1rem;
+    }
+  }
+}
+
+.app-menu{
+  ul.actions{
+    margin-bottom: 5rem;
+    li{
+      padding: 1rem;
+      border: 1px solid #eee;
+      .fa-plus-circle{
+        color: #5cb85c;
+      }
     }
   }
 }
@@ -86,9 +128,11 @@ ul.time-grouping{
 }
 
 .new-run{
-  border: 1px solid #ccc;
   .new-run-form{
     padding: 2rem;
+    .submit-box{
+      margin-top: 2rem;
+    }
   }
   .toggle-input{
     position: absolute;
@@ -142,8 +186,6 @@ ul.time-grouping{
 }
 
 .hypeline-results{
-  border: 1px solid #ccc;
-  margin-top: 1rem;
 }
 
 .options-toggle{

@@ -14,7 +14,7 @@ angular.module( 'ngBoilerplate', [
 ])
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider, $cryptoProvider ) {
-  $urlRouterProvider.otherwise( '/home' );
+  //$urlRouterProvider.otherwise( '/home' );
   $cryptoProvider.setCryptographyKey('HpFNfvyWuVMuUK8c');
 })
 
@@ -80,13 +80,39 @@ angular.module( 'ngBoilerplate', [
 
 })
 
+.factory( 'DataStore', function DataStoreFactory(){
+
+  var data = {},
+    set = function(key, value){
+      data[key] = value;
+    },
+    get = function(key, clear){
+      var clearOnFetch = clear || true;
+      var value;
+      if(data[key]){
+        value = data[key];
+      } else {
+        value = false;
+      }
+      if(clearOnFetch){
+        delete data[key];
+      }
+      return value;
+    };
+
+  return {
+    set: set,
+    get: get
+  };
+})
+
 .factory( 'AuthService', function AuthFactory($rootScope, $location, Config, $crypto, Messages){
   var data = {},
       set = function(user, redirect){
         window.localStorage.setItem('user', user);
         $rootScope.$broadcast('user:updated');
         if(redirect){
-          $location.path('app');
+          $location.path('app/');
         }
       },
       formatter = {

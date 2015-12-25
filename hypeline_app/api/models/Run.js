@@ -9,7 +9,7 @@ module.exports = {
 
   attributes: {
     run_id: {
-        type:"integer",
+        type:"string",
         required:true
     },
     media:{
@@ -34,7 +34,7 @@ module.exports = {
     },
     frequency: {
       type: "integer",
-      defaultsTo: 0
+      defaultsTo: 10
     },
     last_ran: {
       type: "datetime",

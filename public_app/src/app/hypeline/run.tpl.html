@@ -1,0 +1,49 @@
+<div class="loading" ng-show="loadEdit">Loading run...</div>
+<div ng-show="runError">
+  <p class="alert alert-danger">{{runError}}</p>
+</div>
+<ng-form novalidate role="form" name="entryPoint" ng-show="newRun && !loadEdit" class="new-run-form">
+    <div class="col-xs-12">
+        <h5 class="step description sub-heading">What do you want to research? A single keyword works best.</h5>
+        <p class="input-group">
+            <input class="form-control" type="text" placeholder="Tag to search" ng-model="tag" ng-disabled="editExistingRun" required />
+        </p>
+        <p ng-if="inputError" class="alert alert-danger" ng-bind-html="inputError"></p>
+    </div>
+    <div class="col-xs-12">
+        <h5 class="step description sub-heading">Which platform would you like to get results from?</h5>
+        <ul class="input-group platforms">
+            <li>
+              <label for="twitter" class="label label-default"><img src="/assets/imgs/twitter.png" /></label>
+              <input type="checkbox" value="twitter" id="twitter" ng-model="platforms.twitter" ng-disabled="editExistingRun"/>
+            </li>
+            <li>
+              <label for="tumblr" class="label label-default"><img src="/assets/imgs/tumblr.png" /></label>
+              <input type="checkbox" value="tumblr" id="tumblr" ng-model="platforms.tumblr" ng-disabled="editExistingRun"/>
+            </li>
+            <li>
+              <label for="insta" class="label label-default"><img src="/assets/imgs/instagram.png" /></label>
+              <input type="checkbox" value="instagram" id="insta" ng-model="platforms.instagram" ng-disabled="editExistingRun"/>
+            </li>
+            <li>
+              <label for="gplus" class="label label-default"><img src="/assets/imgs/gplus.jpg" /></label>
+              <input type="checkbox" value="gplus" id="gplus" ng-model="platforms.gplus" ng-disabled="editExistingRun"/>
+            </li>
+            <li>
+              <label for="vine" class="label label-default"><img src="/assets/imgs/vine.jpg" /></label>
+              <input type="checkbox" value="vine" id="vine" ng-model="platforms.vine" ng-disabled="editExistingRun"/>
+            </li>
+        </ul>
+        <div class="col-xs-12 input-group">
+          <h5 class="step description sub-heading">Continually fetch results?</h5>
+          <input type="checkbox" value="true" id="scheduled" ng-model="scheduled" />
+        </div>
+    </div>
+
+    <div class="col-xs-12 submit-box">
+        <p class="input-group">
+            <button ng-if="!editExistingRun" type="submit" value="submit" class="btn btn-primary" ng-disabled="entryPoint.$invalid || demo" ng-click="go()">{{ demo ? "Disabled for demo" : "Go!"}}</button>
+            <button ng-if="editExistingRun" type="submit" value="submit" class="btn btn-primary" ng-disabled="entryPoint.$invalid || demo" ng-click="go()">{{ demo ? "Disabled for demo" : "Update Run"}}</button>
+        </p>
+    </div>
+</form>

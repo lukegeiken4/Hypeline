@@ -5,7 +5,16 @@ angular.module( 'hypeLine.hypeline', [
 .config(function config( $stateProvider ) {
   $stateProvider
   .state( 'hypeline', {
-    url: '/app',
+    url: '/app/:section',
+    views: {
+      "main": {
+        controller: 'HypelineCtrl',
+        templateUrl: 'hypeline/index.tpl.html'
+      }
+    }
+  })
+  .state( 'hypeline.edit', {
+    url: '^/app/:section/:id',
     views: {
       "main": {
         controller: 'HypelineCtrl',
@@ -26,23 +35,50 @@ angular.module( 'hypeLine.hypeline', [
   });
 })
 
-.controller( 'HypelineCtrl', function HypelineController( $location, $scope, $http, Config, $rootScope, AuthService, $sanitize ) {
+.controller( 'HypelineCtrl', function HypelineController( $location, $stateParams, $scope, $http, Config, $rootScope, AuthService, $sanitize, DataStore ) {
 
   $scope.defaultDates = function() {
     $scope.endDate = new Date();
     $scope.startDate = new Date(moment().startOf('month').utcOffset(0).format('YYYY-MM-DD HH:MM:SS Z'));
     $scope.tag = null;
     $scope.datesUpdated = moment().format('x');
+    $scope.scheduled = false;
   };
+
+  function setDefaultValues(){
+    $scope.platforms = {};
+    $scope.defaultDates();
+    $scope.inputError = false;
+    $scope.run = {
+      message: false
+    };
+    $scope.editExistingRun = false;
+  }
 
   $scope.demo = $scope.demoPage || false;
+  setDefaultValues();
+  resolveUrl();
 
-  $scope.defaultDates();
-  $scope.platforms = {};
-  $scope.inputError = false;
-  $scope.run = {
-    message: false
-  };
+  $scope.$on('$stateChangeSuccess', function(state){
+    setDefaultValues();
+    resolveUrl();
+  });
+
+  function resolveUrl(){
+    if($stateParams.section === "run" && $stateParams.id){
+      setScopeSection();
+      getUserRun();
+    } else if($stateParams.section === "run" || $stateParams.section === "results") {
+      setDefaultValues();
+      setScopeSection();
+    } else {
+      $location.path('app/results');
+    }
+  }
+
+  function setScopeSection(){
+    $scope.section = $stateParams.section;
+  }
 
   $scope.newRun = true;
   $scope.openNewRun = function(val){
@@ -52,7 +88,7 @@ angular.module( 'hypeLine.hypeline', [
   var setUser = function(){
     $scope.user = AuthService.get();
     if($scope.user || $scope.demo){
-      getUserRuns();
+      checkUserRuns();
     } else {
       if(!$scope.demo){
         AuthService.eject();
@@ -61,14 +97,61 @@ angular.module( 'hypeLine.hypeline', [
   };
 
   if($scope.user || $scope.demo){
-    getUserRuns();
+    checkUserRuns();
   } else {
     setUser();
   }
 
+  $scope.clearLoading = function(){
+    $scope.loadingRun = false;
+  };
+
   $rootScope.$on("user:updated",setUser);
 
-  $scope.runs = [];
+  function checkUserRuns(){
+    $scope.runs = DataStore.get('userRuns', false);
+    if(_.isEmpty($scope.runs)){
+      $scope.runs = [];
+      getUserRuns();
+    }
+  }
+
+  function getUserRun(){
+      $scope.loadEdit = true;
+      var params = {};
+      params.user_id = $scope.user.userId;
+      params.auth_string = $scope.user.authString;
+      params.run_id = $stateParams.id;
+      var url = Config.appRoot + '/run/one';
+      $http.post(url, params)
+      .then(
+        function(data){
+          $scope.loadEdit = false;
+          displayRun(data.data.result);
+        },
+        function(data){
+          $scope.loadEdit = false;
+          console.log("Error fetching run", data, data.data.error);
+          $scope.runError = data.data.error;
+        }
+      );
+  }
+
+  function displayRun(run){
+    explodePlatforms(run.media);
+    $scope.tag = run.keyword;
+    $scope.editExistingRun = true;
+    $scope.scheduled = !run.one_time;
+  }
+
+  function explodePlatforms(media){
+    $scope.platforms = {};
+    _.each(media, setPlatformActive);
+  }
+
+  function setPlatformActive(platform){
+    $scope.platforms[platform] = true;
+  }
 
   function getUserRuns(){
     $scope.runs = [];
@@ -97,7 +180,14 @@ angular.module( 'hypeLine.hypeline', [
 
   $scope.getRun = function(run){
     if(run){
-      $scope.runId = run.runId;
+      if($scope.section !== "results"){
+        DataStore.set('storedRun', run.runId);
+        $location.path('app/results');
+      } else {
+        $scope.loadingRun = run.runId;
+        $scope.hideOptions(run);
+        $scope.runId = run.runId;
+      }
     }
   };
 
@@ -132,6 +222,11 @@ angular.module( 'hypeLine.hypeline', [
     $scope.go(run);
   };
 
+  $scope.editRun = function(run){
+    var url = 'app/run/' + run.runId;
+    $location.path(url);
+  };
+
   function parseUserRuns(data){
     data.forEach(function(run){
       $scope.runs.push({
@@ -139,22 +234,30 @@ angular.module( 'hypeLine.hypeline', [
         startDate: run.hasOwnProperty('start_date') ? moment(run.start_date).format('MM-DD-YYYY') : '?',
         endDate: run.hasOwnProperty('end_date') ? moment(run.end_date).format('MM-DD-YYYY') : '?',
         runId: run.run_id,
-        runDate: moment(run.createdAt).format('MM-DD-YYYY @ h:mm a'),
+        runDate: moment(run.createdAt).format('MM-DD-YYYY'),
         origin: run.media.join(',')
       });
     });
-    $scope.getRun(_.last($scope.runs));
+    DataStore.set('userRuns', $scope.runs);
+    if($scope.section !== "run"){
+      var storedRun = DataStore.get('storedRun');
+
+      if(storedRun){
+        $scope.getRun(_.findWhere($scope.runs, {runId: storedRun}));
+      } else {
+        $scope.getRun(_.last($scope.runs));
+      }
+
+    }
   }
 
   $scope.go = function(run){
     getPlatforms();
     if(!$scope.user && !$scope.demo){
-      console.log('ehre');
       setUser();
       if($scope.user){
         go(run);
       } else {
-        console.log('No user');
         $location.path('user/login');
       }
     } else {
@@ -205,6 +308,7 @@ angular.module( 'hypeLine.hypeline', [
           params.start_date = $scope.startDate;
           params.end_date = $scope.endDate;
           params.auth_string = $scope.user.authString;
+          params.one_time = !$scope.scheduled;
         }
         if(run){
           params.run_id = run.runId;
@@ -218,6 +322,7 @@ angular.module( 'hypeLine.hypeline', [
             if(run){
               $scope.$broadcast('results:updated');
             }
+            console.log(data);
             getUserRuns();
           },
           function(data){
@@ -298,7 +403,7 @@ angular.module( 'hypeLine.hypeline', [
         },
         yAxis: {
           title: {
-            text: 'Score'
+            text: 'Positivity'
           }
         },
         options: {
@@ -331,8 +436,6 @@ angular.module( 'hypeLine.hypeline', [
         }
     };
 
-    fetch();
-
     scope.$watch('timegroup', function(val){
       optionsUpdated();
     });
@@ -350,8 +453,10 @@ angular.module( 'hypeLine.hypeline', [
       }
     }
 
-    scope.$parent.$watch('runId', function(){
-      fetch();
+    scope.$parent.$watch('runId', function(runId){
+      if(runId){
+        fetch();
+      }
     });
 
     scope.$parent.$on('results:updated', function(){
@@ -525,10 +630,12 @@ angular.module( 'hypeLine.hypeline', [
             } else {
               scope.$parent.noDataError = 'No data present';
             }
+            scope.$parent.clearLoading();
           },
           function(data){
             $log.error('Error fetching', data);
             scope.chartConfig.loading = "Error fetching data";
+            scope.$parent.clearLoading();
           }
         );
       }
@@ -547,6 +654,13 @@ angular.module( 'hypeLine.hypeline', [
     link: linkFn
   };
 
+})
+
+.directive('newRun', function(){
+  return {
+    templateUrl: 'hypeline/run.tpl.html',
+    controller: 'HypelineCtrl'
+  };
 })
 
 ;
