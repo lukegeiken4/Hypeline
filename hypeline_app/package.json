@@ -34,8 +34,7 @@
     "sails-mongo": "^0.11.5",
     "stormpath": "^0.15.0",
     "twitter": "^1.2.5",
-    "uuid": "^2.0.1",
-    "when": "^3.7.5"
+    "uuid": "^2.0.1"
   },
   "scripts": {
     "debug": "node debug app.js",
