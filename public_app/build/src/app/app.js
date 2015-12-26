@@ -13,21 +13,21 @@ angular.module( 'ngBoilerplate', [
   'mdo-angular-cryptography'
 ])
 
-.config( ["$stateProvider", "$urlRouterProvider", "$cryptoProvider", function myAppConfig ( $stateProvider, $urlRouterProvider, $cryptoProvider ) {
-  //$urlRouterProvider.otherwise( '/home' );
+.config( function myAppConfig ( $stateProvider, $urlRouterProvider, $cryptoProvider ) {
+  $urlRouterProvider.otherwise( '/home' );
   $cryptoProvider.setCryptographyKey('HpFNfvyWuVMuUK8c');
-}])
+})
 
-.controller( 'AppCtrl', ["$scope", "$location", function AppCtrl ( $scope, $location ) {
+.controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
     if ( angular.isDefined( toState.data && toState.data.pageTitle ) ) {
       //$scope.pageTitle = toState.data.pageTitle + ' | Hypeline' ;
       $scope.pageTitle = 'Hypeline' ;
     }
   });
-}])
+})
 
-.factory( 'Config', ["$rootScope", "$location", function ConfigFactory($rootScope, $location){
+.factory( 'Config', function ConfigFactory($rootScope, $location){
 
   var area = $location.host();
 
@@ -44,7 +44,7 @@ angular.module( 'ngBoilerplate', [
     };
 
   }
-}])
+})
 
 .factory( 'Messages', function MessageFactory(){
 
@@ -106,7 +106,7 @@ angular.module( 'ngBoilerplate', [
   };
 })
 
-.factory( 'AuthService', ["$rootScope", "$location", "Config", "$crypto", "Messages", function AuthFactory($rootScope, $location, Config, $crypto, Messages){
+.factory( 'AuthService', function AuthFactory($rootScope, $location, Config, $crypto, Messages){
   var data = {},
       set = function(user, redirect){
         window.localStorage.setItem('user', user);
@@ -199,9 +199,9 @@ angular.module( 'ngBoilerplate', [
     eject: eject
   };
 
-}])
+})
 
-.run( ["$rootScope", "$location", "AuthService", function run ($rootScope, $location, AuthService) {
+.run( function run ($rootScope, $location, AuthService) {
 
   $rootScope.$on('$stateChangeStart', function () {
     var area = $location.url().split('/')[1];
@@ -214,7 +214,7 @@ angular.module( 'ngBoilerplate', [
     }
   });
 
-}])
+})
 
 ;
 

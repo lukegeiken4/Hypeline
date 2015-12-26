@@ -2,7 +2,7 @@ angular.module( 'hypeLine.userCreate', [
   'ui.router'
 ])
 
-.config(["$stateProvider", function config( $stateProvider ) {
+.config(function config( $stateProvider ) {
   $stateProvider.state( 'user', {
     url: '/user/create',
     views: {
@@ -13,12 +13,12 @@ angular.module( 'hypeLine.userCreate', [
     },
     data:{ pageTitle: 'Create User' }
   });
-}])
+})
 
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'UserCreateCtrl', ["$scope", "$http", "Config", "$location", function HomeController( $scope, $http, Config, $location ) {
+.controller( 'UserCreateCtrl', function HomeController( $scope, $http, Config, $location ) {
 
     $scope.user = {};
 
@@ -37,7 +37,7 @@ angular.module( 'hypeLine.userCreate', [
         );
     };
 
-}])
+})
 
 ;
 

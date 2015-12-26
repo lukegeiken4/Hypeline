@@ -14,7 +14,7 @@ angular.module( 'ngBoilerplate', [
 ])
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider, $cryptoProvider ) {
-  //$urlRouterProvider.otherwise( '/home' );
+  $urlRouterProvider.otherwise( '/home' );
   $cryptoProvider.setCryptographyKey('HpFNfvyWuVMuUK8c');
 })
 

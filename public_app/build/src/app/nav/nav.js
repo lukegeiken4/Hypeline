@@ -1,6 +1,6 @@
 angular.module('hypeLine.menu', [])
 
-.controller('MenuCtrl', ["$scope", "$http", "$rootScope", "$log", "AuthService", function($scope, $http, $rootScope, $log, AuthService) {
+.controller('MenuCtrl', function($scope, $http, $rootScope, $log, AuthService) {
 
   $rootScope.$on('user:updated', function(event, obj) {
     $scope.user = AuthService.get();
@@ -14,7 +14,7 @@ angular.module('hypeLine.menu', [])
   };
 
 
-}])
+})
 
 .directive('navBar', function() {
   return {
